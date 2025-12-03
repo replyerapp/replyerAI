@@ -13,6 +13,9 @@ struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
     @State private var showShareSheet = false
     @State private var showCustomerCenter = false
+    @State private var showStyleMimicry = false
+    @State private var showDecodeMessage = false
+    @State private var styleManager = StyleProfileManager.shared
     
     var body: some View {
         NavigationStack {
@@ -76,13 +79,19 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: viewModel.imageSelection) {
+        .onChange(of: viewModel.imageSelections) {
             Task {
-                await viewModel.loadImage()
+                await viewModel.loadImages()
             }
         }
         .paywallSheet(isPresented: $viewModel.showPaywall)
         .customerCenterSheet(isPresented: $showCustomerCenter)
+        .sheet(isPresented: $showStyleMimicry) {
+            StyleMimicryView()
+        }
+        .sheet(isPresented: $showDecodeMessage) {
+            DecodeMessageView()
+        }
     }
     
     // MARK: - Free Usage Banner
@@ -123,47 +132,165 @@ struct ContentView: View {
     
     private var photoPickerSection: some View {
         VStack(spacing: 12) {
-            PhotosPicker(selection: $viewModel.imageSelection, matching: .images) {
-                Group {
-                    if let image = viewModel.selectedImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 300)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                    } else {
-                        VStack(spacing: 12) {
-                            Image(systemName: "photo.badge.plus")
-                                .font(.system(size: 40))
-                                .foregroundStyle(.secondary)
-                            Text("Select Screenshot")
-                                .font(.headline)
-                                .foregroundStyle(.primary)
-                            Text("Tap to choose a message screenshot")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 200)
-                        .background {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color(.secondarySystemBackground))
-                                .strokeBorder(Color(.separator), style: StrokeStyle(lineWidth: 1, dash: [8]))
-                        }
+            // Header with screenshot count
+            if !viewModel.selectedImages.isEmpty {
+                HStack {
+                    Text("Screenshots (\(viewModel.selectedImages.count)/\(viewModel.maxScreenshots))")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    if viewModel.isPro {
+                        Text("Full Story Mode")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.accentColor.opacity(0.15))
+                            .foregroundStyle(Color.accentColor)
+                            .clipShape(Capsule())
                     }
                 }
             }
-            .buttonStyle(.plain)
             
-            if viewModel.selectedImage != nil {
+            // Display selected images
+            if !viewModel.selectedImages.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(Array(viewModel.selectedImages.enumerated()), id: \.offset) { index, image in
+                            ZStack(alignment: .topTrailing) {
+                                VStack(spacing: 4) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 180)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
+                                    // Order indicator
+                                    Text("\(index + 1)")
+                                        .font(.caption2)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.white)
+                                        .frame(width: 20, height: 20)
+                                        .background(Color.accentColor)
+                                        .clipShape(Circle())
+                                }
+                                
+                                // Delete button
+                                Button {
+                                    viewModel.removeImage(at: index)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title3)
+                                        .foregroundStyle(.white, .red)
+                                }
+                                .offset(x: 8, y: -8)
+                            }
+                        }
+                        
+                        // Add more button (if allowed)
+                        if viewModel.canAddMoreScreenshots {
+                            PhotosPicker(
+                                selection: $viewModel.imageSelections,
+                                maxSelectionCount: viewModel.maxScreenshots,
+                                matching: .images
+                            ) {
+                                VStack(spacing: 8) {
+                                    Image(systemName: "plus.circle.fill")
+                                        .font(.title)
+                                        .foregroundStyle(Color.accentColor)
+                                    Text("Add More")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(width: 100, height: 180)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.secondarySystemBackground))
+                                        .strokeBorder(Color(.separator), style: StrokeStyle(lineWidth: 1, dash: [6]))
+                                }
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, 4)
+                }
+                
+                // Clear all button
                 Button {
-                    viewModel.selectedImage = nil
-                    viewModel.imageSelection = nil
+                    viewModel.clearImages()
                 } label: {
-                    Label("Remove Image", systemImage: "xmark.circle.fill")
+                    Label("Clear All", systemImage: "trash")
                         .font(.subheadline)
                         .foregroundStyle(.red)
                 }
+            } else {
+                // Empty state - Photo picker
+                PhotosPicker(
+                    selection: $viewModel.imageSelections,
+                    maxSelectionCount: viewModel.maxScreenshots,
+                    matching: .images
+                ) {
+                    VStack(spacing: 12) {
+                        Image(systemName: viewModel.isPro ? "photo.stack" : "photo.badge.plus")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.secondary)
+                        Text(viewModel.isPro ? "Select Screenshots" : "Select Screenshot")
+                            .font(.headline)
+                            .foregroundStyle(.primary)
+                        Text(viewModel.isPro 
+                             ? "Add up to \(viewModel.maxScreenshots) screenshots for full context"
+                             : "Tap to choose a message screenshot")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        
+                        if !viewModel.isPro {
+                            Button {
+                                viewModel.showPaywall = true
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "sparkles")
+                                    Text("Upgrade for Multi-Screenshot")
+                                }
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color.accentColor.opacity(0.15))
+                                .foregroundStyle(Color.accentColor)
+                                .clipShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.top, 4)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 200)
+                    .background {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.secondarySystemBackground))
+                            .strokeBorder(Color(.separator), style: StrokeStyle(lineWidth: 1, dash: [8]))
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+            
+            // Pro tip for multi-screenshot
+            if viewModel.isPro && viewModel.selectedImages.count > 1 {
+                HStack(spacing: 6) {
+                    Image(systemName: "lightbulb.fill")
+                        .foregroundStyle(.yellow)
+                    Text("Tip: Screenshots are analyzed in order. Add oldest first, newest last.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(Color(.tertiarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
     }
@@ -196,24 +323,50 @@ struct ContentView: View {
                 Divider()
                     .padding(.leading)
                 
-                // Tone Picker
-                HStack {
-                    Label("Tone", systemImage: "face.smiling")
-                        .foregroundStyle(.primary)
-                    Spacer()
-                    Picker("Tone", selection: $viewModel.selectedTone) {
-                        ForEach(Tone.allCases) { tone in
-                            Text(tone.rawValue).tag(tone)
-                        }
+                // Style Selection: My Style Toggle or Tone Picker
+                if viewModel.isPro && styleManager.hasCompleteProfile {
+                    // My Style Toggle (Pro users with style profile)
+                    HStack {
+                        Label("Use My Style", systemImage: "person.text.rectangle")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Toggle("", isOn: $viewModel.useMyStyle)
+                            .labelsHidden()
                     }
-                    .pickerStyle(.menu)
-                    .tint(.primary)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    
+                    // Show Tone picker only if not using My Style
+                    if !viewModel.useMyStyle {
+                        Divider()
+                            .padding(.leading)
+                        
+                        tonePickerRow
+                    }
+                } else {
+                    // Regular Tone Picker for free users or Pro without style
+                    tonePickerRow
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground))
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+    }
+    
+    private var tonePickerRow: some View {
+        HStack {
+            Label("Tone", systemImage: "face.smiling")
+                .foregroundStyle(.primary)
+            Spacer()
+            Picker("Tone", selection: $viewModel.selectedTone) {
+                ForEach(Tone.allCases) { tone in
+                    Text(tone.rawValue).tag(tone)
+                }
+            }
+            .pickerStyle(.menu)
+            .tint(.primary)
+        }
+        .padding()
+        .background(Color(.secondarySystemBackground))
     }
     
     // MARK: - Context Section
@@ -241,31 +394,178 @@ struct ContentView: View {
                 .foregroundStyle(.primary)
             
             VStack(spacing: 12) {
+                // Full Story (Multi-Screenshot) - Pro Feature
+                fullStoryFeatureRow
+                
                 // Decode Message - Pro Feature
-                proFeatureRow(
-                    icon: "text.magnifyingglass",
-                    title: "Decode Message",
-                    description: "Analyze hidden meanings & emotions",
-                    isLocked: !viewModel.isPro
-                )
+                decodeMessageFeatureRow
                 
                 // My Style - Pro Feature
-                proFeatureRow(
-                    icon: "person.text.rectangle",
-                    title: "My Style",
-                    description: "Train AI to match your writing style",
-                    isLocked: !viewModel.isPro
-                )
+                myStyleFeatureRow
             }
         }
     }
     
-    private func proFeatureRow(icon: String, title: String, description: String, isLocked: Bool) -> some View {
+    private var fullStoryFeatureRow: some View {
+        Button {
+            if !viewModel.isPro {
+                viewModel.showPaywall = true
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "photo.stack")
+                    .font(.title2)
+                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .frame(width: 32)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text("Full Story Mode")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                        
+                        if !viewModel.isPro {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.green)
+                        }
+                    }
+                    
+                    Text(viewModel.isPro 
+                         ? "Upload up to \(MultiScreenshotConstants.proMaxScreenshots) screenshots • Active"
+                         : "Add multiple screenshots for better context")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                if !viewModel.isPro {
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+        }
+        .buttonStyle(.plain)
+        .disabled(viewModel.isPro) // No action needed for Pro users, feature is already active
+    }
+    
+    private var decodeMessageFeatureRow: some View {
+        Button {
+            if viewModel.isPro {
+                showDecodeMessage = true
+            } else {
+                viewModel.showPaywall = true
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "brain.head.profile")
+                    .font(.title2)
+                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .frame(width: 32)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text("Decode Message")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                        
+                        if !viewModel.isPro {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
+                    Text("Analyze psychology, mood & hidden meanings")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private var myStyleFeatureRow: some View {
+        Button {
+            if viewModel.isPro {
+                showStyleMimicry = true
+            } else {
+                viewModel.showPaywall = true
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "person.text.rectangle")
+                    .font(.title2)
+                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .frame(width: 32)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text("My Style")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                        
+                        if !viewModel.isPro {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else if styleManager.hasCompleteProfile {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.green)
+                        }
+                    }
+                    
+                    Text(styleManager.hasCompleteProfile 
+                         ? "Style profile active • Tap to update"
+                         : "Train AI to match your writing style")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+        }
+        .buttonStyle(.plain)
+    }
+    
+    private func proFeatureRow(icon: String, title: String, description: String, isLocked: Bool, action: @escaping () -> Void) -> some View {
         Button {
             if isLocked {
                 viewModel.showPaywall = true
             } else {
-                // TODO: Navigate to pro feature
+                action()
             }
         } label: {
             HStack(spacing: 12) {
@@ -328,11 +628,11 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(viewModel.selectedImage == nil ? Color.gray : Color.accentColor)
+                .background(!viewModel.hasImages ? Color.gray : Color.accentColor)
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
-            .disabled(viewModel.selectedImage == nil || viewModel.isLoading)
+            .disabled(!viewModel.hasImages || viewModel.isLoading)
             
             // Show remaining generations for free users
             if !viewModel.isPro && viewModel.remainingFreeGenerations > 0 {

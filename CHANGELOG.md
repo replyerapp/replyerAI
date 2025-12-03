@@ -1,5 +1,188 @@
 # replyerAI - Changelog
 
+## [1.4.0] - 2025-12-03
+
+### Added - Multi-Screenshot Context (Full Story Mode)
+
+#### Overview
+Pro users can now upload up to 5 screenshots of a conversation to provide the AI with full context. This results in more accurate and contextually appropriate replies.
+
+#### Updated Files
+
+**ReplyViewModel.swift**:
+- Changed `selectedImage: UIImage?` to `selectedImages: [UIImage]` for multi-image support
+- Changed `imageSelection: PhotosPickerItem?` to `imageSelections: [PhotosPickerItem]`
+- Added `MultiScreenshotConstants` enum:
+  - `freeMaxScreenshots`: 1 (free users)
+  - `proMaxScreenshots`: 5 (Pro users)
+- Added computed properties:
+  - `maxScreenshots`: Returns limit based on subscription
+  - `canAddMoreScreenshots`: Whether more images can be added
+  - `isMultiScreenshotAvailable`: Whether feature is available
+  - `hasImages`: Whether any images are selected
+  - `selectedImage`: First image (backward compatibility)
+- Added methods:
+  - `loadImages()`: Loads multiple images from PhotosPickerItems
+  - `removeImage(at:)`: Remove specific image by index
+  - `clearImages()`: Clear all selected images
+- Updated `generateReply()` to use multi-image methods when multiple images selected
+
+**GeminiService.swift**:
+- Added `generateReplyMultiImage(images:relationship:tone:context:)`:
+  - Accepts array of UIImages in chronological order
+  - Prompt instructs AI to consider full conversation history
+  - Returns contextually accurate reply
+- Added `generateStyledReplyMultiImage(images:relationship:context:styleProfile:)`:
+  - Multi-image support with style mimicry
+  - Combines full context with user's writing style
+
+**ContentView.swift**:
+- Completely redesigned Photo Picker Section:
+  - Header showing screenshot count (e.g., "2/5")
+  - "Full Story Mode" badge for Pro users
+  - Horizontal scrolling gallery of selected screenshots
+  - Order indicators (1, 2, 3...) on each screenshot
+  - Individual delete buttons on each image
+  - "Add More" button when below limit
+  - "Clear All" button
+- Added `fullStoryFeatureRow` in Pro Features section:
+  - Shows lock for free users
+  - Shows checkmark and "Active" for Pro users
+- Updated empty state:
+  - Different icon and text for Pro vs Free users
+  - "Upgrade for Multi-Screenshot" button for free users
+- Added Pro tip: "Screenshots are analyzed in order. Add oldest first, newest last."
+- Updated generate button to use `hasImages` instead of single image check
+
+#### How It Works
+
+1. **Pro Users**: Can select up to 5 screenshots
+2. **Free Users**: Limited to 1 screenshot (with upgrade prompt)
+3. **Order Matters**: Screenshots should be added oldest to newest
+4. **AI Analysis**: Gemini analyzes ALL screenshots together for full context
+5. **Better Replies**: More context = more accurate and appropriate replies
+
+#### Use Cases
+
+- Long conversations that span multiple screen lengths
+- Complex discussions where context from earlier messages matters
+- Arguments or emotional conversations where history is important
+- Business negotiations where previous terms were discussed
+
+---
+
+## [1.3.0] - 2025-12-03
+
+### Added - Decode Message (Dating Coach Analysis) Feature
+
+#### New Files
+
+**DecodeMessage/DecodeAnalysis.swift**:
+- `DecodeAnalysis` model with comprehensive psychological insights
+- `TextCue` model for specific text pattern observations
+- `MoodIndicator` enum for visual mood representation
+- Properties: mood score, emotional state, hidden meaning, text cues, relationship dynamics, what they want, red/green flags, recommended approach
+
+**DecodeMessage/DecodeMessageView.swift**:
+- Complete UI for psychological message analysis
+- Image picker for conversation screenshots
+- Relationship and context input
+- Beautiful analysis results display:
+  - Mood score with visual bar (1-10 scale)
+  - Emoji mood indicator
+  - Hidden meaning insights
+  - Emotional state analysis
+  - Text cue breakdown with significance levels
+  - Red flags and green flags sections
+  - Recommended response approach
+
+#### Updated Files
+
+**GeminiService.swift**:
+- Added `decodeMessage(image:relationship:context:)` - Full psychological analysis
+- Added `parseDecodeAnalysis(from:)` - JSON parsing for analysis results
+- Added `jsonParsingFailed` error case
+- Prompt engineered for dating coach / communication psychologist insights
+
+**ContentView.swift**:
+- Added `showDecodeMessage` state
+- Added `decodeMessageFeatureRow` with brain icon
+- Navigation to DecodeMessageView for Pro users
+- Updated description: "Analyze psychology, mood & hidden meanings"
+
+#### Analysis Includes
+
+1. **Mood Score** (1-10): Visual representation of sender's mood
+2. **Emotional State**: What emotions they're experiencing
+3. **Hidden Meaning**: What they're REALLY trying to say
+4. **Text Cues**: Specific patterns analyzed:
+   - Punctuation choices (periods = coldness)
+   - Emoji usage or absence
+   - Response length implications
+   - Word choice analysis
+5. **Relationship Dynamics**: How they view the relationship
+6. **What They Want**: Their desired outcome
+7. **Red Flags**: Warning signs to watch for
+8. **Green Flags**: Positive communication signs
+9. **Recommended Approach**: How to respond effectively
+
+---
+
+## [1.2.0] - 2025-12-03
+
+### Added - Style Mimicry (Reply Like Me) Feature
+
+#### New Files
+
+**StyleMimicry/StyleProfile.swift**:
+- `StyleProfile` model for storing analyzed writing style
+- `StyleSample` model for sample screenshots
+- `StyleProfileManager` singleton for managing style profiles
+- Persistence via UserDefaults
+- Constants: minimum 3 samples, maximum 5 samples
+
+**StyleMimicry/StyleMimicryView.swift**:
+- Complete UI for teaching AI your writing style
+- Multi-image PhotosPicker for sample collection
+- Progress indicator for sample collection
+- Sample thumbnail grid with delete option
+- Instructions for best results
+- Analyze & Save button with loading state
+- Profile status display for existing profiles
+
+#### Updated Files
+
+**GeminiService.swift**:
+- Added `analyzeWritingStyle(samples:)` - Analyzes multiple screenshots to learn user's style
+- Added `generateStyledReply(image:relationship:context:styleProfile:)` - Generates replies matching user's style
+- Style analysis returns JSON with: tone, emoji usage, punctuation, slang, abbreviations, etc.
+
+**ReplyViewModel.swift**:
+- Added `useMyStyle: Bool` toggle for using personal style
+- Added `hasStyleProfile` computed property
+- Updated `generateReply()` to use styled generation when enabled
+
+**ContentView.swift**:
+- Added "Use My Style" toggle in Settings (for Pro users with style profile)
+- Updated My Style feature row to show profile status
+- Navigation to StyleMimicryView
+- Conditional tone picker (hidden when using My Style)
+
+#### How It Works
+
+1. **Collect Samples**: User uploads 3-5 screenshots of their OWN sent messages
+2. **AI Analysis**: Gemini analyzes the samples to identify:
+   - Tone & personality
+   - Emoji usage patterns
+   - Punctuation style
+   - Capitalization habits
+   - Message length preferences
+   - Slang & vocabulary
+   - Greeting/closing styles
+3. **Generate Styled Replies**: When "Use My Style" is enabled, replies match the user's unique writing style
+
+---
+
 ## [1.1.0] - 2025-12-03
 
 ### Added - RevenueCat Subscription Integration
@@ -224,11 +407,17 @@ replyerAI/
 │   ├── replyerAIApp.swift
 │   ├── Secrets.swift             ← API keys (Gemini + RevenueCat)
 │   ├── GeminiService.swift       ← Gemini AI service
-│   ├── ReplyViewModel.swift      ← Main ViewModel
+│   ├── ReplyViewModel.swift      ← Main ViewModel (multi-image support)
 │   ├── ShareSheet.swift          ← Native iOS share sheet
-│   └── SubscriptionService.swift ← RevenueCat subscription management
+│   ├── SubscriptionService.swift ← RevenueCat subscription management
+│   ├── StyleMimicry/
+│   │   ├── StyleProfile.swift    ← Style profile model & manager
+│   │   └── StyleMimicryView.swift ← Style training UI
+│   └── DecodeMessage/
+│       ├── DecodeAnalysis.swift  ← Decode analysis model
+│       └── DecodeMessageView.swift ← Decode message UI
 ├── replyerAI.xcodeproj/
-│   └── project.pbxproj        ← MODIFIED: Added package dependency
-└── CHANGELOG.md               ← NEW: This documentation file
+│   └── project.pbxproj        ← MODIFIED: Added package dependencies
+└── CHANGELOG.md               ← This documentation file
 ```
 

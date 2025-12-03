@@ -47,6 +47,16 @@ enum Tone: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+// MARK: - Multi-Screenshot Constants
+
+enum MultiScreenshotConstants {
+    /// Maximum screenshots for free users
+    static let freeMaxScreenshots = 1
+    
+    /// Maximum screenshots for pro users
+    static let proMaxScreenshots = 5
+}
+
 // MARK: - ViewModel
 
 /// ViewModel for managing reply generation state and logic
@@ -56,17 +66,20 @@ final class ReplyViewModel {
     
     // MARK: - Published Properties
     
-    /// The selected image from the photo picker
-    var selectedImage: UIImage?
+    /// The selected images from the photo picker (multiple for Pro)
+    var selectedImages: [UIImage] = []
     
-    /// The photo picker item selection
-    var imageSelection: PhotosPickerItem?
+    /// The photo picker item selections (multiple)
+    var imageSelections: [PhotosPickerItem] = []
     
     /// The selected relationship with the message sender
     var selectedRelationship: Relationship = .friend
     
     /// The selected tone for the reply
     var selectedTone: Tone = .friendly
+    
+    /// Whether to use the user's personal style instead of tone
+    var useMyStyle: Bool = false
     
     /// Additional context provided by the user
     var contextText: String = ""
@@ -86,11 +99,19 @@ final class ReplyViewModel {
     /// Reference to subscription service
     private let subscriptionService = SubscriptionService.shared
     
+    /// Reference to style profile manager
+    private let styleManager = StyleProfileManager.shared
+    
     // MARK: - Computed Properties
     
     /// Whether the user has pro access
     var isPro: Bool {
         subscriptionService.isPro
+    }
+    
+    /// Whether the user has a complete style profile
+    var hasStyleProfile: Bool {
+        styleManager.hasCompleteProfile
     }
     
     /// Whether the user can generate (pro or within free limit)
@@ -103,6 +124,31 @@ final class ReplyViewModel {
         subscriptionService.remainingFreeGenerations
     }
     
+    /// Maximum allowed screenshots based on subscription
+    var maxScreenshots: Int {
+        isPro ? MultiScreenshotConstants.proMaxScreenshots : MultiScreenshotConstants.freeMaxScreenshots
+    }
+    
+    /// Whether user can add more screenshots
+    var canAddMoreScreenshots: Bool {
+        selectedImages.count < maxScreenshots
+    }
+    
+    /// Whether multi-screenshot is available (Pro feature)
+    var isMultiScreenshotAvailable: Bool {
+        isPro
+    }
+    
+    /// First selected image (for backward compatibility)
+    var selectedImage: UIImage? {
+        selectedImages.first
+    }
+    
+    /// Whether any images are selected
+    var hasImages: Bool {
+        !selectedImages.isEmpty
+    }
+    
     // MARK: - Initialization
     
     init() {}
@@ -112,7 +158,7 @@ final class ReplyViewModel {
     /// Generates a reply based on the selected parameters
     /// Returns true if generation was attempted, false if paywall should be shown
     func generateReply() async -> Bool {
-        guard let image = selectedImage else {
+        guard !selectedImages.isEmpty else {
             errorMessage = "Please select an image first."
             return true
         }
@@ -128,8 +174,41 @@ final class ReplyViewModel {
         generatedReply = ""
         
         do {
-            let prompt = buildPrompt()
-            let response = try await GeminiService.shared.generateResponse(image: image, prompt: prompt)
+            let response: String
+            
+            // Use styled reply if user has a style profile and wants to use it
+            if useMyStyle && hasStyleProfile, let styleProfile = styleManager.profile {
+                if selectedImages.count > 1 {
+                    // Multi-screenshot with style
+                    response = try await GeminiService.shared.generateStyledReplyMultiImage(
+                        images: selectedImages,
+                        relationship: selectedRelationship.rawValue,
+                        context: contextText,
+                        styleProfile: styleProfile.styleAnalysis
+                    )
+                } else {
+                    response = try await GeminiService.shared.generateStyledReply(
+                        image: selectedImages[0],
+                        relationship: selectedRelationship.rawValue,
+                        context: contextText,
+                        styleProfile: styleProfile.styleAnalysis
+                    )
+                }
+            } else {
+                if selectedImages.count > 1 {
+                    // Multi-screenshot without style
+                    response = try await GeminiService.shared.generateReplyMultiImage(
+                        images: selectedImages,
+                        relationship: selectedRelationship.rawValue,
+                        tone: selectedTone.rawValue,
+                        context: contextText
+                    )
+                } else {
+                    let prompt = buildPrompt()
+                    response = try await GeminiService.shared.generateResponse(image: selectedImages[0], prompt: prompt)
+                }
+            }
+            
             generatedReply = response
             
             // Increment usage count for free users
@@ -175,29 +254,56 @@ final class ReplyViewModel {
         return prompt
     }
     
-    /// Loads the image from the PhotosPickerItem
-    func loadImage() async {
-        guard let imageSelection else { return }
+    /// Loads images from the PhotosPickerItems
+    func loadImages() async {
+        guard !imageSelections.isEmpty else { return }
         
-        do {
-            if let data = try await imageSelection.loadTransferable(type: Data.self),
-               let image = UIImage(data: data) {
-                selectedImage = image
+        var loadedImages: [UIImage] = []
+        
+        for selection in imageSelections {
+            do {
+                if let data = try await selection.loadTransferable(type: Data.self),
+                   let image = UIImage(data: data) {
+                    loadedImages.append(image)
+                }
+            } catch {
+                print("Failed to load image: \(error.localizedDescription)")
             }
-        } catch {
-            errorMessage = "Failed to load image: \(error.localizedDescription)"
         }
+        
+        // Respect the max limit
+        selectedImages = Array(loadedImages.prefix(maxScreenshots))
+        
+        // Show paywall prompt if they tried to add more than allowed
+        if loadedImages.count > maxScreenshots && !isPro {
+            errorMessage = "Upgrade to Pro to add up to \(MultiScreenshotConstants.proMaxScreenshots) screenshots for better context!"
+        }
+    }
+    
+    /// Removes an image at the specified index
+    func removeImage(at index: Int) {
+        guard index < selectedImages.count else { return }
+        selectedImages.remove(at: index)
+        if index < imageSelections.count {
+            imageSelections.remove(at: index)
+        }
+    }
+    
+    /// Clears all images
+    func clearImages() {
+        selectedImages.removeAll()
+        imageSelections.removeAll()
     }
     
     /// Clears all input and output data
     func reset() {
-        selectedImage = nil
-        imageSelection = nil
+        selectedImages.removeAll()
+        imageSelections.removeAll()
         selectedRelationship = .friend
         selectedTone = .friendly
+        useMyStyle = false
         contextText = ""
         generatedReply = ""
         errorMessage = nil
     }
 }
-
