@@ -167,15 +167,17 @@ final class GeminiService {
     ///   - relationship: The relationship with the message sender
     ///   - context: Additional context
     ///   - styleProfile: The user's analyzed writing style (JSON string)
+    ///   - contactNotes: Notes about this specific contact (optional)
     /// - Returns: A reply matching the user's style
     /// - Throws: An error if generation fails
     func generateStyledReply(
         image: UIImage,
         relationship: String,
         context: String,
-        styleProfile: String
+        styleProfile: String,
+        contactNotes: String = ""
     ) async throws -> String {
-        let prompt = """
+        var prompt = """
         You are a message reply assistant that MUST match the user's personal writing style exactly.
         
         ## USER'S WRITING STYLE PROFILE:
@@ -191,6 +193,21 @@ final class GeminiService {
         ## CONTEXT:
         - Relationship with sender: \(relationship)
         \(context.isEmpty ? "" : "- Additional context: \(context)")
+        """
+        
+        if !contactNotes.isEmpty {
+            prompt += """
+            
+            
+            ## IMPORTANT - CONTACT-SPECIFIC RULES:
+            \(contactNotes)
+            
+            You MUST follow these rules when generating the reply for this specific person.
+            """
+        }
+        
+        prompt += """
+        
         
         ## RULES:
         - Match the language of the conversation
@@ -220,19 +237,21 @@ final class GeminiService {
     ///   - relationship: The relationship with the message sender
     ///   - tone: The desired tone for the reply
     ///   - context: Additional context
+    ///   - contactNotes: Notes about this specific contact (optional)
     /// - Returns: A contextually accurate reply
     /// - Throws: An error if generation fails
     func generateReplyMultiImage(
         images: [UIImage],
         relationship: String,
         tone: String,
-        context: String
+        context: String,
+        contactNotes: String = ""
     ) async throws -> String {
         guard !images.isEmpty else {
             throw GeminiError.noSamplesProvided
         }
         
-        let prompt = """
+        var prompt = """
         You are a helpful assistant that generates reply messages. 
         
         I'm showing you \(images.count) screenshots of a message conversation in chronological order (first image = earliest messages, last image = most recent messages). Please analyze the FULL conversation history across all screenshots and generate an appropriate reply.
@@ -245,7 +264,30 @@ final class GeminiService {
         - Generate ONLY the reply message text, nothing else.
         - Keep the reply natural and conversational.
         - Match the language used in the conversation.
-        \(context.isEmpty ? "" : "\n**Additional context from me:**\n\(context)")
+        """
+        
+        if !contactNotes.isEmpty {
+            prompt += """
+            
+            
+            **IMPORTANT - Remember these things about this person:**
+            \(contactNotes)
+            
+            You MUST follow these rules when generating the reply.
+            """
+        }
+        
+        if !context.isEmpty {
+            prompt += """
+            
+            
+            **Additional context from me:**
+            \(context)
+            """
+        }
+        
+        prompt += """
+        
         
         Now, analyze ALL the images together and generate an appropriate reply message that takes into account the full conversation history.
         """
@@ -271,19 +313,21 @@ final class GeminiService {
     ///   - relationship: The relationship with the message sender
     ///   - context: Additional context
     ///   - styleProfile: The user's analyzed writing style (JSON string)
+    ///   - contactNotes: Notes about this specific contact (optional)
     /// - Returns: A reply matching the user's style with full context
     /// - Throws: An error if generation fails
     func generateStyledReplyMultiImage(
         images: [UIImage],
         relationship: String,
         context: String,
-        styleProfile: String
+        styleProfile: String,
+        contactNotes: String = ""
     ) async throws -> String {
         guard !images.isEmpty else {
             throw GeminiError.noSamplesProvided
         }
         
-        let prompt = """
+        var prompt = """
         You are a message reply assistant that MUST match the user's personal writing style exactly.
         
         ## USER'S WRITING STYLE PROFILE:
@@ -300,6 +344,21 @@ final class GeminiService {
         ## CONTEXT:
         - Relationship with sender: \(relationship)
         \(context.isEmpty ? "" : "- Additional context: \(context)")
+        """
+        
+        if !contactNotes.isEmpty {
+            prompt += """
+            
+            
+            ## IMPORTANT - CONTACT-SPECIFIC RULES:
+            \(contactNotes)
+            
+            You MUST follow these rules when generating the reply for this specific person.
+            """
+        }
+        
+        prompt += """
+        
         
         ## RULES:
         - Consider the ENTIRE conversation from all screenshots

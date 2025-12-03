@@ -1,5 +1,104 @@
 # replyerAI - Changelog
 
+## [1.5.0] - 2025-12-03
+
+### Added - Contact Profiles (Save People's Preferences)
+
+#### Overview
+Pro users can now save specific profiles for people they message frequently. Add notes like "Sarah hates emojis and loves sarcasm" and the AI will automatically remember these preferences when generating replies.
+
+#### New Files
+
+**ContactProfiles/ContactProfile.swift**:
+- `ContactProfile` model with properties:
+  - `id`: Unique identifier (UUID)
+  - `name`: Contact's name
+  - `relationship`: Relationship type
+  - `notes`: Custom notes for AI (e.g., "hates emojis, loves sarcasm")
+  - `preferredTone`: Optional default tone for this contact
+  - `createdAt` / `updatedAt`: Timestamps
+  - `emoji`: Computed property for visual avatar based on relationship
+- `ContactProfileManager` singleton:
+  - `profiles`: Array of saved profiles
+  - `selectedProfile`: Currently selected profile
+  - `addProfile()`, `updateProfile()`, `deleteProfile()`: CRUD operations
+  - `selectProfile()`, `clearSelection()`: Selection management
+  - Persistence via UserDefaults
+
+**ContactProfiles/ContactProfilesView.swift**:
+- `ContactProfilesView`: Main list view for managing profiles
+  - Empty state with onboarding
+  - Swipe to delete
+  - Tap to edit
+- `ProfileRowView`: Individual profile row with emoji, name, relationship, notes preview
+- `AddEditProfileView`: Form for creating/editing profiles
+  - Name field
+  - Relationship picker
+  - Notes text field (for AI rules)
+  - Optional preferred tone
+  - Delete button (edit mode)
+- `ContactProfilePicker`: Dropdown picker for selecting profiles
+  - Shows in main view when Pro
+  - Displays selected profile's notes
+  - Quick access to manage profiles
+
+#### Updated Files
+
+**ReplyViewModel.swift**:
+- Added `selectedContactProfile: ContactProfile?`
+- Added computed properties:
+  - `isContactProfilesAvailable`: Pro feature check
+  - `hasContactProfile`: Whether profile is selected
+  - `effectiveRelationship`: From profile or manual
+  - `effectiveTone`: From profile or manual
+  - `contactProfileNotes`: Notes for AI context
+- Added `applyContactProfile()`: Applies settings when profile selected
+- Updated `buildPrompt()` to include contact-specific rules
+- Updated `reset()` to clear selected profile
+
+**GeminiService.swift**:
+- Added `contactNotes` parameter to:
+  - `generateStyledReply()`: Includes contact rules in styled prompts
+  - `generateReplyMultiImage()`: Includes contact rules in multi-image prompts
+  - `generateStyledReplyMultiImage()`: Combines style + contact rules
+- Contact notes are prominently displayed in prompts with "IMPORTANT" header
+
+**ContentView.swift**:
+- Added `showContactProfiles` state
+- Added `contactProfileManager` state
+- Added `contactProfileSection`: Shows profile picker for Pro users
+- Added `contactProfilesFeatureRow` in Pro Features:
+  - Shows profile count badge
+  - Lock icon for free users
+  - Navigates to profile management
+- Updated Settings section:
+  - Relationship picker disabled when profile selected
+  - Tone picker disabled when profile has preferred tone
+  - Info hint showing which profile is active
+
+#### How It Works
+
+1. **Create Profile**: Tap "Contact Profiles" → Add new profile
+2. **Add Details**: 
+   - Name: "Sarah"
+   - Relationship: Friend
+   - Notes: "Hates emojis, loves sarcasm, always busy"
+   - Preferred Tone: Sarcastic (optional)
+3. **Select Profile**: Choose "Sarah" from the picker
+4. **Generate**: AI automatically applies Sarah's preferences
+5. **Result**: Replies are tailored specifically for Sarah
+
+#### Example Notes
+
+- "Hates emojis and loves sarcasm"
+- "Very formal, use proper grammar"
+- "Responds well to humor, use puns"
+- "Sensitive about work topics"
+- "Prefers short, direct messages"
+- "Always busy, keep it brief"
+
+---
+
 ## [1.4.0] - 2025-12-03
 
 ### Added - Multi-Screenshot Context (Full Story Mode)
@@ -407,9 +506,12 @@ replyerAI/
 │   ├── replyerAIApp.swift
 │   ├── Secrets.swift             ← API keys (Gemini + RevenueCat)
 │   ├── GeminiService.swift       ← Gemini AI service
-│   ├── ReplyViewModel.swift      ← Main ViewModel (multi-image support)
+│   ├── ReplyViewModel.swift      ← Main ViewModel (multi-image + profiles)
 │   ├── ShareSheet.swift          ← Native iOS share sheet
 │   ├── SubscriptionService.swift ← RevenueCat subscription management
+│   ├── ContactProfiles/
+│   │   ├── ContactProfile.swift  ← Contact profile model & manager
+│   │   └── ContactProfilesView.swift ← Profile management UI
 │   ├── StyleMimicry/
 │   │   ├── StyleProfile.swift    ← Style profile model & manager
 │   │   └── StyleMimicryView.swift ← Style training UI

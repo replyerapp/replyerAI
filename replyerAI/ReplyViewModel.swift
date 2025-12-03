@@ -102,6 +102,16 @@ final class ReplyViewModel {
     /// Reference to style profile manager
     private let styleManager = StyleProfileManager.shared
     
+    /// Reference to contact profile manager
+    private let contactProfileManager = ContactProfileManager.shared
+    
+    /// Selected contact profile (Pro feature)
+    var selectedContactProfile: ContactProfile? {
+        didSet {
+            applyContactProfile()
+        }
+    }
+    
     // MARK: - Computed Properties
     
     /// Whether the user has pro access
@@ -149,6 +159,34 @@ final class ReplyViewModel {
         !selectedImages.isEmpty
     }
     
+    /// Whether contact profiles feature is available (Pro feature)
+    var isContactProfilesAvailable: Bool {
+        isPro
+    }
+    
+    /// Whether a contact profile is selected
+    var hasContactProfile: Bool {
+        selectedContactProfile != nil
+    }
+    
+    /// The effective relationship (from profile or manual selection)
+    var effectiveRelationship: String {
+        selectedContactProfile?.relationship ?? selectedRelationship.rawValue
+    }
+    
+    /// The effective tone (from profile or manual selection)
+    var effectiveTone: String {
+        if let profile = selectedContactProfile, let preferredTone = profile.preferredTone {
+            return preferredTone
+        }
+        return selectedTone.rawValue
+    }
+    
+    /// Contact profile notes for AI context
+    var contactProfileNotes: String {
+        selectedContactProfile?.notes ?? ""
+    }
+    
     // MARK: - Initialization
     
     init() {}
@@ -182,16 +220,18 @@ final class ReplyViewModel {
                     // Multi-screenshot with style
                     response = try await GeminiService.shared.generateStyledReplyMultiImage(
                         images: selectedImages,
-                        relationship: selectedRelationship.rawValue,
+                        relationship: effectiveRelationship,
                         context: contextText,
-                        styleProfile: styleProfile.styleAnalysis
+                        styleProfile: styleProfile.styleAnalysis,
+                        contactNotes: contactProfileNotes
                     )
                 } else {
                     response = try await GeminiService.shared.generateStyledReply(
                         image: selectedImages[0],
-                        relationship: selectedRelationship.rawValue,
+                        relationship: effectiveRelationship,
                         context: contextText,
-                        styleProfile: styleProfile.styleAnalysis
+                        styleProfile: styleProfile.styleAnalysis,
+                        contactNotes: contactProfileNotes
                     )
                 }
             } else {
@@ -199,9 +239,10 @@ final class ReplyViewModel {
                     // Multi-screenshot without style
                     response = try await GeminiService.shared.generateReplyMultiImage(
                         images: selectedImages,
-                        relationship: selectedRelationship.rawValue,
-                        tone: selectedTone.rawValue,
-                        context: contextText
+                        relationship: effectiveRelationship,
+                        tone: effectiveTone,
+                        context: contextText,
+                        contactNotes: contactProfileNotes
                     )
                 } else {
                     let prompt = buildPrompt()
@@ -229,12 +270,24 @@ final class ReplyViewModel {
         I'm showing you a screenshot of a message conversation. Please analyze the messages in the image and generate a reply.
         
         **Instructions:**
-        - The person I'm replying to is my \(selectedRelationship.rawValue.lowercased()).
-        - I want the reply to have a \(selectedTone.rawValue.lowercased()) tone.
+        - The person I'm replying to is my \(effectiveRelationship.lowercased()).
+        - I want the reply to have a \(effectiveTone.lowercased()) tone.
         - Generate ONLY the reply message text, nothing else.
         - Keep the reply natural and conversational.
         - Match the language used in the conversation (if they write in Spanish, reply in Spanish, etc.).
         """
+        
+        // Add contact profile notes if available
+        if !contactProfileNotes.isEmpty {
+            prompt += """
+            
+            
+            **IMPORTANT - Remember these things about this person:**
+            \(contactProfileNotes)
+            
+            Make sure to follow these rules when generating the reply.
+            """
+        }
         
         if !contextText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             prompt += """
@@ -252,6 +305,22 @@ final class ReplyViewModel {
         """
         
         return prompt
+    }
+    
+    /// Applies settings from the selected contact profile
+    private func applyContactProfile() {
+        guard let profile = selectedContactProfile else { return }
+        
+        // Apply relationship from profile
+        if let relationship = Relationship.allCases.first(where: { $0.rawValue == profile.relationship }) {
+            selectedRelationship = relationship
+        }
+        
+        // Apply preferred tone if set
+        if let toneName = profile.preferredTone,
+           let tone = Tone.allCases.first(where: { $0.rawValue == toneName }) {
+            selectedTone = tone
+        }
     }
     
     /// Loads images from the PhotosPickerItems
@@ -302,6 +371,7 @@ final class ReplyViewModel {
         selectedRelationship = .friend
         selectedTone = .friendly
         useMyStyle = false
+        selectedContactProfile = nil
         contextText = ""
         generatedReply = ""
         errorMessage = nil

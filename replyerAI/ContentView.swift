@@ -15,7 +15,9 @@ struct ContentView: View {
     @State private var showCustomerCenter = false
     @State private var showStyleMimicry = false
     @State private var showDecodeMessage = false
+    @State private var showContactProfiles = false
     @State private var styleManager = StyleProfileManager.shared
+    @State private var contactProfileManager = ContactProfileManager.shared
     
     var body: some View {
         NavigationStack {
@@ -30,6 +32,11 @@ struct ContentView: View {
                     
                     // MARK: - Photo Picker Section
                     photoPickerSection
+                    
+                    // MARK: - Contact Profile Section (Pro)
+                    if viewModel.isPro {
+                        contactProfileSection
+                    }
                     
                     // MARK: - Settings Section
                     settingsSection
@@ -91,6 +98,36 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showDecodeMessage) {
             DecodeMessageView()
+        }
+        .sheet(isPresented: $showContactProfiles) {
+            ContactProfilesView()
+        }
+    }
+    
+    // MARK: - Contact Profile Section
+    
+    private var contactProfileSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Contact Profile")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                
+                Spacer()
+                
+                Button {
+                    showContactProfiles = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "gear")
+                        Text("Manage")
+                    }
+                    .font(.caption)
+                    .foregroundStyle(Color.accentColor)
+                }
+            }
+            
+            ContactProfilePicker(selectedProfile: $viewModel.selectedContactProfile)
         }
     }
     
@@ -304,18 +341,23 @@ struct ContentView: View {
                 .foregroundStyle(.primary)
             
             VStack(spacing: 0) {
-                // Relationship Picker
+                // Relationship Picker (disabled if contact profile selected)
                 HStack {
                     Label("Relationship", systemImage: "person.2")
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(viewModel.hasContactProfile ? .secondary : .primary)
                     Spacer()
-                    Picker("Relationship", selection: $viewModel.selectedRelationship) {
-                        ForEach(Relationship.allCases) { relationship in
-                            Text(relationship.rawValue).tag(relationship)
+                    if viewModel.hasContactProfile {
+                        Text(viewModel.effectiveRelationship)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Picker("Relationship", selection: $viewModel.selectedRelationship) {
+                            ForEach(Relationship.allCases) { relationship in
+                                Text(relationship.rawValue).tag(relationship)
+                            }
                         }
+                        .pickerStyle(.menu)
+                        .tint(.primary)
                     }
-                    .pickerStyle(.menu)
-                    .tint(.primary)
                 }
                 .padding()
                 .background(Color(.secondarySystemBackground))
@@ -349,21 +391,37 @@ struct ContentView: View {
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
+            
+            // Show contact profile info hint
+            if viewModel.hasContactProfile {
+                HStack(spacing: 6) {
+                    Image(systemName: "info.circle.fill")
+                        .foregroundStyle(Color.accentColor)
+                    Text("Settings from \(viewModel.selectedContactProfile?.name ?? "profile") are being used.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
     }
     
     private var tonePickerRow: some View {
         HStack {
             Label("Tone", systemImage: "face.smiling")
-                .foregroundStyle(.primary)
+                .foregroundStyle(viewModel.hasContactProfile && viewModel.selectedContactProfile?.preferredTone != nil ? .secondary : .primary)
             Spacer()
-            Picker("Tone", selection: $viewModel.selectedTone) {
-                ForEach(Tone.allCases) { tone in
-                    Text(tone.rawValue).tag(tone)
+            if viewModel.hasContactProfile, let preferredTone = viewModel.selectedContactProfile?.preferredTone {
+                Text(preferredTone)
+                    .foregroundStyle(.secondary)
+            } else {
+                Picker("Tone", selection: $viewModel.selectedTone) {
+                    ForEach(Tone.allCases) { tone in
+                        Text(tone.rawValue).tag(tone)
+                    }
                 }
+                .pickerStyle(.menu)
+                .tint(.primary)
             }
-            .pickerStyle(.menu)
-            .tint(.primary)
         }
         .padding()
         .background(Color(.secondarySystemBackground))
@@ -394,6 +452,9 @@ struct ContentView: View {
                 .foregroundStyle(.primary)
             
             VStack(spacing: 12) {
+                // Contact Profiles - Pro Feature
+                contactProfilesFeatureRow
+                
                 // Full Story (Multi-Screenshot) - Pro Feature
                 fullStoryFeatureRow
                 
@@ -404,6 +465,64 @@ struct ContentView: View {
                 myStyleFeatureRow
             }
         }
+    }
+    
+    private var contactProfilesFeatureRow: some View {
+        Button {
+            if viewModel.isPro {
+                showContactProfiles = true
+            } else {
+                viewModel.showPaywall = true
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "person.crop.circle.badge.checkmark")
+                    .font(.title2)
+                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .frame(width: 32)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text("Contact Profiles")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                        
+                        if !viewModel.isPro {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else if contactProfileManager.hasProfiles {
+                            Text("\(contactProfileManager.profileCount)")
+                                .font(.caption2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.accentColor)
+                                .clipShape(Capsule())
+                        }
+                    }
+                    
+                    Text(contactProfileManager.hasProfiles 
+                         ? "\(contactProfileManager.profileCount) profile\(contactProfileManager.profileCount == 1 ? "" : "s") saved • Tap to manage"
+                         : "Save preferences for specific people")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+        }
+        .buttonStyle(.plain)
     }
     
     private var fullStoryFeatureRow: some View {
