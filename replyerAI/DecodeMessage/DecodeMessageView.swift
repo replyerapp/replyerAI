@@ -83,7 +83,7 @@ struct DecodeMessageView: View {
         VStack(spacing: 12) {
             Image(systemName: "brain.head.profile")
                 .font(.system(size: 50))
-                .foregroundStyle(.accent)
+                .foregroundStyle(Color.accentColor)
             
             Text("Decode Their Message")
                 .font(.title2)
@@ -340,7 +340,7 @@ struct DecodeMessageView: View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Quick Summary", systemImage: "sparkles")
                 .font(.headline)
-                .foregroundStyle(.accent)
+                .foregroundStyle(Color.accentColor)
             
             Text(analysis.summary)
                 .font(.body)
@@ -386,7 +386,7 @@ struct DecodeMessageView: View {
                         .padding(.top, 6)
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(""\(cue.observation)"")
+                        Text("\"\(cue.observation)\"")
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .italic()
