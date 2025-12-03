@@ -85,7 +85,7 @@ struct StyleMimicryView: View {
         VStack(spacing: 12) {
             Image(systemName: "person.text.rectangle.fill")
                 .font(.system(size: 50))
-                .foregroundStyle(.accent)
+                .foregroundStyle(Color.accentColor)
             
             Text("Teach AI Your Style")
                 .font(.title2)
@@ -156,7 +156,7 @@ struct StyleMimicryView: View {
             
             // Progress bar
             ProgressView(value: styleManager.sampleProgress)
-                .tint(styleManager.pendingSamples.count >= StyleConstants.minimumSamples ? .green : .accent)
+                .tint(styleManager.pendingSamples.count >= StyleConstants.minimumSamples ? Color.green : Color.accentColor)
             
             // Sample grid
             LazyVGrid(columns: [
@@ -219,7 +219,7 @@ struct StyleMimicryView: View {
             VStack(spacing: 8) {
                 Image(systemName: "plus.circle.fill")
                     .font(.title)
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.accentColor)
                 Text("Add")
                     .font(.caption)
                     .foregroundStyle(.secondary)
