@@ -11,7 +11,7 @@ import GoogleGenerativeAI
 
 /// Service class for interacting with Google's Gemini AI model.
 @MainActor
-final class GeminiService: ObservableObject {
+final class GeminiService {
     
     /// The Gemini generative model instance
     private let model: GenerativeModel
@@ -54,8 +54,7 @@ final class GeminiService: ObservableObject {
         
         let response = try await model.generateContent(
             prompt,
-            imageData,
-            "image/jpeg"
+            image
         )
         
         guard let text = response.text else {

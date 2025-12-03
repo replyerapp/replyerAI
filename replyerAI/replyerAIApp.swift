@@ -9,6 +9,12 @@ import SwiftUI
 
 @main
 struct replyerAIApp: App {
+    
+    init() {
+        // Configure RevenueCat on app launch
+        SubscriptionService.shared.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

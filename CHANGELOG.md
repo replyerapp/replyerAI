@@ -1,5 +1,64 @@
 # replyerAI - Changelog
 
+## [1.1.0] - 2025-12-03
+
+### Added - RevenueCat Subscription Integration
+
+#### RevenueCat Package Dependency
+- Added `RevenueCat/purchases-ios-spm` package dependency (version 5.0.0+)
+- Includes both `RevenueCat` and `RevenueCatUI` products
+- Package repository: https://github.com/RevenueCat/purchases-ios-spm
+
+#### SubscriptionService.swift
+- Created `replyerAI/SubscriptionService.swift` for managing subscriptions
+- **Constants**:
+  - `proEntitlementID`: "pro_access" - The entitlement ID in RevenueCat
+  - `freeUsageLimit`: 3 - Daily free generations
+- **Properties**:
+  - `isPro: Bool` - Whether user has pro access
+  - `dailyUsageCount: Int` - Current daily usage for free users
+  - `canGenerate: Bool` - Whether user can generate (pro or within limit)
+  - `remainingFreeGenerations: Int` - Remaining free generations today
+- **Methods**:
+  - `configure()` - Initialize RevenueCat SDK (call in App init)
+  - `checkSubscriptionStatus()` - Fetch and update subscription status
+  - `incrementUsage()` - Track usage for free users
+  - `restorePurchases()` - Restore previous purchases
+- **Helper Views**:
+  - `ProFeatureLock` - Locked feature placeholder view
+  - `.paywallSheet()` - View modifier for presenting RevenueCatUI paywall
+
+#### Subscription Plans (Configure in RevenueCat Dashboard)
+- Monthly subscription
+- 6-month subscription
+- Yearly subscription
+- Lifetime purchase
+
+#### Updated Files for Subscription Support
+
+**Secrets.swift**:
+- Added `revenueCatAPIKey` for RevenueCat Public API Key
+
+**ReplyViewModel.swift**:
+- Added `showPaywall: Bool` for paywall presentation
+- Added `isPro`, `canGenerate`, `remainingFreeGenerations` computed properties
+- Updated `generateReply()` to check subscription status before generating
+- Automatically shows paywall when free limit reached
+
+**ContentView.swift**:
+- Added free usage banner showing remaining generations
+- Added "PRO" badge in toolbar for pro users
+- Added Pro Features section with locked features:
+  - "Decode Message" (Pro only)
+  - "My Style" (Pro only)
+- Generate button shows remaining generations
+- Integrated RevenueCatUI PaywallView via `.paywallSheet()` modifier
+
+**replyerAIApp.swift**:
+- Added `SubscriptionService.shared.configure()` in init
+
+---
+
 ## [1.0.0] - 2025-12-03
 
 ### Added
@@ -100,20 +159,28 @@
 
 ## Setup Instructions
 
-1. **Add your API Key**:
+1. **Add your API Keys**:
    - Open `replyerAI/Secrets.swift`
-   - Replace `"YOUR_API_KEY_HERE"` with your actual Gemini API key
+   - Replace `"YOUR_GEMINI_API_KEY_HERE"` with your Gemini API key
+   - Replace `"YOUR_REVENUECAT_API_KEY_HERE"` with your RevenueCat Public API key
 
-2. **Secure your secrets**:
+2. **Configure RevenueCat Dashboard**:
+   - Create a project at https://app.revenuecat.com
+   - Add your App Store app
+   - Create products: monthly, 6-month, yearly, lifetime
+   - Create entitlement: `pro_access`
+   - Attach products to the entitlement
+
+3. **Secure your secrets**:
    - Add `Secrets.swift` to your `.gitignore` file:
      ```
      # Secrets
      **/Secrets.swift
      ```
 
-3. **Build the project**:
+4. **Build the project**:
    - Open `replyerAI.xcodeproj` in Xcode
-   - Xcode will automatically fetch the GoogleGenerativeAI package
+   - Xcode will automatically fetch the packages
    - Build and run the project
 
 ---
@@ -155,10 +222,11 @@ replyerAI/
 │   ├── Assets.xcassets/
 │   ├── ContentView.swift
 │   ├── replyerAIApp.swift
-│   ├── Secrets.swift          ← NEW: API key storage
-│   ├── GeminiService.swift    ← NEW: Gemini AI service
-│   ├── ReplyViewModel.swift   ← NEW: Main ViewModel for reply generation
-│   └── ShareSheet.swift       ← NEW: Native iOS share sheet wrapper
+│   ├── Secrets.swift             ← API keys (Gemini + RevenueCat)
+│   ├── GeminiService.swift       ← Gemini AI service
+│   ├── ReplyViewModel.swift      ← Main ViewModel
+│   ├── ShareSheet.swift          ← Native iOS share sheet
+│   └── SubscriptionService.swift ← RevenueCat subscription management
 ├── replyerAI.xcodeproj/
 │   └── project.pbxproj        ← MODIFIED: Added package dependency
 └── CHANGELOG.md               ← NEW: This documentation file

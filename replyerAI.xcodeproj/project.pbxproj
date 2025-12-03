@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3F7941F42EE0C9CF00D5718C /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 3F936C962EE0BE000017DCA6 /* GoogleGenerativeAI */; };
+		3F7942372EE0D77F00D5718C /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 3F936C982EE0BE100017DCA6 /* RevenueCat */; };
+		3F7942382EE0D77F00D5718C /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3F936C992EE0BE100017DCA6 /* RevenueCatUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3F936C792EE0BDCA0017DCA6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F7942382EE0D77F00D5718C /* RevenueCatUI in Frameworks */,
+				3F7942372EE0D77F00D5718C /* RevenueCat in Frameworks */,
+				3F7941F42EE0C9CF00D5718C /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +122,8 @@
 			name = replyerAI;
 			packageProductDependencies = (
 				3F936C962EE0BE000017DCA6 /* GoogleGenerativeAI */,
+				3F936C982EE0BE100017DCA6 /* RevenueCat */,
+				3F936C992EE0BE100017DCA6 /* RevenueCatUI */,
 			);
 			productName = replyerAI;
 			productReference = 3F936C6B2EE0BDC90017DCA6 /* replyerAI.app */;
@@ -198,6 +209,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3F936C952EE0BE000017DCA6 /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+				3FBB8BA72EE0E016009CEACE /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3F936C6C2EE0BDC90017DCA6 /* Products */;
@@ -404,12 +416,13 @@
 				DEVELOPMENT_TEAM = SWK2ARJXT6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReplyerAI needs access to your photo library to select message screenshots for generating replies.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReplyerAI needs access to your photo library to select message screenshots for generating replies.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -437,12 +450,13 @@
 				DEVELOPMENT_TEAM = SWK2ARJXT6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReplyerAI needs access to your photo library to select message screenshots for generating replies.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "ReplyerAI needs access to your photo library to select message screenshots for generating replies.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -594,6 +608,22 @@
 				minimumVersion = 0.5.0;
 			};
 		};
+		3F936C972EE0BE100017DCA6 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		3FBB8BA72EE0E016009CEACE /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.49.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -601,6 +631,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F936C952EE0BE000017DCA6 /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
 			productName = GoogleGenerativeAI;
+		};
+		3F936C982EE0BE100017DCA6 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F936C972EE0BE100017DCA6 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		3F936C992EE0BE100017DCA6 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F936C972EE0BE100017DCA6 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

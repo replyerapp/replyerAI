@@ -80,6 +80,29 @@ final class ReplyViewModel {
     /// Error message if generation fails
     var errorMessage: String?
     
+    /// Whether to show the paywall
+    var showPaywall: Bool = false
+    
+    /// Reference to subscription service
+    private let subscriptionService = SubscriptionService.shared
+    
+    // MARK: - Computed Properties
+    
+    /// Whether the user has pro access
+    var isPro: Bool {
+        subscriptionService.isPro
+    }
+    
+    /// Whether the user can generate (pro or within free limit)
+    var canGenerate: Bool {
+        subscriptionService.canGenerate
+    }
+    
+    /// Remaining free generations
+    var remainingFreeGenerations: Int {
+        subscriptionService.remainingFreeGenerations
+    }
+    
     // MARK: - Initialization
     
     init() {}
@@ -87,10 +110,17 @@ final class ReplyViewModel {
     // MARK: - Methods
     
     /// Generates a reply based on the selected parameters
-    func generateReply() async {
+    /// Returns true if generation was attempted, false if paywall should be shown
+    func generateReply() async -> Bool {
         guard let image = selectedImage else {
             errorMessage = "Please select an image first."
-            return
+            return true
+        }
+        
+        // Check if user can generate (pro or within free limit)
+        if !canGenerate {
+            showPaywall = true
+            return false
         }
         
         isLoading = true
@@ -101,11 +131,15 @@ final class ReplyViewModel {
             let prompt = buildPrompt()
             let response = try await GeminiService.shared.generateResponse(image: image, prompt: prompt)
             generatedReply = response
+            
+            // Increment usage count for free users
+            subscriptionService.incrementUsage()
         } catch {
             errorMessage = error.localizedDescription
         }
         
         isLoading = false
+        return true
     }
     
     /// Builds the prompt string based on user selections

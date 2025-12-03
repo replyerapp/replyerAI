@@ -7,15 +7,24 @@
 
 import SwiftUI
 import PhotosUI
+import RevenueCatUI
 
 struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
     @State private var showShareSheet = false
+    @State private var showCustomerCenter = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
+                    // MARK: - Subscription Status
+                    if viewModel.isPro {
+                        SubscriptionStatusView(showCustomerCenter: $showCustomerCenter)
+                    } else {
+                        freeUsageBanner
+                    }
+                    
                     // MARK: - Photo Picker Section
                     photoPickerSection
                     
@@ -24,6 +33,9 @@ struct ContentView: View {
                     
                     // MARK: - Context Section
                     contextSection
+                    
+                    // MARK: - Pro Features Section (Locked for free users)
+                    proFeaturesSection
                     
                     // MARK: - Generate Button
                     generateButton
@@ -42,6 +54,18 @@ struct ContentView: View {
             }
             .navigationTitle("ReplyerAI")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if viewModel.isPro {
+                        Text("PRO")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.accentColor)
+                            .foregroundStyle(.white)
+                            .clipShape(Capsule())
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         viewModel.reset()
@@ -57,6 +81,42 @@ struct ContentView: View {
                 await viewModel.loadImage()
             }
         }
+        .paywallSheet(isPresented: $viewModel.showPaywall)
+        .customerCenterSheet(isPresented: $showCustomerCenter)
+    }
+    
+    // MARK: - Free Usage Banner
+    
+    private var freeUsageBanner: some View {
+        Button {
+            viewModel.showPaywall = true
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Free Plan")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    Text("\(viewModel.remainingFreeGenerations) of \(SubscriptionConstants.freeUsageLimit) generations left today")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Text("Upgrade")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.accentColor)
+                    .foregroundStyle(.white)
+                    .clipShape(Capsule())
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
     }
     
     // MARK: - Photo Picker Section
@@ -172,31 +232,123 @@ struct ContentView: View {
         }
     }
     
+    // MARK: - Pro Features Section
+    
+    private var proFeaturesSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Pro Features")
+                .font(.headline)
+                .foregroundStyle(.primary)
+            
+            VStack(spacing: 12) {
+                // Decode Message - Pro Feature
+                proFeatureRow(
+                    icon: "text.magnifyingglass",
+                    title: "Decode Message",
+                    description: "Analyze hidden meanings & emotions",
+                    isLocked: !viewModel.isPro
+                )
+                
+                // My Style - Pro Feature
+                proFeatureRow(
+                    icon: "person.text.rectangle",
+                    title: "My Style",
+                    description: "Train AI to match your writing style",
+                    isLocked: !viewModel.isPro
+                )
+            }
+        }
+    }
+    
+    private func proFeatureRow(icon: String, title: String, description: String, isLocked: Bool) -> some View {
+        Button {
+            if isLocked {
+                viewModel.showPaywall = true
+            } else {
+                // TODO: Navigate to pro feature
+            }
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundStyle(isLocked ? .secondary : Color.accentColor)
+                    .frame(width: 32)
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack {
+                        Text(title)
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                        
+                        if isLocked {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
+                    Text(description)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .opacity(isLocked ? 0.7 : 1.0)
+        }
+        .buttonStyle(.plain)
+    }
+    
     // MARK: - Generate Button
     
     private var generateButton: some View {
-        Button {
-            Task {
-                await viewModel.generateReply()
-            }
-        } label: {
-            HStack(spacing: 8) {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .tint(.white)
-                } else {
-                    Image(systemName: "sparkles")
+        VStack(spacing: 8) {
+            Button {
+                Task {
+                    await viewModel.generateReply()
                 }
-                Text(viewModel.isLoading ? "Generating..." : "Generate Reply")
-                    .fontWeight(.semibold)
+            } label: {
+                HStack(spacing: 8) {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .tint(.white)
+                    } else {
+                        Image(systemName: "sparkles")
+                    }
+                    Text(viewModel.isLoading ? "Generating..." : "Generate Reply")
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(viewModel.selectedImage == nil ? Color.gray : Color.accentColor)
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(viewModel.selectedImage == nil ? Color.gray : Color.accentColor)
-            .foregroundStyle(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .disabled(viewModel.selectedImage == nil || viewModel.isLoading)
+            
+            // Show remaining generations for free users
+            if !viewModel.isPro && viewModel.remainingFreeGenerations > 0 {
+                Text("\(viewModel.remainingFreeGenerations) free generation\(viewModel.remainingFreeGenerations == 1 ? "" : "s") remaining today")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else if !viewModel.isPro && viewModel.remainingFreeGenerations == 0 {
+                Button {
+                    viewModel.showPaywall = true
+                } label: {
+                    Text("Daily limit reached. Upgrade to Pro for unlimited access.")
+                        .font(.caption)
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
         }
-        .disabled(viewModel.selectedImage == nil || viewModel.isLoading)
     }
     
     // MARK: - Result Section
