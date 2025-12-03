@@ -258,6 +258,7 @@ struct AddEditProfileView: View {
             }
             .navigationTitle(isEditing ? "Edit Profile" : "New Profile")
             .navigationBarTitleDisplayMode(.inline)
+            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") {

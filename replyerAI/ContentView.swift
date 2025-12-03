@@ -63,6 +63,10 @@ struct ContentView: View {
                 .padding()
             }
             .navigationTitle("ReplyerAI")
+            .scrollDismissesKeyboard(.interactively)
+            .onTapGesture {
+                hideKeyboard()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.isPro {
@@ -829,6 +833,14 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .background(Color.orange.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Keyboard Dismissal Helper
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

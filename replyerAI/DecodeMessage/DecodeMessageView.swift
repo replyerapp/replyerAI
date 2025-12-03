@@ -54,6 +54,10 @@ struct DecodeMessageView: View {
             }
             .navigationTitle("Decode Message")
             .navigationBarTitleDisplayMode(.inline)
+            .scrollDismissesKeyboard(.interactively)
+            .onTapGesture {
+                hideKeyboard()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Close") {
@@ -520,6 +524,14 @@ struct DecodeMessageView: View {
         analysis = nil
         additionalContext = ""
         errorMessage = nil
+    }
+}
+
+// MARK: - Keyboard Dismissal Helper
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
