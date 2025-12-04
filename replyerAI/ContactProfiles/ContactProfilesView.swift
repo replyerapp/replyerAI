@@ -305,6 +305,7 @@ struct AddEditProfileView: View {
         switch selectedRelationship {
         case .wife, .husband: return "💍"
         case .girlfriend, .boyfriend: return "❤️"
+        case .situationship: return "🤷"
         case .boss: return "👔"
         case .coworker: return "💼"
         case .friend: return "😊"

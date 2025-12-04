@@ -36,6 +36,8 @@ struct ContactProfile: Codable, Identifiable, Equatable {
             return "💍"
         case "girlfriend", "boyfriend":
             return "❤️"
+        case "situationship":
+            return "🤷"
         case "boss":
             return "👔"
         case "coworker":

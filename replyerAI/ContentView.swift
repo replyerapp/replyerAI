@@ -13,6 +13,8 @@ import Combine
 struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
     @State private var showShareSheet = false
+    @State private var showShareCard = false
+    @State private var showCopiedToast = false
     @State private var showCustomerCenter = false
     @State private var showStyleMimicry = false
     @State private var showDecodeMessage = false
@@ -823,46 +825,94 @@ struct ContentView: View {
     // MARK: - Result Section
     
     private var resultSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Text("Generated Reply")
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                
-                Spacer()
-                
-                Button {
-                    UIPasteboard.general.string = viewModel.generatedReply
-                } label: {
-                    Label("Copy", systemImage: "doc.on.doc")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
+        VStack(spacing: 16) {
+            // Beautiful Reply Card
+            ReplyCardView(
+                reply: viewModel.generatedReply,
+                tone: viewModel.effectiveTone,
+                relationship: viewModel.effectiveRelationship
+            )
+            .overlay(alignment: .topTrailing) {
+                // Copied toast
+                if showCopiedToast {
+                    Text("Copied!")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.green)
+                        .clipShape(Capsule())
+                        .transition(.scale.combined(with: .opacity))
+                        .padding(12)
                 }
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.capsule)
-                
-                Button {
-                    showShareSheet = true
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                }
-                .buttonStyle(.bordered)
-                .buttonBorderShape(.circle)
             }
             
-            Text(viewModel.generatedReply)
-                .font(.body)
-                .foregroundStyle(.primary)
-                .textSelection(.enabled)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(.secondarySystemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            // Action Buttons
+            HStack(spacing: 12) {
+                // Copy Text Button
+                Button {
+                    UIPasteboard.general.string = viewModel.generatedReply
+                    withAnimation(.spring(response: 0.3)) {
+                        showCopiedToast = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        withAnimation {
+                            showCopiedToast = false
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "doc.on.doc")
+                        Text("Copy Text")
+                    }
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        LinearGradient(
+                            colors: [Color.blue, Color.cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                
+                // Share Card Button
+                Button {
+                    showShareCard = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Share Card")
+                    }
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        LinearGradient(
+                            colors: [Color.purple, Color.pink],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
         }
         .padding(.top, 8)
-        .shareSheet(isPresented: $showShareSheet, text: viewModel.generatedReply)
+        .sheet(isPresented: $showShareCard) {
+            ShareCardSheet(
+                reply: viewModel.generatedReply,
+                tone: viewModel.effectiveTone,
+                relationship: viewModel.effectiveRelationship
+            )
+        }
     }
     
     // MARK: - Error View
@@ -879,6 +929,218 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .background(Color.orange.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Reply Card View
+
+struct ReplyCardView: View {
+    let reply: String
+    let tone: String
+    let relationship: String
+    
+    private var gradientColors: [Color] {
+        switch tone.lowercased() {
+        case "angry": return [Color.red, Color.orange]
+        case "funny": return [Color.yellow, Color.orange]
+        case "professional": return [Color.blue, Color.indigo]
+        case "sarcastic": return [Color.purple, Color.pink]
+        case "passive aggressive": return [Color.gray, Color.purple]
+        case "romantic": return [Color.pink, Color.red]
+        case "apologetic": return [Color.blue, Color.cyan]
+        case "assertive": return [Color.orange, Color.red]
+        case "friendly": return [Color.green, Color.teal]
+        case "formal": return [Color.gray, Color.blue]
+        case "casual": return [Color.teal, Color.green]
+        case "sympathetic": return [Color.purple, Color.blue]
+        case "flirty": return [Color.pink, Color.purple]
+        default: return [Color.accentColor, Color.purple]
+        }
+    }
+    
+    private var toneEmoji: String {
+        switch tone.lowercased() {
+        case "angry": return "😤"
+        case "funny": return "😂"
+        case "professional": return "💼"
+        case "sarcastic": return "😏"
+        case "passive aggressive": return "🙃"
+        case "romantic": return "💕"
+        case "apologetic": return "🥺"
+        case "assertive": return "💪"
+        case "friendly": return "😊"
+        case "formal": return "🎩"
+        case "casual": return "✌️"
+        case "sympathetic": return "🤗"
+        case "flirty": return "😘"
+        default: return "✨"
+        }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header with tone badge
+            HStack {
+                HStack(spacing: 6) {
+                    Text(toneEmoji)
+                    Text(tone)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.white.opacity(0.2))
+                .clipShape(Capsule())
+                
+                Spacer()
+                
+                Image(systemName: "sparkles")
+                    .font(.title3)
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+            
+            // Reply text
+            Text(reply)
+                .font(.body)
+                .fontWeight(.medium)
+                .foregroundStyle(.white)
+                .textSelection(.enabled)
+                .lineSpacing(4)
+            
+            // Footer
+            HStack {
+                Text("Generated by ReplyerAI")
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.6))
+                
+                Spacer()
+                
+                Text("For: \(relationship)")
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.6))
+            }
+        }
+        .padding(20)
+        .background(
+            LinearGradient(
+                colors: gradientColors,
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .shadow(color: gradientColors[0].opacity(0.4), radius: 15, x: 0, y: 8)
+    }
+}
+
+// MARK: - Share Card Sheet
+
+struct ShareCardSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    let reply: String
+    let tone: String
+    let relationship: String
+    
+    @State private var renderedImage: UIImage?
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                Text("Share Your Reply")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                // Preview card
+                ReplyCardView(reply: reply, tone: tone, relationship: relationship)
+                    .padding(.horizontal)
+                
+                // Share buttons
+                VStack(spacing: 12) {
+                    // Share as Image
+                    Button {
+                        shareAsImage()
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "photo")
+                            Text("Share as Image")
+                        }
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(
+                            LinearGradient(
+                                colors: [Color.purple, Color.pink],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+                    
+                    // Share as Text
+                    Button {
+                        shareAsText()
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "text.bubble")
+                            Text("Share as Text")
+                        }
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color(.secondarySystemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+                }
+                .padding(.horizontal)
+                
+                Spacer()
+            }
+            .padding(.top, 24)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func shareAsImage() {
+        let cardView = ReplyCardView(reply: reply, tone: tone, relationship: relationship)
+            .padding(20)
+            .frame(width: 350)
+            .background(Color(.systemBackground))
+        
+        let renderer = ImageRenderer(content: cardView)
+        renderer.scale = 3.0
+        
+        if let image = renderer.uiImage {
+            let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let rootVC = window.rootViewController {
+                rootVC.present(activityVC, animated: true)
+            }
+        }
+    }
+    
+    private func shareAsText() {
+        let activityVC = UIActivityViewController(activityItems: [reply], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootVC = window.rootViewController {
+            rootVC.present(activityVC, animated: true)
+        }
     }
 }
 
