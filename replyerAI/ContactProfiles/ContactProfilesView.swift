@@ -178,6 +178,8 @@ struct AddEditProfileView: View {
     @State private var notes: String = ""
     @State private var selectedTone: Tone? = nil
     @State private var usePreferredTone: Bool = false
+    @State private var selectedEmoji: String = ""
+    @State private var showEmojiPicker: Bool = false
     
     private var isEditing: Bool {
         if case .edit = mode { return true }
@@ -204,6 +206,22 @@ struct AddEditProfileView: View {
                     Picker("Relationship", selection: $selectedRelationship) {
                         ForEach(Relationship.allCases) { relationship in
                             Text(relationship.rawValue).tag(relationship)
+                        }
+                    }
+                    
+                    // Emoji Picker
+                    Button {
+                        showEmojiPicker = true
+                    } label: {
+                        HStack {
+                            Text("Emoji")
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            Text(selectedEmoji.isEmpty ? defaultEmojiForRelationship : selectedEmoji)
+                                .font(.title2)
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                 } header: {
@@ -277,6 +295,25 @@ struct AddEditProfileView: View {
             .onAppear {
                 loadExistingProfile()
             }
+            .sheet(isPresented: $showEmojiPicker) {
+                EmojiPickerView(selectedEmoji: $selectedEmoji)
+            }
+        }
+    }
+    
+    private var defaultEmojiForRelationship: String {
+        switch selectedRelationship {
+        case .wife, .husband: return "💍"
+        case .girlfriend, .boyfriend: return "❤️"
+        case .boss: return "👔"
+        case .coworker: return "💼"
+        case .friend: return "😊"
+        case .bestFriend: return "🤝"
+        case .parent: return "👨‍👩‍👧"
+        case .sibling: return "👫"
+        case .exPartner: return "💔"
+        case .acquaintance: return "👋"
+        case .stranger: return "❓"
         }
     }
     
@@ -285,6 +322,7 @@ struct AddEditProfileView: View {
         
         name = profile.name
         notes = profile.notes
+        selectedEmoji = profile.customEmoji ?? ""
         
         // Find matching relationship
         if let relationship = Relationship.allCases.first(where: { $0.rawValue == profile.relationship }) {
@@ -305,6 +343,8 @@ struct AddEditProfileView: View {
         
         let preferredTone = usePreferredTone ? selectedTone?.rawValue : nil
         
+        let customEmoji = selectedEmoji.isEmpty ? nil : selectedEmoji
+        
         if let existing = existingProfile {
             // Update existing profile
             let updated = ContactProfile(
@@ -313,6 +353,7 @@ struct AddEditProfileView: View {
                 relationship: selectedRelationship.rawValue,
                 notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
                 preferredTone: preferredTone,
+                customEmoji: customEmoji,
                 createdAt: existing.createdAt,
                 updatedAt: Date()
             )
@@ -323,7 +364,8 @@ struct AddEditProfileView: View {
                 name: trimmedName,
                 relationship: selectedRelationship.rawValue,
                 notes: notes.trimmingCharacters(in: .whitespacesAndNewlines),
-                preferredTone: preferredTone
+                preferredTone: preferredTone,
+                customEmoji: customEmoji
             )
             profileManager.addProfile(newProfile)
         }
@@ -434,6 +476,80 @@ struct ContactProfilePicker: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .sheet(isPresented: $showProfilesList) {
             ContactProfilesView()
+        }
+    }
+}
+
+// MARK: - Emoji Picker View
+
+struct EmojiPickerView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var selectedEmoji: String
+    
+    private let columns = [
+        GridItem(.adaptive(minimum: 44))
+    ]
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    // Clear option
+                    Button {
+                        selectedEmoji = ""
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Text("Use Default")
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            if selectedEmoji.isEmpty {
+                                Image(systemName: "checkmark")
+                                    .foregroundStyle(Color.accentColor)
+                            }
+                        }
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                    .buttonStyle(.plain)
+                    
+                    // Emoji grid
+                    LazyVGrid(columns: columns, spacing: 8) {
+                        ForEach(ContactEmojis.all, id: \.self) { emoji in
+                            Button {
+                                selectedEmoji = emoji
+                                dismiss()
+                            } label: {
+                                Text(emoji)
+                                    .font(.title)
+                                    .frame(width: 44, height: 44)
+                                    .background(
+                                        selectedEmoji == emoji
+                                            ? Color.accentColor.opacity(0.2)
+                                            : Color(.secondarySystemBackground)
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(selectedEmoji == emoji ? Color.accentColor : Color.clear, lineWidth: 2)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("Choose Emoji")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }

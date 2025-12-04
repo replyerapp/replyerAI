@@ -34,6 +34,9 @@ struct ContentView: View {
                     // MARK: - Photo Picker Section
                     photoPickerSection
                     
+                    // MARK: - Pro Features Section (Between screenshot and settings)
+                    proFeaturesSection
+                    
                     // MARK: - Contact Profile Section (Pro)
                     if viewModel.isPro {
                         contactProfileSection
@@ -44,9 +47,6 @@ struct ContentView: View {
                     
                     // MARK: - Context Section
                     contextSection
-                    
-                    // MARK: - Pro Features Section (Locked for free users)
-                    proFeaturesSection
                     
                     // MARK: - Generate Button
                     generateButton
@@ -468,17 +468,17 @@ struct ContentView: View {
                 .foregroundStyle(.primary)
             
             VStack(spacing: 12) {
-                // Contact Profiles - Pro Feature
-                contactProfilesFeatureRow
-                
-                // Full Story (Multi-Screenshot) - Pro Feature
+                // Full Story (Multi-Screenshot) - Pro Feature (ON TOP)
                 fullStoryFeatureRow
+                
+                // My Style - Pro Feature (with toggle)
+                myStyleFeatureRow
                 
                 // Decode Message - Pro Feature
                 decodeMessageFeatureRow
                 
-                // My Style - Pro Feature
-                myStyleFeatureRow
+                // Contact Profiles - Pro Feature
+                contactProfilesFeatureRow
             }
         }
     }
@@ -643,56 +643,71 @@ struct ContentView: View {
     }
     
     private var myStyleFeatureRow: some View {
-        Button {
-            if viewModel.isPro {
-                showStyleMimicry = true
-            } else {
-                viewModel.showPaywall = true
-            }
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: "person.text.rectangle")
-                    .font(.title2)
-                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
-                    .frame(width: 32)
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack {
-                        Text("My Style")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.primary)
-                        
-                        if !viewModel.isPro {
-                            Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        } else if styleManager.hasCompleteProfile {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.caption)
-                                .foregroundStyle(.green)
+        HStack(spacing: 0) {
+            // Main button area
+            Button {
+                if viewModel.isPro {
+                    showStyleMimicry = true
+                } else {
+                    viewModel.showPaywall = true
+                }
+            } label: {
+                HStack(spacing: 12) {
+                    Image(systemName: "person.text.rectangle")
+                        .font(.title2)
+                        .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                        .frame(width: 32)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Text("My Style")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.primary)
+                            
+                            if !viewModel.isPro {
+                                Image(systemName: "lock.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            } else if styleManager.hasCompleteProfile {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.caption)
+                                    .foregroundStyle(.green)
+                            }
                         }
+                        
+                        Text(styleManager.hasCompleteProfile 
+                             ? (viewModel.useMyStyle ? "Active • Using your style" : "Tap to configure")
+                             : "Train AI to match your writing style")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                     
-                    Text(styleManager.hasCompleteProfile 
-                         ? "Style profile active • Tap to update"
-                         : "Train AI to match your writing style")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    Spacer()
                 }
+            }
+            .buttonStyle(.plain)
+            
+            // Toggle button (only for Pro users with style profile)
+            if viewModel.isPro && styleManager.hasCompleteProfile {
+                Divider()
+                    .frame(height: 40)
+                    .padding(.horizontal, 8)
                 
-                Spacer()
-                
+                Toggle("", isOn: $viewModel.useMyStyle)
+                    .labelsHidden()
+                    .padding(.trailing, 4)
+            } else {
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.tertiary)
+                    .padding(.trailing, 4)
             }
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .opacity(!viewModel.isPro ? 0.7 : 1.0)
         }
-        .buttonStyle(.plain)
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .opacity(!viewModel.isPro ? 0.7 : 1.0)
     }
     
     private func proFeatureRow(icon: String, title: String, description: String, isLocked: Bool, action: @escaping () -> Void) -> some View {
@@ -748,13 +763,12 @@ struct ContentView: View {
         VStack(spacing: 8) {
             Button {
                 Task {
-                    await viewModel.generateReply()
+                    await generateWithDelay()
                 }
             } label: {
                 HStack(spacing: 8) {
                     if viewModel.isLoading {
-                        ProgressView()
-                            .tint(.white)
+                        LoadingDotsView()
                     } else {
                         Image(systemName: "sparkles")
                     }
@@ -783,6 +797,25 @@ struct ContentView: View {
                         .foregroundStyle(Color.accentColor)
                 }
             }
+        }
+    }
+    
+    /// Generate reply with minimum 5 second delay for better UX
+    private func generateWithDelay() async {
+        let startTime = Date()
+        
+        // Start the actual generation
+        async let generation: Bool = viewModel.generateReply()
+        
+        // Wait for both generation and minimum delay
+        let _ = await generation
+        
+        // Calculate remaining time to reach 5 seconds
+        let elapsed = Date().timeIntervalSince(startTime)
+        let minimumDelay: TimeInterval = 5.0
+        
+        if elapsed < minimumDelay {
+            try? await Task.sleep(nanoseconds: UInt64((minimumDelay - elapsed) * 1_000_000_000))
         }
     }
     
@@ -845,6 +878,30 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .background(Color.orange.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Loading Dots Animation
+
+struct LoadingDotsView: View {
+    @State private var dotCount = 0
+    
+    let timer = Timer.publish(every: 0.4, on: .main, in: .common).autoconnect()
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(0..<3) { index in
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 8, height: 8)
+                    .scaleEffect(dotCount == index ? 1.2 : 0.8)
+                    .opacity(dotCount == index ? 1.0 : 0.5)
+                    .animation(.easeInOut(duration: 0.3), value: dotCount)
+            }
+        }
+        .onReceive(timer) { _ in
+            dotCount = (dotCount + 1) % 3
+        }
     }
 }
 

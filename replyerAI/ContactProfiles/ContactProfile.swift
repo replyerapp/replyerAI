@@ -17,11 +17,20 @@ struct ContactProfile: Codable, Identifiable, Equatable {
     var relationship: String
     var notes: String
     var preferredTone: String?
+    var customEmoji: String?
     var createdAt: Date
     var updatedAt: Date
     
-    /// Display emoji based on relationship
+    /// Display emoji - custom or based on relationship
     var emoji: String {
+        if let custom = customEmoji, !custom.isEmpty {
+            return custom
+        }
+        return defaultEmoji
+    }
+    
+    /// Default emoji based on relationship
+    var defaultEmoji: String {
         switch relationship.lowercased() {
         case "wife", "husband":
             return "💍"
@@ -56,6 +65,7 @@ struct ContactProfile: Codable, Identifiable, Equatable {
         relationship: String,
         notes: String = "",
         preferredTone: String? = nil,
+        customEmoji: String? = nil,
         createdAt: Date = Date(),
         updatedAt: Date = Date()
     ) {
@@ -64,9 +74,25 @@ struct ContactProfile: Codable, Identifiable, Equatable {
         self.relationship = relationship
         self.notes = notes
         self.preferredTone = preferredTone
+        self.customEmoji = customEmoji
         self.createdAt = createdAt
         self.updatedAt = updatedAt
     }
+}
+
+// MARK: - Common Emojis for Contacts
+
+enum ContactEmojis {
+    static let all: [String] = [
+        "😊", "😎", "🥰", "😍", "🤗", "😇", "🙂", "😏",
+        "❤️", "💕", "💖", "💗", "💘", "💝", "💍", "💔",
+        "👨", "👩", "👴", "👵", "👶", "🧑", "👤", "👥",
+        "👨‍👩‍👧", "👨‍👩‍👦", "👫", "👭", "👬", "🤝", "👋", "✌️",
+        "👔", "💼", "🏢", "💻", "📱", "🎓", "🏆", "⭐",
+        "🔥", "✨", "💫", "🌟", "⚡", "💎", "🎯", "🎪",
+        "🐱", "🐶", "🦊", "🐻", "🐼", "🐨", "🦁", "🐯",
+        "🌸", "🌺", "🌹", "🌷", "🌻", "🌼", "💐", "🍀"
+    ]
 }
 
 // MARK: - Contact Profile Manager
