@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var showStyleMimicry = false
     @State private var showDecodeMessage = false
     @State private var showContactProfiles = false
+    @State private var showSettings = false
     @State private var styleManager = StyleProfileManager.shared
     @State private var contactProfileManager = ContactProfileManager.shared
     
@@ -81,14 +82,25 @@ struct ContentView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        viewModel.reset()
-                    } label: {
-                        Image(systemName: "arrow.counterclockwise")
+                    HStack(spacing: 16) {
+                        Button {
+                            viewModel.reset()
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                        }
+                        .disabled(viewModel.isLoading)
+                        
+                        Button {
+                            showSettings = true
+                        } label: {
+                            Image(systemName: "gearshape")
+                        }
                     }
-                    .disabled(viewModel.isLoading)
                 }
             }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
         }
         .onChange(of: viewModel.imageSelections) {
             Task {
