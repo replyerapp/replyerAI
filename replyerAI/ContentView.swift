@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import RevenueCatUI
+import Combine
 
 struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
