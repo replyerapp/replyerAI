@@ -11,6 +11,7 @@ import StoreKit
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.requestReview) private var requestReview
+    @State private var appearanceManager = AppearanceManager.shared
     
     // App version from bundle
     private var appVersion: String {
@@ -29,6 +30,27 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
+                // MARK: - Appearance Section
+                Section {
+                    HStack(spacing: 12) {
+                        Image(systemName: appearanceManager.appearanceMode.icon)
+                            .font(.body)
+                            .foregroundStyle(Color.accentColor)
+                            .frame(width: 24)
+                        
+                        Picker("Appearance", selection: $appearanceManager.appearanceMode) {
+                            ForEach(AppearanceMode.allCases) { mode in
+                                Text(mode.rawValue).tag(mode)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                    }
+                } header: {
+                    Text("Appearance")
+                } footer: {
+                    Text("Choose how ReplyerAI looks. System follows your device settings.")
+                }
+                
                 // MARK: - General Section
                 Section {
                     // Share App

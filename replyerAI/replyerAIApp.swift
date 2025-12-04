@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct replyerAIApp: App {
+    @State private var appearanceManager = AppearanceManager.shared
     
     init() {
         // Configure RevenueCat on app launch
@@ -18,6 +19,7 @@ struct replyerAIApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(appearanceManager.colorScheme)
         }
     }
 }
