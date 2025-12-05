@@ -38,17 +38,17 @@ struct SettingsView: View {
                             .foregroundStyle(Color.accentColor)
                             .frame(width: 24)
                         
-                        Picker("Appearance", selection: $appearanceManager.appearanceMode) {
+                        Picker(L10n.appearance, selection: $appearanceManager.appearanceMode) {
                             ForEach(AppearanceMode.allCases) { mode in
-                                Text(mode.rawValue).tag(mode)
+                                Text(mode.localizedName).tag(mode)
                             }
                         }
                         .pickerStyle(.menu)
                     }
                 } header: {
-                    Text("Appearance")
+                    Text(L10n.appearance)
                 } footer: {
-                    Text("Choose how ReplyerAI looks. System follows your device settings.")
+                    Text(L10n.appearanceFooter)
                 }
                 
                 // MARK: - General Section
@@ -56,7 +56,7 @@ struct SettingsView: View {
                     // Share App
                     ShareLink(item: URL(string: "https://apps.apple.com/app/id\(appStoreID)")!) {
                         SettingsRow(
-                            title: "Share ReplyerAI",
+                            title: L10n.shareApp,
                             icon: "square.and.arrow.up",
                             iconColor: .blue
                         )
@@ -67,7 +67,7 @@ struct SettingsView: View {
                         requestReview()
                     } label: {
                         SettingsRow(
-                            title: "Rate Us",
+                            title: L10n.rateUs,
                             icon: "star.fill",
                             iconColor: .yellow
                         )
@@ -76,7 +76,7 @@ struct SettingsView: View {
                     // Terms of Use
                     Link(destination: termsURL) {
                         SettingsRow(
-                            title: "Terms of Use",
+                            title: L10n.termsOfUse,
                             icon: "doc.text",
                             iconColor: .gray
                         )
@@ -85,7 +85,7 @@ struct SettingsView: View {
                     // Privacy Policy
                     Link(destination: privacyURL) {
                         SettingsRow(
-                            title: "Privacy Policy",
+                            title: L10n.privacyPolicy,
                             icon: "hand.raised.fill",
                             iconColor: .green
                         )
@@ -94,7 +94,7 @@ struct SettingsView: View {
                     // App Version
                     HStack {
                         SettingsRow(
-                            title: "App Version",
+                            title: L10n.appVersion,
                             icon: "info.circle",
                             iconColor: .secondary,
                             showChevron: false
@@ -104,7 +104,7 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                     }
                 } header: {
-                    Text("General")
+                    Text(L10n.general)
                 }
                 
                 // MARK: - Support Section
@@ -114,7 +114,7 @@ struct SettingsView: View {
                         openMail(to: supportEmail, subject: "ReplyerAI Support Request")
                     } label: {
                         SettingsRow(
-                            title: "Support",
+                            title: L10n.support,
                             icon: "questionmark.circle",
                             iconColor: .purple
                         )
@@ -125,17 +125,17 @@ struct SettingsView: View {
                         openMail(to: feedbackEmail, subject: "ReplyerAI Feedback")
                     } label: {
                         SettingsRow(
-                            title: "Feedback & Suggestions",
+                            title: L10n.feedbackSuggestions,
                             icon: "envelope.fill",
                             iconColor: .orange
                         )
                     }
                 } header: {
-                    Text("Support")
+                    Text(L10n.support)
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Settings")
+            .navigationTitle(L10n.settings)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

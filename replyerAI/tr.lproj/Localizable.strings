@@ -1,0 +1,195 @@
+/* 
+  Localizable.strings (Turkish)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "ReplyerAI";
+"pro" = "PRO";
+"done" = "Tamam";
+"cancel" = "İptal";
+"save" = "Kaydet";
+"delete" = "Sil";
+"close" = "Kapat";
+"upgrade" = "Yükselt";
+"select" = "Seç";
+"none" = "Yok";
+"add" = "Ekle";
+"edit" = "Düzenle";
+"reset" = "Sıfırla";
+
+// MARK: - Subscription
+"free_plan" = "Ücretsiz Plan";
+"generations_left_today" = "Bugün %d/%d üretim hakkı kaldı";
+"daily_limit_reached" = "Günlük limit doldu. Sınırsız erişim için Pro'ya yükseltin.";
+"free_generations_remaining" = "Bugün %d ücretsiz üretim hakkı kaldı";
+
+// MARK: - Photo Picker
+"screenshots" = "Ekran Görüntüleri";
+"full_story_mode" = "Tam Hikaye Modu";
+"select_screenshot" = "Ekran Görüntüsü Seç";
+"select_screenshots" = "Ekran Görüntüleri Seç";
+"tap_to_choose_screenshot" = "Mesaj ekran görüntüsü seçmek için dokun";
+"add_screenshots_for_context" = "Tam bağlam için %d'e kadar ekran görüntüsü ekle";
+"upgrade_for_multi_screenshot" = "Çoklu ekran görüntüsü için yükseltin";
+"add_more" = "Daha Ekle";
+"clear_all" = "Tümünü Temizle";
+"screenshot_tip" = "İpucu: Ekran görüntüleri sırayla analiz edilir. Önce en eskisini, en son en yenisini ekleyin.";
+"remove_image" = "Resmi Kaldır";
+
+// MARK: - Pro Features
+"pro_features" = "Pro Özellikler";
+"full_story_mode_title" = "Tam Hikaye Modu";
+"full_story_mode_desc_active" = "%d'e kadar ekran görüntüsü yükle • Aktif";
+"full_story_mode_desc_locked" = "Daha iyi bağlam için birden fazla ekran görüntüsü ekle";
+"my_style" = "Benim Tarzım";
+"my_style_active" = "Aktif • Tarzınız kullanılıyor";
+"my_style_configure" = "Yapılandırmak için dokun";
+"my_style_train" = "Yapay zekayı yazım tarzınıza eğitin";
+"decode_message" = "Mesajı Çöz";
+"decode_message_desc" = "Psikoloji, ruh hali ve gizli anlamları analiz et";
+"contact_profiles" = "Kişi Profilleri";
+"contact_profiles_desc" = "Belirli kişiler için tercihleri kaydet";
+"profiles_saved" = "%d profil kaydedildi • Yönetmek için dokun";
+
+// MARK: - Settings Section
+"settings" = "Ayarlar";
+"relationship" = "İlişki";
+"tone" = "Ton";
+"use_my_style" = "Tarzımı Kullan";
+"settings_from_profile" = "%@ ayarları kullanılıyor.";
+
+// MARK: - Relationships
+"wife" = "Eş (Kadın)";
+"husband" = "Eş (Erkek)";
+"girlfriend" = "Kız Arkadaş";
+"boyfriend" = "Erkek Arkadaş";
+"situationship" = "Belirsiz İlişki";
+"boss" = "Patron";
+"coworker" = "İş Arkadaşı";
+"friend" = "Arkadaş";
+"best_friend" = "En İyi Arkadaş";
+"parent" = "Ebeveyn";
+"sibling" = "Kardeş";
+"ex_partner" = "Eski Partner";
+"acquaintance" = "Tanıdık";
+"stranger" = "Yabancı";
+
+// MARK: - Tones
+"angry" = "Kızgın";
+"funny" = "Komik";
+"professional" = "Profesyonel";
+"sarcastic" = "Alaycı";
+"passive_aggressive" = "Pasif Agresif";
+"romantic" = "Romantik";
+"apologetic" = "Özür Dileyen";
+"assertive" = "Kararlı";
+"friendly" = "Arkadaşça";
+"formal" = "Resmi";
+"casual" = "Gündelik";
+"sympathetic" = "Anlayışlı";
+"flirty" = "Flörtöz";
+
+// MARK: - Context
+"additional_context" = "Ek Bağlam";
+"context_placeholder" = "örn: Dün kavga ettik...";
+
+// MARK: - Generate Button
+"generate_reply" = "Yanıt Oluştur";
+"generating" = "Oluşturuluyor...";
+
+// MARK: - Result Section
+"generated_reply" = "Oluşturulan Yanıt";
+"copy_text" = "Metni Kopyala";
+"share_card" = "Kartı Paylaş";
+"copied" = "Kopyalandı!";
+"share_your_reply" = "Yanıtınızı Paylaşın";
+"share_as_image" = "Resim Olarak Paylaş";
+"share_as_text" = "Metin Olarak Paylaş";
+"generated_by" = "ReplyerAI ile oluşturuldu";
+"for_relationship" = "İçin: %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "Kişi Profili";
+"manage" = "Yönet";
+"no_contact_profiles" = "Kişi Profili Yok";
+"contact_profiles_empty_desc" = "Sık mesajlaştığınız kişiler için profiller kaydedin. \"Emoji sevmez\" veya \"Alaycılığı sever\" gibi notlar ekleyin, yapay zeka hatırlayacak!";
+"create_first_profile" = "İlk Profili Oluştur";
+"add_profile" = "Profil Ekle";
+"edit_profile" = "Profili Düzenle";
+"new_profile" = "Yeni Profil";
+"basic_info" = "Temel Bilgiler";
+"name" = "İsim";
+"emoji" = "Emoji";
+"notes_for_ai" = "Yapay Zeka İçin Notlar";
+"notes_placeholder" = "örn: Emoji sevmez, alaycılığı sever, her zaman meşgul...";
+"notes_footer" = "Bu kişi için yanıt oluştururken yapay zekanın hatırlaması gereken detayları ekleyin.";
+"default_tone" = "Varsayılan Ton";
+"set_preferred_tone" = "Tercih Edilen Tonu Ayarla";
+"tone_footer" = "Bu kişi seçildiğinde otomatik olarak bu tonu kullan.";
+"delete_profile" = "Profili Sil";
+"swipe_to_delete" = "Silmek için sola kaydırın. Düzenlemek için dokunun.";
+"none_manual" = "Yok (Manuel)";
+"manage_profiles" = "Profilleri Yönet...";
+"choose_emoji" = "Emoji Seç";
+"use_default" = "Varsayılanı Kullan";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "Yapay Zekaya Tarzınızı Öğretin";
+"style_mimicry_desc" = "Kendi mesajlarınızdan 3-5 ekran görüntüsü yükleyin. Yapay zeka argo, emoji kullanımı ve ton dahil benzersiz yazım tarzınızı öğrenecek.";
+"style_profile_active" = "Tarz Profili Aktif";
+"samples_analyzed" = "Analiz edilen örnekler:";
+"last_updated" = "Son güncelleme:";
+"style_active_desc" = "Yanıtlarınız artık kişisel yazım tarzınızla eşleşecek!";
+"update_your_style" = "Tarzınızı Güncelleyin";
+"add_your_messages" = "Mesajlarınızı Ekleyin";
+"minimum_samples" = "%d/%d minimum";
+"use_your_messages" = "KENDİ gönderdiğiniz mesajların ekran görüntülerini kullanın";
+"include_different_types" = "Farklı konuşma türlerini dahil edin";
+"dont_use_others" = "Başkalarının mesajlarını kullanmayın";
+"analyze_save_style" = "Analiz Et ve Kaydet";
+"analyzing_style" = "Tarzınız Analiz Ediliyor...";
+"delete_style_profile" = "Tarz Profilini Sil";
+"delete_style_confirm" = "Bu, öğrenilmiş yazım tarzınızı kaldıracak. Yeni bir profil oluşturmak için yeni örnekler eklemeniz gerekecek.";
+
+// MARK: - Decode Message
+"decode_their_message" = "Mesajlarını Çözümle";
+"decode_desc" = "Bir ekran görüntüsü yükleyin ve gerçekte ne düşündüklerini keşfedin. Ruh halleri, gizli anlamlar ve sizden ne istedikleri hakkında psikolojik içgörüler edinin.";
+"select_message_screenshot" = "Mesaj Ekran Görüntüsü Seç";
+"choose_conversation" = "Analiz edilecek bir konuşma seçin";
+"context" = "Bağlam";
+"backstory_optional" = "Arka plan hikayesi var mı? (isteğe bağlı)";
+"decode_message_button" = "Mesajı Çöz";
+"analyzing" = "Analiz ediliyor...";
+"mood_analysis" = "Ruh Hali Analizi";
+"quick_summary" = "Hızlı Özet";
+"what_they_really_mean" = "Gerçekte Ne Demek İstiyorlar";
+"emotional_state" = "Duygusal Durum";
+"what_they_want" = "Ne İstiyorlar";
+"text_cues_detected" = "Tespit Edilen Metin İpuçları";
+"relationship_dynamics" = "İlişki Dinamikleri";
+"how_to_respond" = "Nasıl Yanıt Verilmeli";
+"red_flags" = "Kırmızı Bayraklar";
+"green_flags" = "Yeşil Bayraklar";
+
+// MARK: - Settings Screen
+"appearance" = "Görünüm";
+"appearance_footer" = "ReplyerAI'nin nasıl görüneceğini seçin. Sistem, cihaz ayarlarınızı takip eder.";
+"system" = "Sistem";
+"light" = "Açık";
+"dark" = "Koyu";
+"general" = "Genel";
+"share_app" = "ReplyerAI'yi Paylaş";
+"rate_us" = "Bizi Değerlendirin";
+"terms_of_use" = "Kullanım Şartları";
+"privacy_policy" = "Gizlilik Politikası";
+"app_version" = "Uygulama Sürümü";
+"support" = "Destek";
+"feedback_suggestions" = "Geri Bildirim ve Öneriler";
+
+// MARK: - Errors
+"please_select_image" = "Lütfen önce bir resim seçin.";
+"error_occurred" = "Bir hata oluştu";
+

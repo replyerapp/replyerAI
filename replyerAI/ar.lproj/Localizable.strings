@@ -1,0 +1,195 @@
+/* 
+  Localizable.strings (Arabic)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "ReplyerAI";
+"pro" = "برو";
+"done" = "تم";
+"cancel" = "إلغاء";
+"save" = "حفظ";
+"delete" = "حذف";
+"close" = "إغلاق";
+"upgrade" = "ترقية";
+"select" = "اختيار";
+"none" = "لا شيء";
+"add" = "إضافة";
+"edit" = "تعديل";
+"reset" = "إعادة تعيين";
+
+// MARK: - Subscription
+"free_plan" = "الخطة المجانية";
+"generations_left_today" = "%d من %d توليدات متبقية اليوم";
+"daily_limit_reached" = "تم الوصول للحد اليومي. قم بالترقية للوصول غير المحدود.";
+"free_generations_remaining" = "%d توليد(ات) مجانية متبقية اليوم";
+
+// MARK: - Photo Picker
+"screenshots" = "لقطات الشاشة";
+"full_story_mode" = "وضع القصة الكاملة";
+"select_screenshot" = "اختر لقطة شاشة";
+"select_screenshots" = "اختر لقطات الشاشة";
+"tap_to_choose_screenshot" = "انقر لاختيار لقطة شاشة للرسالة";
+"add_screenshots_for_context" = "أضف حتى %d لقطات للسياق الكامل";
+"upgrade_for_multi_screenshot" = "قم بالترقية للقطات متعددة";
+"add_more" = "إضافة المزيد";
+"clear_all" = "مسح الكل";
+"screenshot_tip" = "نصيحة: يتم تحليل اللقطات بالترتيب. أضف الأقدم أولاً، ثم الأحدث.";
+"remove_image" = "إزالة الصورة";
+
+// MARK: - Pro Features
+"pro_features" = "ميزات برو";
+"full_story_mode_title" = "وضع القصة الكاملة";
+"full_story_mode_desc_active" = "ارفع حتى %d لقطات • نشط";
+"full_story_mode_desc_locked" = "أضف لقطات متعددة لسياق أفضل";
+"my_style" = "أسلوبي";
+"my_style_active" = "نشط • يستخدم أسلوبك";
+"my_style_configure" = "انقر للتهيئة";
+"my_style_train" = "درّب الذكاء الاصطناعي على أسلوب كتابتك";
+"decode_message" = "فك تشفير الرسالة";
+"decode_message_desc" = "حلل النفسية والمزاج والمعاني الخفية";
+"contact_profiles" = "ملفات جهات الاتصال";
+"contact_profiles_desc" = "احفظ التفضيلات لأشخاص محددين";
+"profiles_saved" = "%d ملف(ات) محفوظة • انقر للإدارة";
+
+// MARK: - Settings Section
+"settings" = "الإعدادات";
+"relationship" = "العلاقة";
+"tone" = "النبرة";
+"use_my_style" = "استخدم أسلوبي";
+"settings_from_profile" = "يتم استخدام إعدادات %@.";
+
+// MARK: - Relationships
+"wife" = "زوجة";
+"husband" = "زوج";
+"girlfriend" = "صديقة";
+"boyfriend" = "صديق";
+"situationship" = "علاقة غير محددة";
+"boss" = "مدير";
+"coworker" = "زميل عمل";
+"friend" = "صديق/ة";
+"best_friend" = "أفضل صديق/ة";
+"parent" = "والد/ة";
+"sibling" = "أخ/أخت";
+"ex_partner" = "شريك سابق";
+"acquaintance" = "معرفة";
+"stranger" = "غريب";
+
+// MARK: - Tones
+"angry" = "غاضب";
+"funny" = "مضحك";
+"professional" = "مهني";
+"sarcastic" = "ساخر";
+"passive_aggressive" = "عدواني سلبي";
+"romantic" = "رومانسي";
+"apologetic" = "اعتذاري";
+"assertive" = "حازم";
+"friendly" = "ودود";
+"formal" = "رسمي";
+"casual" = "عادي";
+"sympathetic" = "متعاطف";
+"flirty" = "مغازل";
+
+// MARK: - Context
+"additional_context" = "سياق إضافي";
+"context_placeholder" = "مثال: تشاجرنا بالأمس...";
+
+// MARK: - Generate Button
+"generate_reply" = "توليد الرد";
+"generating" = "جاري التوليد...";
+
+// MARK: - Result Section
+"generated_reply" = "الرد المُولَّد";
+"copy_text" = "نسخ النص";
+"share_card" = "مشاركة البطاقة";
+"copied" = "تم النسخ!";
+"share_your_reply" = "شارك ردك";
+"share_as_image" = "مشاركة كصورة";
+"share_as_text" = "مشاركة كنص";
+"generated_by" = "تم التوليد بواسطة ReplyerAI";
+"for_relationship" = "لـ: %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "ملف جهة الاتصال";
+"manage" = "إدارة";
+"no_contact_profiles" = "لا توجد ملفات جهات اتصال";
+"contact_profiles_empty_desc" = "احفظ ملفات للأشخاص الذين تراسلهم كثيراً. أضف ملاحظات مثل \"يكره الإيموجي\" أو \"يحب السخرية\" وسيتذكرها الذكاء الاصطناعي!";
+"create_first_profile" = "إنشاء أول ملف";
+"add_profile" = "إضافة ملف";
+"edit_profile" = "تعديل الملف";
+"new_profile" = "ملف جديد";
+"basic_info" = "معلومات أساسية";
+"name" = "الاسم";
+"emoji" = "إيموجي";
+"notes_for_ai" = "ملاحظات للذكاء الاصطناعي";
+"notes_placeholder" = "مثال: يكره الإيموجي، يحب السخرية، مشغول دائماً...";
+"notes_footer" = "أضف أي تفاصيل يجب أن يتذكرها الذكاء الاصطناعي عند توليد الردود لهذا الشخص.";
+"default_tone" = "النبرة الافتراضية";
+"set_preferred_tone" = "تعيين النبرة المفضلة";
+"tone_footer" = "استخدم هذه النبرة تلقائياً عند اختيار جهة الاتصال هذه.";
+"delete_profile" = "حذف الملف";
+"swipe_to_delete" = "اسحب لليسار لحذف ملف. انقر للتعديل.";
+"none_manual" = "لا شيء (يدوي)";
+"manage_profiles" = "إدارة الملفات...";
+"choose_emoji" = "اختر إيموجي";
+"use_default" = "استخدم الافتراضي";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "علّم الذكاء الاصطناعي أسلوبك";
+"style_mimicry_desc" = "ارفع 3-5 لقطات شاشة من رسائلك الخاصة. سيتعلم الذكاء الاصطناعي أسلوب كتابتك الفريد بما في ذلك العامية واستخدام الإيموجي والنبرة.";
+"style_profile_active" = "ملف الأسلوب نشط";
+"samples_analyzed" = "العينات المحللة:";
+"last_updated" = "آخر تحديث:";
+"style_active_desc" = "ستتطابق ردودك الآن مع أسلوب كتابتك الشخصي!";
+"update_your_style" = "تحديث أسلوبك";
+"add_your_messages" = "أضف رسائلك";
+"minimum_samples" = "%d/%d الحد الأدنى";
+"use_your_messages" = "استخدم لقطات شاشة لرسائلك المرسلة";
+"include_different_types" = "ضمّن أنواعاً مختلفة من المحادثات";
+"dont_use_others" = "لا تستخدم رسائل أشخاص آخرين";
+"analyze_save_style" = "تحليل وحفظ الأسلوب";
+"analyzing_style" = "جاري تحليل أسلوبك...";
+"delete_style_profile" = "حذف ملف الأسلوب";
+"delete_style_confirm" = "سيؤدي هذا إلى إزالة أسلوب كتابتك المُتعلَّم. ستحتاج إلى إضافة عينات جديدة لإنشاء ملف جديد.";
+
+// MARK: - Decode Message
+"decode_their_message" = "فك تشفير رسالتهم";
+"decode_desc" = "ارفع لقطة شاشة واكتشف ما يفكرون به حقاً. احصل على رؤى نفسية حول مزاجهم والمعاني الخفية وما يريدونه منك.";
+"select_message_screenshot" = "اختر لقطة شاشة للرسالة";
+"choose_conversation" = "اختر محادثة للتحليل";
+"context" = "السياق";
+"backstory_optional" = "أي خلفية؟ (اختياري)";
+"decode_message_button" = "فك تشفير الرسالة";
+"analyzing" = "جاري التحليل...";
+"mood_analysis" = "تحليل المزاج";
+"quick_summary" = "ملخص سريع";
+"what_they_really_mean" = "ما يقصدونه حقاً";
+"emotional_state" = "الحالة العاطفية";
+"what_they_want" = "ما يريدونه";
+"text_cues_detected" = "إشارات النص المكتشفة";
+"relationship_dynamics" = "ديناميكيات العلاقة";
+"how_to_respond" = "كيفية الرد";
+"red_flags" = "علامات تحذيرية";
+"green_flags" = "علامات إيجابية";
+
+// MARK: - Settings Screen
+"appearance" = "المظهر";
+"appearance_footer" = "اختر مظهر ReplyerAI. النظام يتبع إعدادات جهازك.";
+"system" = "النظام";
+"light" = "فاتح";
+"dark" = "داكن";
+"general" = "عام";
+"share_app" = "مشاركة ReplyerAI";
+"rate_us" = "قيّمنا";
+"terms_of_use" = "شروط الاستخدام";
+"privacy_policy" = "سياسة الخصوصية";
+"app_version" = "إصدار التطبيق";
+"support" = "الدعم";
+"feedback_suggestions" = "الملاحظات والاقتراحات";
+
+// MARK: - Errors
+"please_select_image" = "يرجى اختيار صورة أولاً.";
+"error_occurred" = "حدث خطأ";
+

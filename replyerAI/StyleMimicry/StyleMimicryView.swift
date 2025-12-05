@@ -38,11 +38,11 @@ struct StyleMimicryView: View {
                 }
                 .padding()
             }
-            .navigationTitle("My Style")
+            .navigationTitle(L10n.myStyle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button(L10n.cancel) {
                         dismiss()
                     }
                 }
@@ -53,7 +53,7 @@ struct StyleMimicryView: View {
                             Button(role: .destructive) {
                                 showDeleteConfirmation = true
                             } label: {
-                                Label("Delete Style Profile", systemImage: "trash")
+                                Label(L10n.deleteStyleProfile, systemImage: "trash")
                             }
                         } label: {
                             Image(systemName: "ellipsis.circle")
@@ -65,16 +65,16 @@ struct StyleMimicryView: View {
                 loadSelectedImage()
             }
             .confirmationDialog(
-                "Delete Style Profile?",
+                L10n.deleteStyleProfile,
                 isPresented: $showDeleteConfirmation,
                 titleVisibility: .visible
             ) {
-                Button("Delete", role: .destructive) {
+                Button(L10n.delete, role: .destructive) {
                     styleManager.deleteProfile()
                 }
-                Button("Cancel", role: .cancel) { }
+                Button(L10n.cancel, role: .cancel) { }
             } message: {
-                Text("This will remove your learned writing style. You'll need to add new samples to create a new profile.")
+                Text(L10n.deleteStyleConfirm)
             }
         }
     }
@@ -87,11 +87,11 @@ struct StyleMimicryView: View {
                 .font(.system(size: 50))
                 .foregroundStyle(Color.accentColor)
             
-            Text("Teach AI Your Style")
+            Text(L10n.teachAIYourStyle)
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Upload 3-5 screenshots of your own messages. The AI will learn your unique writing style including slang, emoji usage, and tone.")
+            Text(L10n.styleMimicryDesc)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -106,20 +106,20 @@ struct StyleMimicryView: View {
             HStack {
                 Image(systemName: "checkmark.seal.fill")
                     .foregroundStyle(.green)
-                Text("Style Profile Active")
+                Text(L10n.styleProfileActive)
                     .font(.headline)
             }
             
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("Samples analyzed:")
+                    Text(L10n.samplesAnalyzed)
                     Spacer()
                     Text("\(styleManager.profile?.sampleCount ?? 0)")
                         .foregroundStyle(.secondary)
                 }
                 
                 HStack {
-                    Text("Last updated:")
+                    Text(L10n.lastUpdated)
                     Spacer()
                     if let date = styleManager.profile?.updatedAt {
                         Text(date.formatted(date: .abbreviated, time: .shortened))
@@ -129,7 +129,7 @@ struct StyleMimicryView: View {
             }
             .font(.subheadline)
             
-            Text("Your replies will now match your personal writing style!")
+            Text(L10n.styleActiveDesc)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .padding(.top, 4)
@@ -144,12 +144,12 @@ struct StyleMimicryView: View {
     private var sampleCollectionSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text(styleManager.hasCompleteProfile ? "Update Your Style" : "Add Your Messages")
+                Text(styleManager.hasCompleteProfile ? L10n.updateYourStyle : L10n.addYourMessages)
                     .font(.headline)
                 
                 Spacer()
                 
-                Text("\(styleManager.pendingSamples.count)/\(StyleConstants.minimumSamples) minimum")
+                Text(L10n.minimumSamples(styleManager.pendingSamples.count, StyleConstants.minimumSamples))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -179,9 +179,9 @@ struct StyleMimicryView: View {
             
             // Instructions
             VStack(alignment: .leading, spacing: 8) {
-                instructionRow(icon: "checkmark.circle.fill", text: "Use screenshots of YOUR sent messages", color: .green)
-                instructionRow(icon: "checkmark.circle.fill", text: "Include different conversation types", color: .green)
-                instructionRow(icon: "xmark.circle.fill", text: "Don't use other people's messages", color: .red)
+                instructionRow(icon: "checkmark.circle.fill", text: L10n.useYourMessages, color: .green)
+                instructionRow(icon: "checkmark.circle.fill", text: L10n.includeDifferentTypes, color: .green)
+                instructionRow(icon: "xmark.circle.fill", text: L10n.dontUseOthers, color: .red)
             }
             .padding(.top, 8)
             
@@ -220,7 +220,7 @@ struct StyleMimicryView: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.title)
                     .foregroundStyle(Color.accentColor)
-                Text("Add")
+                Text(L10n.add)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -251,7 +251,7 @@ struct StyleMimicryView: View {
                 } else {
                     Image(systemName: "wand.and.stars")
                 }
-                Text(styleManager.isAnalyzing ? "Analyzing Your Style..." : "Analyze & Save Style")
+                Text(styleManager.isAnalyzing ? L10n.analyzingStyle : L10n.analyzeSaveStyle)
                     .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)

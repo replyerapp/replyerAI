@@ -52,7 +52,7 @@ struct DecodeMessageView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Decode Message")
+            .navigationTitle(L10n.decodeMessage)
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.interactively)
             .onTapGesture {
@@ -60,7 +60,7 @@ struct DecodeMessageView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Close") {
+                    Button(L10n.close) {
                         dismiss()
                     }
                 }
@@ -89,11 +89,11 @@ struct DecodeMessageView: View {
                 .font(.system(size: 50))
                 .foregroundStyle(Color.accentColor)
             
-            Text("Decode Their Message")
+            Text(L10n.decodeTheirMessage)
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Upload a screenshot and discover what they're really thinking. Get psychological insights into their mood, hidden meanings, and what they want from you.")
+            Text(L10n.decodeDesc)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -118,10 +118,10 @@ struct DecodeMessageView: View {
                             Image(systemName: "message.badge.waveform")
                                 .font(.system(size: 40))
                                 .foregroundStyle(.secondary)
-                            Text("Select Message Screenshot")
+                            Text(L10n.selectMessageScreenshot)
                                 .font(.headline)
                                 .foregroundStyle(.primary)
-                            Text("Choose a conversation to analyze")
+                            Text(L10n.chooseConversation)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -143,7 +143,7 @@ struct DecodeMessageView: View {
                     imageSelection = nil
                     analysis = nil
                 } label: {
-                    Label("Remove Image", systemImage: "xmark.circle.fill")
+                    Label(L10n.removeImage, systemImage: "xmark.circle.fill")
                         .font(.subheadline)
                         .foregroundStyle(.red)
                 }
@@ -155,17 +155,17 @@ struct DecodeMessageView: View {
     
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Context")
+            Text(L10n.context)
                 .font(.headline)
             
             // Relationship
             HStack {
-                Label("Relationship", systemImage: "person.2")
+                Label(L10n.relationship, systemImage: "person.2")
                     .foregroundStyle(.primary)
                 Spacer()
-                Picker("Relationship", selection: $relationship) {
+                Picker(L10n.relationship, selection: $relationship) {
                     ForEach(Relationship.allCases) { rel in
-                        Text(rel.rawValue).tag(rel)
+                        Text(rel.localizedName).tag(rel)
                     }
                 }
                 .pickerStyle(.menu)
@@ -176,7 +176,7 @@ struct DecodeMessageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
             // Additional Context
-            TextField("Any backstory? (optional)", text: $additionalContext, axis: .vertical)
+            TextField(L10n.backstoryOptional, text: $additionalContext, axis: .vertical)
                 .lineLimit(2...4)
                 .padding()
                 .background(Color(.secondarySystemBackground))
@@ -199,7 +199,7 @@ struct DecodeMessageView: View {
                 } else {
                     Image(systemName: "brain.head.profile")
                 }
-                Text(isAnalyzing ? "Analyzing..." : "Decode Message")
+                Text(isAnalyzing ? L10n.analyzing : L10n.decodeMessageButton)
                     .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)
@@ -224,7 +224,7 @@ struct DecodeMessageView: View {
             // Hidden Meaning
             insightCard(
                 icon: "eye.fill",
-                title: "What They Really Mean",
+                title: L10n.whatTheyReallyMean,
                 content: analysis.hiddenMeaning,
                 color: .purple
             )
@@ -232,7 +232,7 @@ struct DecodeMessageView: View {
             // Emotional State
             insightCard(
                 icon: "heart.fill",
-                title: "Emotional State",
+                title: L10n.emotionalState,
                 content: analysis.emotionalState,
                 color: .pink
             )
@@ -240,7 +240,7 @@ struct DecodeMessageView: View {
             // What They Want
             insightCard(
                 icon: "target",
-                title: "What They Want",
+                title: L10n.whatTheyWant,
                 content: analysis.whatTheyWant,
                 color: .blue
             )
@@ -253,7 +253,7 @@ struct DecodeMessageView: View {
             // Relationship Dynamics
             insightCard(
                 icon: "person.2.fill",
-                title: "Relationship Dynamics",
+                title: L10n.relationshipDynamics,
                 content: analysis.relationshipDynamics,
                 color: .orange
             )
@@ -266,7 +266,7 @@ struct DecodeMessageView: View {
             // Recommended Approach
             insightCard(
                 icon: "lightbulb.fill",
-                title: "How to Respond",
+                title: L10n.howToRespond,
                 content: analysis.recommendedApproach,
                 color: .yellow
             )
@@ -280,7 +280,7 @@ struct DecodeMessageView: View {
         
         return VStack(spacing: 16) {
             HStack {
-                Text("Mood Analysis")
+                Text(L10n.moodAnalysis)
                     .font(.headline)
                 Spacer()
                 Text(mood.emoji)
@@ -342,7 +342,7 @@ struct DecodeMessageView: View {
     
     private func summaryCard(_ analysis: DecodeAnalysis) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label("Quick Summary", systemImage: "sparkles")
+            Label(L10n.quickSummary, systemImage: "sparkles")
                 .font(.headline)
                 .foregroundStyle(Color.accentColor)
             
@@ -379,7 +379,7 @@ struct DecodeMessageView: View {
     
     private func textCuesSection(_ cues: [TextCue]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Text Cues Detected", systemImage: "text.magnifyingglass")
+            Label(L10n.textCuesDetected, systemImage: "text.magnifyingglass")
                 .font(.headline)
             
             ForEach(cues) { cue in
@@ -422,7 +422,7 @@ struct DecodeMessageView: View {
             // Red Flags
             if !analysis.redFlags.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Red Flags", systemImage: "exclamationmark.triangle.fill")
+                    Label(L10n.redFlags, systemImage: "exclamationmark.triangle.fill")
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.red)
@@ -446,7 +446,7 @@ struct DecodeMessageView: View {
             // Green Flags
             if !analysis.greenFlags.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Green Flags", systemImage: "checkmark.seal.fill")
+                    Label(L10n.greenFlags, systemImage: "checkmark.seal.fill")
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.green)

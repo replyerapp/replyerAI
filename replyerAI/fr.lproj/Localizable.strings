@@ -1,0 +1,195 @@
+/* 
+  Localizable.strings (French)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "ReplyerAI";
+"pro" = "PRO";
+"done" = "Terminé";
+"cancel" = "Annuler";
+"save" = "Enregistrer";
+"delete" = "Supprimer";
+"close" = "Fermer";
+"upgrade" = "Passer à Pro";
+"select" = "Sélectionner";
+"none" = "Aucun";
+"add" = "Ajouter";
+"edit" = "Modifier";
+"reset" = "Réinitialiser";
+
+// MARK: - Subscription
+"free_plan" = "Plan Gratuit";
+"generations_left_today" = "%d sur %d générations restantes aujourd'hui";
+"daily_limit_reached" = "Limite quotidienne atteinte. Passez à Pro pour un accès illimité.";
+"free_generations_remaining" = "%d génération(s) gratuite(s) restante(s) aujourd'hui";
+
+// MARK: - Photo Picker
+"screenshots" = "Captures d'écran";
+"full_story_mode" = "Mode Histoire Complète";
+"select_screenshot" = "Sélectionner une capture";
+"select_screenshots" = "Sélectionner des captures";
+"tap_to_choose_screenshot" = "Appuyez pour choisir une capture de message";
+"add_screenshots_for_context" = "Ajoutez jusqu'à %d captures pour le contexte complet";
+"upgrade_for_multi_screenshot" = "Passez à Pro pour plusieurs captures";
+"add_more" = "Ajouter";
+"clear_all" = "Tout effacer";
+"screenshot_tip" = "Conseil : Les captures sont analysées dans l'ordre. Ajoutez d'abord la plus ancienne, puis la plus récente.";
+"remove_image" = "Supprimer l'image";
+
+// MARK: - Pro Features
+"pro_features" = "Fonctionnalités Pro";
+"full_story_mode_title" = "Mode Histoire Complète";
+"full_story_mode_desc_active" = "Téléchargez jusqu'à %d captures • Actif";
+"full_story_mode_desc_locked" = "Ajoutez plusieurs captures pour plus de contexte";
+"my_style" = "Mon Style";
+"my_style_active" = "Actif • Utilise votre style";
+"my_style_configure" = "Appuyez pour configurer";
+"my_style_train" = "Entraînez l'IA à imiter votre style d'écriture";
+"decode_message" = "Décoder le Message";
+"decode_message_desc" = "Analysez la psychologie, l'humeur et les significations cachées";
+"contact_profiles" = "Profils de Contacts";
+"contact_profiles_desc" = "Enregistrez les préférences pour des personnes spécifiques";
+"profiles_saved" = "%d profil(s) enregistré(s) • Appuyez pour gérer";
+
+// MARK: - Settings Section
+"settings" = "Paramètres";
+"relationship" = "Relation";
+"tone" = "Ton";
+"use_my_style" = "Utiliser Mon Style";
+"settings_from_profile" = "Les paramètres de %@ sont utilisés.";
+
+// MARK: - Relationships
+"wife" = "Épouse";
+"husband" = "Époux";
+"girlfriend" = "Petite amie";
+"boyfriend" = "Petit ami";
+"situationship" = "Relation floue";
+"boss" = "Patron";
+"coworker" = "Collègue";
+"friend" = "Ami(e)";
+"best_friend" = "Meilleur(e) ami(e)";
+"parent" = "Parent";
+"sibling" = "Frère/Sœur";
+"ex_partner" = "Ex-partenaire";
+"acquaintance" = "Connaissance";
+"stranger" = "Inconnu(e)";
+
+// MARK: - Tones
+"angry" = "En colère";
+"funny" = "Drôle";
+"professional" = "Professionnel";
+"sarcastic" = "Sarcastique";
+"passive_aggressive" = "Passif-agressif";
+"romantic" = "Romantique";
+"apologetic" = "Apologétique";
+"assertive" = "Assertif";
+"friendly" = "Amical";
+"formal" = "Formel";
+"casual" = "Décontracté";
+"sympathetic" = "Compatissant";
+"flirty" = "Charmeur";
+
+// MARK: - Context
+"additional_context" = "Contexte Supplémentaire";
+"context_placeholder" = "ex: Nous nous sommes disputés hier...";
+
+// MARK: - Generate Button
+"generate_reply" = "Générer une Réponse";
+"generating" = "Génération...";
+
+// MARK: - Result Section
+"generated_reply" = "Réponse Générée";
+"copy_text" = "Copier le texte";
+"share_card" = "Partager la carte";
+"copied" = "Copié !";
+"share_your_reply" = "Partagez Votre Réponse";
+"share_as_image" = "Partager en image";
+"share_as_text" = "Partager en texte";
+"generated_by" = "Généré par ReplyerAI";
+"for_relationship" = "Pour : %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "Profil de Contact";
+"manage" = "Gérer";
+"no_contact_profiles" = "Aucun Profil de Contact";
+"contact_profiles_empty_desc" = "Enregistrez des profils pour les personnes que vous contactez souvent. Ajoutez des notes comme « déteste les emojis » ou « adore le sarcasme » et l'IA s'en souviendra !";
+"create_first_profile" = "Créer le Premier Profil";
+"add_profile" = "Ajouter un Profil";
+"edit_profile" = "Modifier le Profil";
+"new_profile" = "Nouveau Profil";
+"basic_info" = "Informations de Base";
+"name" = "Nom";
+"emoji" = "Emoji";
+"notes_for_ai" = "Notes pour l'IA";
+"notes_placeholder" = "ex: Déteste les emojis, adore le sarcasme, toujours occupé...";
+"notes_footer" = "Ajoutez tous les détails dont l'IA doit se souvenir lors de la génération de réponses pour cette personne.";
+"default_tone" = "Ton par Défaut";
+"set_preferred_tone" = "Définir le Ton Préféré";
+"tone_footer" = "Utiliser automatiquement ce ton lorsque ce contact est sélectionné.";
+"delete_profile" = "Supprimer le Profil";
+"swipe_to_delete" = "Glissez vers la gauche pour supprimer un profil. Appuyez pour modifier.";
+"none_manual" = "Aucun (Manuel)";
+"manage_profiles" = "Gérer les Profils...";
+"choose_emoji" = "Choisir un Emoji";
+"use_default" = "Utiliser par défaut";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "Apprenez à l'IA Votre Style";
+"style_mimicry_desc" = "Téléchargez 3 à 5 captures de vos propres messages. L'IA apprendra votre style d'écriture unique, y compris l'argot, l'utilisation des emojis et le ton.";
+"style_profile_active" = "Profil de Style Actif";
+"samples_analyzed" = "Échantillons analysés :";
+"last_updated" = "Dernière mise à jour :";
+"style_active_desc" = "Vos réponses correspondront désormais à votre style d'écriture personnel !";
+"update_your_style" = "Mettre à Jour Votre Style";
+"add_your_messages" = "Ajoutez Vos Messages";
+"minimum_samples" = "%d/%d minimum";
+"use_your_messages" = "Utilisez des captures de VOS messages envoyés";
+"include_different_types" = "Incluez différents types de conversations";
+"dont_use_others" = "N'utilisez pas les messages d'autres personnes";
+"analyze_save_style" = "Analyser et Enregistrer le Style";
+"analyzing_style" = "Analyse de Votre Style...";
+"delete_style_profile" = "Supprimer le Profil de Style";
+"delete_style_confirm" = "Cela supprimera votre style d'écriture appris. Vous devrez ajouter de nouveaux échantillons pour créer un nouveau profil.";
+
+// MARK: - Decode Message
+"decode_their_message" = "Décodez Leur Message";
+"decode_desc" = "Téléchargez une capture et découvrez ce qu'ils pensent vraiment. Obtenez des aperçus psychologiques sur leur humeur, les significations cachées et ce qu'ils attendent de vous.";
+"select_message_screenshot" = "Sélectionner une Capture de Message";
+"choose_conversation" = "Choisissez une conversation à analyser";
+"context" = "Contexte";
+"backstory_optional" = "Une histoire derrière ? (optionnel)";
+"decode_message_button" = "Décoder le Message";
+"analyzing" = "Analyse...";
+"mood_analysis" = "Analyse de l'Humeur";
+"quick_summary" = "Résumé Rapide";
+"what_they_really_mean" = "Ce Qu'ils Veulent Vraiment Dire";
+"emotional_state" = "État Émotionnel";
+"what_they_want" = "Ce Qu'ils Veulent";
+"text_cues_detected" = "Indices Textuels Détectés";
+"relationship_dynamics" = "Dynamiques Relationnelles";
+"how_to_respond" = "Comment Répondre";
+"red_flags" = "Signaux d'Alerte";
+"green_flags" = "Signaux Positifs";
+
+// MARK: - Settings Screen
+"appearance" = "Apparence";
+"appearance_footer" = "Choisissez l'apparence de ReplyerAI. Système suit les paramètres de votre appareil.";
+"system" = "Système";
+"light" = "Clair";
+"dark" = "Sombre";
+"general" = "Général";
+"share_app" = "Partager ReplyerAI";
+"rate_us" = "Notez-nous";
+"terms_of_use" = "Conditions d'Utilisation";
+"privacy_policy" = "Politique de Confidentialité";
+"app_version" = "Version de l'Application";
+"support" = "Support";
+"feedback_suggestions" = "Commentaires et Suggestions";
+
+// MARK: - Errors
+"please_select_image" = "Veuillez d'abord sélectionner une image.";
+"error_occurred" = "Une erreur s'est produite";
+

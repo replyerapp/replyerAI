@@ -15,6 +15,14 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
     
     var id: String { rawValue }
     
+    var localizedName: String {
+        switch self {
+        case .system: return String(localized: "system")
+        case .light: return String(localized: "light")
+        case .dark: return String(localized: "dark")
+        }
+    }
+    
     var colorScheme: ColorScheme? {
         switch self {
         case .system: return nil

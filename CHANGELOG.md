@@ -1,5 +1,67 @@
 # replyerAI - Changelog
 
+## [1.6.0] - 2025-12-05
+
+### Added - Full Localization Support
+
+#### Overview
+The app is now fully localized in 6 languages: English, French, Spanish, Arabic, Turkish, and Portuguese (Brazilian). Users will automatically see the app in their device's preferred language.
+
+#### New Files
+
+**Localization/LocalizedStrings.swift**:
+- `L10n` enum with all localized string constants
+- Helper functions for formatted strings (e.g., `L10n.generationsLeftToday(3, 5)`)
+- Extensions for `ReplyViewModel.Relationship` and `ReplyViewModel.Tone` with `localizedName` properties
+
+**Language Files (*.lproj/Localizable.strings)**:
+- `en.lproj/Localizable.strings` - English (Base)
+- `fr.lproj/Localizable.strings` - French
+- `es.lproj/Localizable.strings` - Spanish
+- `ar.lproj/Localizable.strings` - Arabic (RTL support)
+- `tr.lproj/Localizable.strings` - Turkish
+- `pt-BR.lproj/Localizable.strings` - Portuguese (Brazil)
+
+#### Localized Content
+- App name and navigation titles
+- All UI labels and buttons
+- Relationship types (Wife, Husband, Friend, etc.)
+- Tone options (Angry, Funny, Professional, etc.)
+- Pro features descriptions
+- Settings screen
+- Error messages
+- Contact profiles management
+- Style mimicry feature
+- Decode message feature
+- Subscription banners
+
+#### Updated Files
+
+**ContentView.swift**:
+- All hardcoded strings replaced with `L10n.*` constants
+- Relationship and Tone pickers use `localizedName` property
+
+**SettingsView.swift**:
+- All labels and section headers localized
+
+**ContactProfilesView.swift**:
+- Full localization of profile management UI
+
+**StyleMimicryView.swift**:
+- All instructions and labels localized
+
+**DecodeMessageView.swift**:
+- Analysis results and UI labels localized
+
+**AppearanceManager.swift**:
+- Added `localizedName` property to `AppearanceMode` enum
+
+#### Project Configuration
+- `knownRegions` in project.pbxproj includes all supported languages
+- `developmentRegion` set to `en`
+
+---
+
 ## [1.5.0] - 2025-12-03
 
 ### Added - Contact Profiles (Save People's Preferences)

@@ -24,11 +24,11 @@ struct ContactProfilesView: View {
                     profilesList
                 }
             }
-            .navigationTitle("Contact Profiles")
+            .navigationTitle(L10n.contactProfiles)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Done") {
+                    Button(L10n.done) {
                         dismiss()
                     }
                 }
@@ -58,11 +58,11 @@ struct ContactProfilesView: View {
                 .font(.system(size: 60))
                 .foregroundStyle(.secondary)
             
-            Text("No Contact Profiles")
+            Text(L10n.noContactProfiles)
                 .font(.title2)
                 .fontWeight(.semibold)
             
-            Text("Save profiles for people you message frequently. Add notes like \"hates emojis\" or \"loves sarcasm\" and the AI will remember!")
+            Text(L10n.contactProfilesEmptyDesc)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -71,7 +71,7 @@ struct ContactProfilesView: View {
             Button {
                 showAddProfile = true
             } label: {
-                Label("Create First Profile", systemImage: "plus.circle.fill")
+                Label(L10n.createFirstProfile, systemImage: "plus.circle.fill")
                     .fontWeight(.semibold)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
@@ -100,7 +100,7 @@ struct ContactProfilesView: View {
             } header: {
                 Text("\(profileManager.profileCount) Profile\(profileManager.profileCount == 1 ? "" : "s")")
             } footer: {
-                Text("Swipe left to delete a profile. Tap to edit.")
+                Text(L10n.swipeToDelete)
             }
         }
     }
@@ -200,12 +200,12 @@ struct AddEditProfileView: View {
             Form {
                 // Basic Info Section
                 Section {
-                    TextField("Name", text: $name)
+                    TextField(L10n.name, text: $name)
                         .textContentType(.name)
                     
-                    Picker("Relationship", selection: $selectedRelationship) {
+                    Picker(L10n.relationship, selection: $selectedRelationship) {
                         ForEach(Relationship.allCases) { relationship in
-                            Text(relationship.rawValue).tag(relationship)
+                            Text(relationship.localizedName).tag(relationship)
                         }
                     }
                     
@@ -214,7 +214,7 @@ struct AddEditProfileView: View {
                         showEmojiPicker = true
                     } label: {
                         HStack {
-                            Text("Emoji")
+                            Text(L10n.emoji)
                                 .foregroundStyle(.primary)
                             Spacer()
                             Text(selectedEmoji.isEmpty ? defaultEmojiForRelationship : selectedEmoji)
@@ -225,35 +225,35 @@ struct AddEditProfileView: View {
                         }
                     }
                 } header: {
-                    Text("Basic Info")
+                    Text(L10n.basicInfo)
                 }
                 
                 // Notes Section
                 Section {
-                    TextField("e.g., Hates emojis, loves sarcasm, always busy...", text: $notes, axis: .vertical)
+                    TextField(L10n.notesPlaceholder, text: $notes, axis: .vertical)
                         .lineLimit(3...6)
                 } header: {
-                    Text("Notes for AI")
+                    Text(L10n.notesForAI)
                 } footer: {
-                    Text("Add any details the AI should remember when generating replies for this person.")
+                    Text(L10n.notesFooter)
                 }
                 
                 // Preferred Tone Section
                 Section {
-                    Toggle("Set Preferred Tone", isOn: $usePreferredTone)
+                    Toggle(L10n.setPreferredTone, isOn: $usePreferredTone)
                     
                     if usePreferredTone {
-                        Picker("Tone", selection: $selectedTone) {
-                            Text("None").tag(nil as Tone?)
+                        Picker(L10n.tone, selection: $selectedTone) {
+                            Text(L10n.none).tag(nil as Tone?)
                             ForEach(Tone.allCases) { tone in
-                                Text(tone.rawValue).tag(tone as Tone?)
+                                Text(tone.localizedName).tag(tone as Tone?)
                             }
                         }
                     }
                 } header: {
-                    Text("Default Tone")
+                    Text(L10n.defaultTone)
                 } footer: {
-                    Text("Automatically use this tone when this contact is selected.")
+                    Text(L10n.toneFooter)
                 }
                 
                 // Delete Section (Edit mode only)
@@ -267,25 +267,25 @@ struct AddEditProfileView: View {
                         } label: {
                             HStack {
                                 Spacer()
-                                Text("Delete Profile")
+                                Text(L10n.deleteProfile)
                                 Spacer()
                             }
                         }
                     }
                 }
             }
-            .navigationTitle(isEditing ? "Edit Profile" : "New Profile")
+            .navigationTitle(isEditing ? L10n.editProfile : L10n.newProfile)
             .navigationBarTitleDisplayMode(.inline)
             .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button(L10n.cancel) {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
+                    Button(L10n.save) {
                         saveProfile()
                     }
                     .fontWeight(.semibold)
@@ -398,9 +398,9 @@ struct ContactProfilePicker: View {
                             selectedProfile = nil
                         } label: {
                             if selectedProfile == nil {
-                                Label("None (Manual)", systemImage: "checkmark")
+                                Label(L10n.noneManual, systemImage: "checkmark")
                             } else {
-                                Text("None (Manual)")
+                                Text(L10n.noneManual)
                             }
                         }
                         
@@ -425,7 +425,7 @@ struct ContactProfilePicker: View {
                         Button {
                             showProfilesList = true
                         } label: {
-                            Label("Manage Profiles...", systemImage: "gear")
+                            Label(L10n.manageProfiles, systemImage: "gear")
                         }
                     } label: {
                         HStack(spacing: 4) {
@@ -433,7 +433,7 @@ struct ContactProfilePicker: View {
                                 Text("\(profile.emoji) \(profile.name)")
                                     .foregroundStyle(.primary)
                             } else {
-                                Text("Select")
+                                Text(L10n.select)
                                     .foregroundStyle(.secondary)
                             }
                             Image(systemName: "chevron.up.chevron.down")
@@ -446,7 +446,7 @@ struct ContactProfilePicker: View {
                         showProfilesList = true
                     } label: {
                         HStack(spacing: 4) {
-                            Text("Add Profile")
+                            Text(L10n.addProfile)
                                 .foregroundStyle(Color.accentColor)
                             Image(systemName: "plus.circle.fill")
                                 .font(.caption)
@@ -501,7 +501,7 @@ struct EmojiPickerView: View {
                         dismiss()
                     } label: {
                         HStack {
-                            Text("Use Default")
+                            Text(L10n.useDefault)
                                 .foregroundStyle(.primary)
                             Spacer()
                             if selectedEmoji.isEmpty {
@@ -542,11 +542,11 @@ struct EmojiPickerView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Choose Emoji")
+            .navigationTitle(L10n.chooseEmoji)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                    Button(L10n.done) {
                         dismiss()
                     }
                 }

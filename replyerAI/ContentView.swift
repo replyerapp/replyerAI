@@ -66,7 +66,7 @@ struct ContentView: View {
                 }
                 .padding()
             }
-            .navigationTitle("ReplyerAI")
+            .navigationTitle(L10n.appName)
             .scrollDismissesKeyboard(.interactively)
             .onTapGesture {
                 hideKeyboard()
@@ -74,7 +74,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if viewModel.isPro {
-                        Text("PRO")
+                        Text(L10n.pro)
                             .font(.caption)
                             .fontWeight(.bold)
                             .padding(.horizontal, 8)
@@ -128,7 +128,7 @@ struct ContentView: View {
     private var contactProfileSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Contact Profile")
+                Text(L10n.contactProfile)
                     .font(.headline)
                     .foregroundStyle(.primary)
                 
@@ -139,7 +139,7 @@ struct ContentView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "gear")
-                        Text("Manage")
+                        Text(L10n.manage)
                     }
                     .font(.caption)
                     .foregroundStyle(Color.accentColor)
@@ -158,17 +158,17 @@ struct ContentView: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Free Plan")
+                    Text(L10n.freePlan)
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                    Text("\(viewModel.remainingFreeGenerations) of \(SubscriptionConstants.freeUsageLimit) generations left today")
+                    Text(L10n.generationsLeftToday(viewModel.remainingFreeGenerations, SubscriptionConstants.freeUsageLimit))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
                 
-                Text("Upgrade")
+                Text(L10n.upgrade)
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .padding(.horizontal, 12)
@@ -191,7 +191,7 @@ struct ContentView: View {
             // Header with screenshot count
             if !viewModel.selectedImages.isEmpty {
                 HStack {
-                    Text("Screenshots (\(viewModel.selectedImages.count)/\(viewModel.maxScreenshots))")
+                    Text("\(L10n.screenshots) (\(viewModel.selectedImages.count)/\(viewModel.maxScreenshots))")
                         .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundStyle(.secondary)
@@ -199,7 +199,7 @@ struct ContentView: View {
                     Spacer()
                     
                     if viewModel.isPro {
-                        Text("Full Story Mode")
+                        Text(L10n.fullStoryMode)
                             .font(.caption)
                             .fontWeight(.medium)
                             .padding(.horizontal, 8)
@@ -257,7 +257,7 @@ struct ContentView: View {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.title)
                                         .foregroundStyle(Color.accentColor)
-                                    Text("Add More")
+                                    Text(L10n.addMore)
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
@@ -278,7 +278,7 @@ struct ContentView: View {
                 Button {
                     viewModel.clearImages()
                 } label: {
-                    Label("Clear All", systemImage: "trash")
+                    Label(L10n.clearAll, systemImage: "trash")
                         .font(.subheadline)
                         .foregroundStyle(.red)
                 }
@@ -293,12 +293,12 @@ struct ContentView: View {
                         Image(systemName: viewModel.isPro ? "photo.stack" : "photo.badge.plus")
                             .font(.system(size: 40))
                             .foregroundStyle(.secondary)
-                        Text(viewModel.isPro ? "Select Screenshots" : "Select Screenshot")
+                        Text(viewModel.isPro ? L10n.selectScreenshots : L10n.selectScreenshot)
                             .font(.headline)
                             .foregroundStyle(.primary)
                         Text(viewModel.isPro 
-                             ? "Add up to \(viewModel.maxScreenshots) screenshots for full context"
-                             : "Tap to choose a message screenshot")
+                             ? L10n.addScreenshotsForContext(viewModel.maxScreenshots)
+                             : L10n.tapToChooseScreenshot)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
@@ -309,7 +309,7 @@ struct ContentView: View {
                             } label: {
                                 HStack(spacing: 4) {
                                     Image(systemName: "sparkles")
-                                    Text("Upgrade for Multi-Screenshot")
+                                    Text(L10n.upgradeForMultiScreenshot)
                                 }
                                 .font(.caption)
                                 .fontWeight(.medium)
@@ -339,7 +339,7 @@ struct ContentView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "lightbulb.fill")
                         .foregroundStyle(.yellow)
-                    Text("Tip: Screenshots are analyzed in order. Add oldest first, newest last.")
+                    Text(L10n.screenshotTip)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -355,23 +355,23 @@ struct ContentView: View {
     
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Settings")
+            Text(L10n.settings)
                 .font(.headline)
                 .foregroundStyle(.primary)
             
             VStack(spacing: 0) {
                 // Relationship Picker (disabled if contact profile selected)
                 HStack {
-                    Label("Relationship", systemImage: "person.2")
+                    Label(L10n.relationship, systemImage: "person.2")
                         .foregroundStyle(viewModel.hasContactProfile ? .secondary : .primary)
                     Spacer()
                     if viewModel.hasContactProfile {
                         Text(viewModel.effectiveRelationship)
                             .foregroundStyle(.secondary)
                     } else {
-                        Picker("Relationship", selection: $viewModel.selectedRelationship) {
+                        Picker(L10n.relationship, selection: $viewModel.selectedRelationship) {
                             ForEach(Relationship.allCases) { relationship in
-                                Text(relationship.rawValue).tag(relationship)
+                                Text(relationship.localizedName).tag(relationship)
                             }
                         }
                         .pickerStyle(.menu)
@@ -388,7 +388,7 @@ struct ContentView: View {
                 if viewModel.isPro && styleManager.hasCompleteProfile {
                     // My Style Toggle (Pro users with style profile)
                     HStack {
-                        Label("Use My Style", systemImage: "person.text.rectangle")
+                        Label(L10n.useMyStyle, systemImage: "person.text.rectangle")
                             .foregroundStyle(.primary)
                         Spacer()
                         Toggle("", isOn: $viewModel.useMyStyle)
@@ -416,7 +416,7 @@ struct ContentView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "info.circle.fill")
                         .foregroundStyle(Color.accentColor)
-                    Text("Settings from \(viewModel.selectedContactProfile?.name ?? "profile") are being used.")
+                    Text(L10n.settingsFromProfile(viewModel.selectedContactProfile?.name ?? "profile"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -426,16 +426,16 @@ struct ContentView: View {
     
     private var tonePickerRow: some View {
         HStack {
-            Label("Tone", systemImage: "face.smiling")
+            Label(L10n.tone, systemImage: "face.smiling")
                 .foregroundStyle(viewModel.hasContactProfile && viewModel.selectedContactProfile?.preferredTone != nil ? .secondary : .primary)
             Spacer()
             if viewModel.hasContactProfile, let preferredTone = viewModel.selectedContactProfile?.preferredTone {
                 Text(preferredTone)
                     .foregroundStyle(.secondary)
             } else {
-                Picker("Tone", selection: $viewModel.selectedTone) {
+                Picker(L10n.tone, selection: $viewModel.selectedTone) {
                     ForEach(Tone.allCases) { tone in
-                        Text(tone.rawValue).tag(tone)
+                        Text(tone.localizedName).tag(tone)
                     }
                 }
                 .pickerStyle(.menu)
@@ -450,11 +450,11 @@ struct ContentView: View {
     
     private var contextSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Additional Context")
+            Text(L10n.additionalContext)
                 .font(.headline)
                 .foregroundStyle(.primary)
             
-            TextField("e.g., We had a fight yesterday...", text: $viewModel.contextText, axis: .vertical)
+            TextField(L10n.contextPlaceholder, text: $viewModel.contextText, axis: .vertical)
                 .lineLimit(3...6)
                 .padding()
                 .background(Color(.secondarySystemBackground))
@@ -466,7 +466,7 @@ struct ContentView: View {
     
     private var proFeaturesSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Pro Features")
+            Text(L10n.proFeatures)
                 .font(.headline)
                 .foregroundStyle(.primary)
             
@@ -502,7 +502,7 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
-                        Text("Contact Profiles")
+                        Text(L10n.contactProfiles)
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .foregroundStyle(.primary)
@@ -524,8 +524,8 @@ struct ContentView: View {
                     }
                     
                     Text(contactProfileManager.hasProfiles 
-                         ? "\(contactProfileManager.profileCount) profile\(contactProfileManager.profileCount == 1 ? "" : "s") saved • Tap to manage"
-                         : "Save preferences for specific people")
+                         ? L10n.profilesSaved(contactProfileManager.profileCount)
+                         : L10n.contactProfilesDesc)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -558,7 +558,7 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
-                        Text("Full Story Mode")
+                        Text(L10n.fullStoryModeTitle)
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .foregroundStyle(.primary)
@@ -575,8 +575,8 @@ struct ContentView: View {
                     }
                     
                     Text(viewModel.isPro 
-                         ? "Upload up to \(MultiScreenshotConstants.proMaxScreenshots) screenshots • Active"
-                         : "Add multiple screenshots for better context")
+                         ? L10n.fullStoryModeDescActive(MultiScreenshotConstants.proMaxScreenshots)
+                         : L10n.fullStoryModeDescLocked)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -614,7 +614,7 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
-                        Text("Decode Message")
+                        Text(L10n.decodeMessage)
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .foregroundStyle(.primary)
@@ -626,7 +626,7 @@ struct ContentView: View {
                         }
                     }
                     
-                    Text("Analyze psychology, mood & hidden meanings")
+                    Text(L10n.decodeMessageDesc)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -663,7 +663,7 @@ struct ContentView: View {
                     
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
-                            Text("My Style")
+                            Text(L10n.myStyle)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
                                 .foregroundStyle(.primary)
@@ -680,8 +680,8 @@ struct ContentView: View {
                         }
                         
                         Text(styleManager.hasCompleteProfile 
-                             ? (viewModel.useMyStyle ? "Active • Using your style" : "Tap to configure")
-                             : "Train AI to match your writing style")
+                             ? (viewModel.useMyStyle ? L10n.myStyleActive : L10n.myStyleConfigure)
+                             : L10n.myStyleTrain)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -775,7 +775,7 @@ struct ContentView: View {
                     } else {
                         Image(systemName: "sparkles")
                     }
-                    Text(viewModel.isLoading ? "Generating..." : "Generate Reply")
+                    Text(viewModel.isLoading ? L10n.generating : L10n.generateReply)
                         .fontWeight(.semibold)
                 }
                 .frame(maxWidth: .infinity)
@@ -788,14 +788,14 @@ struct ContentView: View {
             
             // Show remaining generations for free users
             if !viewModel.isPro && viewModel.remainingFreeGenerations > 0 {
-                Text("\(viewModel.remainingFreeGenerations) free generation\(viewModel.remainingFreeGenerations == 1 ? "" : "s") remaining today")
+                Text(L10n.freeGenerationsRemaining(viewModel.remainingFreeGenerations))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else if !viewModel.isPro && viewModel.remainingFreeGenerations == 0 {
                 Button {
                     viewModel.showPaywall = true
                 } label: {
-                    Text("Daily limit reached. Upgrade to Pro for unlimited access.")
+                    Text(L10n.dailyLimitReached)
                         .font(.caption)
                         .foregroundStyle(Color.accentColor)
                 }
@@ -835,7 +835,7 @@ struct ContentView: View {
             .overlay(alignment: .topTrailing) {
                 // Copied toast
                 if showCopiedToast {
-                    Text("Copied!")
+                    Text(L10n.copied)
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(.white)
@@ -864,7 +864,7 @@ struct ContentView: View {
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "doc.on.doc")
-                        Text("Copy Text")
+                        Text(L10n.copyText)
                     }
                     .font(.subheadline)
                     .fontWeight(.semibold)
@@ -887,7 +887,7 @@ struct ContentView: View {
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "square.and.arrow.up")
-                        Text("Share Card")
+                        Text(L10n.shareCard)
                     }
                     .font(.subheadline)
                     .fontWeight(.semibold)
@@ -1009,13 +1009,13 @@ struct ReplyCardView: View {
             
             // Footer
             HStack {
-                Text("Generated by ReplyerAI")
+                Text(L10n.generatedBy)
                     .font(.caption2)
                     .foregroundStyle(.white.opacity(0.6))
                 
                 Spacer()
                 
-                Text("For: \(relationship)")
+                Text(L10n.forRelationship(relationship))
                     .font(.caption2)
                     .foregroundStyle(.white.opacity(0.6))
             }
@@ -1046,7 +1046,7 @@ struct ShareCardSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                Text("Share Your Reply")
+                Text(L10n.shareYourReply)
                     .font(.title2)
                     .fontWeight(.bold)
                 
@@ -1062,7 +1062,7 @@ struct ShareCardSheet: View {
                     } label: {
                         HStack(spacing: 8) {
                             Image(systemName: "photo")
-                            Text("Share as Image")
+                            Text(L10n.shareAsImage)
                         }
                         .font(.headline)
                         .foregroundStyle(.white)
@@ -1084,7 +1084,7 @@ struct ShareCardSheet: View {
                     } label: {
                         HStack(spacing: 8) {
                             Image(systemName: "text.bubble")
-                            Text("Share as Text")
+                            Text(L10n.shareAsText)
                         }
                         .font(.headline)
                         .foregroundStyle(.primary)
