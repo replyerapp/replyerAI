@@ -6,7 +6,7 @@
 */
 
 // MARK: - App General
-"app_name" = "ReplyerAI";
+"app_name" = "Replyer";
 "pro" = "PRO";
 "done" = "Tamam";
 "cancel" = "İptal";
@@ -66,7 +66,7 @@
 "husband" = "Eş (Erkek)";
 "girlfriend" = "Kız Arkadaş";
 "boyfriend" = "Erkek Arkadaş";
-"situationship" = "Belirsiz İlişki";
+"situationship" = "Situationship";
 "boss" = "Patron";
 "coworker" = "İş Arkadaşı";
 "friend" = "Arkadaş";
@@ -93,8 +93,8 @@
 "flirty" = "Flörtöz";
 
 // MARK: - Context
-"additional_context" = "Ek Bağlam";
-"context_placeholder" = "örn: Dün kavga ettik...";
+"additional_context" = "Yanıtın & Ek Bilgi";
+"context_placeholder" = "örn: Dün kavga ettik. Kaba olmadan hayır de...";
 
 // MARK: - Generate Button
 "generate_reply" = "Yanıt Oluştur";
@@ -108,7 +108,7 @@
 "share_your_reply" = "Yanıtınızı Paylaşın";
 "share_as_image" = "Resim Olarak Paylaş";
 "share_as_text" = "Metin Olarak Paylaş";
-"generated_by" = "ReplyerAI ile oluşturuldu";
+"generated_by" = "Replyer ile oluşturuldu";
 "for_relationship" = "İçin: %@";
 
 // MARK: - Contact Profiles
@@ -176,18 +176,56 @@
 
 // MARK: - Settings Screen
 "appearance" = "Görünüm";
-"appearance_footer" = "ReplyerAI'nin nasıl görüneceğini seçin. Sistem, cihaz ayarlarınızı takip eder.";
+"appearance_footer" = "Replyer'nin nasıl görüneceğini seçin. Sistem, cihaz ayarlarınızı takip eder.";
 "system" = "Sistem";
 "light" = "Açık";
 "dark" = "Koyu";
 "general" = "Genel";
-"share_app" = "ReplyerAI'yi Paylaş";
+"share_app" = "Replyer'yi Paylaş";
 "rate_us" = "Bizi Değerlendirin";
 "terms_of_use" = "Kullanım Şartları";
 "privacy_policy" = "Gizlilik Politikası";
 "app_version" = "Uygulama Sürümü";
 "support" = "Destek";
 "feedback_suggestions" = "Geri Bildirim ve Öneriler";
+
+// MARK: - Subscription Management
+"subscription" = "Abonelik";
+"manage_subscription" = "Aboneliği Yönet";
+"upgrade_to_pro" = "Pro'ya Yükselt";
+"unlock_all_features" = "Tüm premium özelliklerin kilidini açın";
+"restore_purchases" = "Satın Alımları Geri Yükle";
+"plan" = "Plan";
+"renews_on" = "Yenilenme tarihi";
+"status" = "Durum";
+"lifetime" = "Ömür Boyu";
+"cancel_subscription" = "Aboneliği İptal Et";
+"cancel_subscription_footer" = "İptal işlemi App Store üzerinden yönetilir. Aboneliklerinizi açmak için dokunun.";
+"subscription_active_until_end" = "Aboneliğiniz mevcut fatura döneminizin sonuna kadar aktif kalacaktır.";
+"auto_renew_info" = "Gelecekteki ödemeleri durdurmak için yenileme tarihinden en az 24 saat önce iptal edin.";
+"billed_through_apple" = "Tüm ödemeler Apple üzerinden güvenli bir şekilde işlenir.";
+"important_information" = "Önemli Bilgiler";
+"monthly_plan" = "Aylık";
+"yearly_plan" = "Yıllık";
+"lifetime_plan" = "Ömür Boyu";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "Yanıtın";
+"customize" = "Özelleştir";
+"background" = "Arka plan";
+"text_color" = "Metin rengi";
+"text_gradient" = "Metin gradyanı";
+"shuffle" = "Karıştır";
+"corner_style" = "Köşe stili";
+"sharp" = "Keskin";
+"smooth" = "Yumuşak";
+"round" = "Yuvarlak";
+"download_image" = "Resmi İndir";
+"saved_to_photos" = "Fotoğraflara Kaydedildi!";
+"image_saved" = "Kaydedildi!";
+"image_saved_message" = "Resim fotoğraf kütüphanenize kaydedildi.";
+"created_with_replyer" = "Replyer ile oluşturuldu";
 
 // MARK: - Errors
 "please_select_image" = "Lütfen önce bir resim seçin.";

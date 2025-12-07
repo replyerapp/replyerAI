@@ -22,7 +22,7 @@ final class GeminiService {
     /// Initializes the Gemini service with the API key from Secrets
     private init() {
         self.model = GenerativeModel(
-            name: "gemini-2.0-flash",
+            name: "gemini-2.5-flash",
             apiKey: Secrets.geminiAPIKey
         )
     }
@@ -517,18 +517,99 @@ enum GeminiError: LocalizedError {
     case imageConversionFailed
     case noSamplesProvided
     case jsonParsingFailed
+    case networkError
+    case apiKeyInvalid
+    case rateLimitExceeded
+    case serverError
+    case safetyBlocked
+    case invalidRequest
+    case modelNotFound
+    case unknown(String)
     
     var errorDescription: String? {
         switch self {
         case .noTextInResponse:
-            return "The model did not return any text in the response."
+            return "The AI couldn't generate a response. Please try again."
         case .imageConversionFailed:
-            return "Failed to convert the image to the required format."
+            return "Unable to process the image. Please try a different screenshot."
         case .noSamplesProvided:
-            return "No sample images were provided for analysis."
+            return "Please select at least one screenshot to analyze."
         case .jsonParsingFailed:
-            return "Failed to parse the analysis response."
+            return "Something went wrong while processing the response. Please try again."
+        case .networkError:
+            return "No internet connection. Please check your network and try again."
+        case .apiKeyInvalid:
+            return "Invalid API key. Please check your configuration."
+        case .rateLimitExceeded:
+            return "Too many requests. Please wait a moment and try again."
+        case .serverError:
+            return "The AI service is temporarily unavailable. Please try again later."
+        case .safetyBlocked:
+            return "The content was blocked by safety filters. Please try a different screenshot."
+        case .invalidRequest:
+            return "Unable to process this request. Please try again with a different image."
+        case .modelNotFound:
+            return "AI model not available. Please update the app or try again later."
+        case .unknown(let message):
+            return "Something went wrong. Please try again. (\(message))"
         }
     }
+}
+
+/// Helper to convert API errors to user-friendly messages
+func mapAPIError(_ error: Error) -> GeminiError {
+    let errorString = String(describing: error).lowercased()
+    let localizedString = error.localizedDescription.lowercased()
+    
+    // Check for GoogleGenerativeAI specific errors
+    if errorString.contains("generatecontenterror") {
+        // GenerateContentError cases
+        if errorString.contains("internalerror") || errorString.contains("error 0") {
+            return .serverError
+        } else if errorString.contains("promptblocked") || errorString.contains("safety") || errorString.contains("error 2") {
+            return .safetyBlocked
+        } else if errorString.contains("responsestopped") || errorString.contains("error 3") {
+            return .safetyBlocked
+        } else if errorString.contains("invalidapikey") || errorString.contains("error 1") {
+            return .apiKeyInvalid
+        } else if errorString.contains("unsupporteduserinput") {
+            return .invalidRequest
+        }
+    }
+    
+    // Network errors
+    if localizedString.contains("network") || localizedString.contains("internet") || 
+       localizedString.contains("offline") || localizedString.contains("connection") ||
+       localizedString.contains("timed out") || errorString.contains("nsurlerror") {
+        return .networkError
+    }
+    
+    // API key errors
+    if localizedString.contains("api key") || localizedString.contains("invalid key") || 
+       localizedString.contains("unauthorized") || localizedString.contains("401") ||
+       localizedString.contains("permission") || localizedString.contains("forbidden") {
+        return .apiKeyInvalid
+    }
+    
+    // Rate limiting
+    if localizedString.contains("rate limit") || localizedString.contains("quota") || 
+       localizedString.contains("429") || localizedString.contains("too many") {
+        return .rateLimitExceeded
+    }
+    
+    // Server errors
+    if localizedString.contains("500") || localizedString.contains("502") || 
+       localizedString.contains("503") || localizedString.contains("server") ||
+       localizedString.contains("internal error") {
+        return .serverError
+    }
+    
+    // Model errors
+    if localizedString.contains("model") && (localizedString.contains("not found") || localizedString.contains("unavailable")) {
+        return .modelNotFound
+    }
+    
+    // Default: return simplified message
+    return .unknown("Please check your internet connection and try again")
 }
 

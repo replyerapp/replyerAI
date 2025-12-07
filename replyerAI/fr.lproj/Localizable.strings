@@ -6,7 +6,7 @@
 */
 
 // MARK: - App General
-"app_name" = "ReplyerAI";
+"app_name" = "Replyer";
 "pro" = "PRO";
 "done" = "Terminé";
 "cancel" = "Annuler";
@@ -66,7 +66,7 @@
 "husband" = "Époux";
 "girlfriend" = "Petite amie";
 "boyfriend" = "Petit ami";
-"situationship" = "Relation floue";
+"situationship" = "Situationship";
 "boss" = "Patron";
 "coworker" = "Collègue";
 "friend" = "Ami(e)";
@@ -93,8 +93,8 @@
 "flirty" = "Charmeur";
 
 // MARK: - Context
-"additional_context" = "Contexte Supplémentaire";
-"context_placeholder" = "ex: Nous nous sommes disputés hier...";
+"additional_context" = "Votre Réponse & Contexte";
+"context_placeholder" = "ex: Nous nous sommes disputés hier. Dire non sans être impoli...";
 
 // MARK: - Generate Button
 "generate_reply" = "Générer une Réponse";
@@ -108,7 +108,7 @@
 "share_your_reply" = "Partagez Votre Réponse";
 "share_as_image" = "Partager en image";
 "share_as_text" = "Partager en texte";
-"generated_by" = "Généré par ReplyerAI";
+"generated_by" = "Généré par Replyer";
 "for_relationship" = "Pour : %@";
 
 // MARK: - Contact Profiles
@@ -176,18 +176,56 @@
 
 // MARK: - Settings Screen
 "appearance" = "Apparence";
-"appearance_footer" = "Choisissez l'apparence de ReplyerAI. Système suit les paramètres de votre appareil.";
+"appearance_footer" = "Choisissez l'apparence de Replyer. Système suit les paramètres de votre appareil.";
 "system" = "Système";
 "light" = "Clair";
 "dark" = "Sombre";
 "general" = "Général";
-"share_app" = "Partager ReplyerAI";
+"share_app" = "Partager Replyer";
 "rate_us" = "Notez-nous";
 "terms_of_use" = "Conditions d'Utilisation";
 "privacy_policy" = "Politique de Confidentialité";
 "app_version" = "Version de l'Application";
 "support" = "Support";
 "feedback_suggestions" = "Commentaires et Suggestions";
+
+// MARK: - Subscription Management
+"subscription" = "Abonnement";
+"manage_subscription" = "Gérer l'abonnement";
+"upgrade_to_pro" = "Passer à Pro";
+"unlock_all_features" = "Débloquez toutes les fonctionnalités premium";
+"restore_purchases" = "Restaurer les achats";
+"plan" = "Forfait";
+"renews_on" = "Renouvellement le";
+"status" = "Statut";
+"lifetime" = "À vie";
+"cancel_subscription" = "Annuler l'abonnement";
+"cancel_subscription_footer" = "L'annulation est gérée via l'App Store. Appuyez pour ouvrir vos abonnements.";
+"subscription_active_until_end" = "Votre abonnement restera actif jusqu'à la fin de votre période de facturation actuelle.";
+"auto_renew_info" = "Pour arrêter les prochains prélèvements, annulez au moins 24 heures avant la date de renouvellement.";
+"billed_through_apple" = "Tous les paiements sont traités de manière sécurisée par Apple.";
+"important_information" = "Informations Importantes";
+"monthly_plan" = "Mensuel";
+"yearly_plan" = "Annuel";
+"lifetime_plan" = "À vie";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "Votre Réponse";
+"customize" = "Personnaliser";
+"background" = "Arrière-plan";
+"text_color" = "Couleur du texte";
+"text_gradient" = "Dégradé du texte";
+"shuffle" = "Mélanger";
+"corner_style" = "Style des coins";
+"sharp" = "Anguleux";
+"smooth" = "Lisse";
+"round" = "Arrondi";
+"download_image" = "Télécharger l'image";
+"saved_to_photos" = "Enregistré dans Photos !";
+"image_saved" = "Enregistré !";
+"image_saved_message" = "Image enregistrée dans votre photothèque.";
+"created_with_replyer" = "Créé avec Replyer";
 
 // MARK: - Errors
 "please_select_image" = "Veuillez d'abord sélectionner une image.";

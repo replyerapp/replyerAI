@@ -75,10 +75,10 @@ final class ReplyViewModel {
     var imageSelections: [PhotosPickerItem] = []
     
     /// The selected relationship with the message sender
-    var selectedRelationship: Relationship = .friend
+    var selectedRelationship: Relationship = .situationship
     
     /// The selected tone for the reply
-    var selectedTone: Tone = .friendly
+    var selectedTone: Tone = .flirty
     
     /// Whether to use the user's personal style instead of tone
     var useMyStyle: Bool = false
@@ -256,8 +256,12 @@ final class ReplyViewModel {
             
             // Increment usage count for free users
             subscriptionService.incrementUsage()
+        } catch let geminiError as GeminiError {
+            errorMessage = geminiError.errorDescription
         } catch {
-            errorMessage = error.localizedDescription
+            // Map unknown errors to user-friendly messages
+            let mappedError = mapAPIError(error)
+            errorMessage = mappedError.errorDescription
         }
         
         isLoading = false
@@ -370,8 +374,8 @@ final class ReplyViewModel {
     func reset() {
         selectedImages.removeAll()
         imageSelections.removeAll()
-        selectedRelationship = .friend
-        selectedTone = .friendly
+        selectedRelationship = .situationship
+        selectedTone = .flirty
         useMyStyle = false
         selectedContactProfile = nil
         contextText = ""

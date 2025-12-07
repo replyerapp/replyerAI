@@ -14,7 +14,7 @@ import SwiftUI
 
 enum SubscriptionConstants {
     /// The entitlement ID configured in RevenueCat dashboard
-    static let proEntitlementID = "replyerAI Pro"
+    static let proEntitlementID = "Replyer Pro"
     
     /// Free tier daily usage limit
     static let freeUsageLimit = 3
@@ -310,10 +310,22 @@ extension View {
     /// Present a paywall sheet using RevenueCatUI
     func paywallSheet(isPresented: Binding<Bool>) -> some View {
         self.sheet(isPresented: isPresented) {
+            DismissablePaywallView(isPresented: isPresented)
+        }
+    }
+}
+
+/// Paywall view with dismiss button
+struct DismissablePaywallView: View {
+    @Binding var isPresented: Bool
+    
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
             PaywallView()
                 .onPurchaseCompleted { customerInfo in
                     Task { @MainActor in
                         SubscriptionService.shared.updateProStatus(from: customerInfo)
+                        isPresented = false
                     }
                 }
                 .onRestoreCompleted { customerInfo in
@@ -321,13 +333,18 @@ extension View {
                         SubscriptionService.shared.updateProStatus(from: customerInfo)
                     }
                 }
-        }
-    }
-    
-    /// Present Customer Center for subscription management
-    func customerCenterSheet(isPresented: Binding<Bool>) -> some View {
-        self.sheet(isPresented: isPresented) {
-            CustomerCenterView()
+            
+            // Close button
+            Button {
+                isPresented = false
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(.white.opacity(0.8))
+                    .background(Circle().fill(.black.opacity(0.3)))
+            }
+            .padding(.top, 16)
+            .padding(.trailing, 16)
         }
     }
 }
@@ -350,7 +367,7 @@ struct CustomerCenterView: View {
                 Section {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("replyerAI Pro")
+                            Text("Replyer Pro")
                                 .font(.headline)
                             if subscriptionService.isPro {
                                 if let expirationDate = subscriptionService.subscriptionExpirationDate {
@@ -502,7 +519,7 @@ struct SubscriptionStatusView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text("replyerAI Pro")
+                        Text("Replyer Pro")
                             .font(.headline)
                         
                         if subscriptionService.isPro {

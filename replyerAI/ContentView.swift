@@ -9,17 +9,17 @@ import SwiftUI
 import PhotosUI
 import RevenueCatUI
 import Combine
+import Photos
 
 struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
     @State private var showShareSheet = false
-    @State private var showShareCard = false
     @State private var showCopiedToast = false
-    @State private var showCustomerCenter = false
     @State private var showStyleMimicry = false
     @State private var showDecodeMessage = false
     @State private var showContactProfiles = false
     @State private var showSettings = false
+    @State private var showResultPopup = false
     @State private var styleManager = StyleProfileManager.shared
     @State private var contactProfileManager = ContactProfileManager.shared
     
@@ -29,7 +29,7 @@ struct ContentView: View {
                 VStack(spacing: 24) {
                     // MARK: - Subscription Status
                     if viewModel.isPro {
-                        SubscriptionStatusView(showCustomerCenter: $showCustomerCenter)
+                        proStatusBanner
                     } else {
                         freeUsageBanner
                     }
@@ -54,11 +54,6 @@ struct ContentView: View {
                     // MARK: - Generate Button
                     generateButton
                     
-                    // MARK: - Result Section
-                    if !viewModel.generatedReply.isEmpty {
-                        resultSection
-                    }
-                    
                     // MARK: - Error Message
                     if let error = viewModel.errorMessage {
                         errorView(error)
@@ -72,32 +67,11 @@ struct ContentView: View {
                 hideKeyboard()
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if viewModel.isPro {
-                        Text(L10n.pro)
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.accentColor)
-                            .foregroundStyle(.white)
-                            .clipShape(Capsule())
-                    }
-                }
                 ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 16) {
-                        Button {
-                            viewModel.reset()
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                        }
-                        .disabled(viewModel.isLoading)
-                        
-                        Button {
-                            showSettings = true
-                        } label: {
-                            Image(systemName: "gearshape")
-                        }
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
                     }
                 }
             }
@@ -111,7 +85,6 @@ struct ContentView: View {
             }
         }
         .paywallSheet(isPresented: $viewModel.showPaywall)
-        .customerCenterSheet(isPresented: $showCustomerCenter)
         .sheet(isPresented: $showStyleMimicry) {
             StyleMimicryView()
         }
@@ -120,6 +93,25 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showContactProfiles) {
             ContactProfilesView()
+        }
+        .onChange(of: viewModel.generatedReply) { oldValue, newValue in
+            if !newValue.isEmpty && oldValue.isEmpty {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    showResultPopup = true
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $showResultPopup) {
+            ResultPopupView(
+                reply: viewModel.generatedReply,
+                showCopiedToast: $showCopiedToast,
+                onDismiss: {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        showResultPopup = false
+                    }
+                },
+                onShareAsImage: { }
+            )
         }
     }
     
@@ -150,6 +142,68 @@ struct ContentView: View {
         }
     }
     
+    // MARK: - Pro Status Banner
+    
+    private var proStatusBanner: some View {
+        HStack(spacing: 12) {
+            // Crown icon with gradient background
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [.yellow, .orange],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 44, height: 44)
+                
+                Image(systemName: "crown.fill")
+                    .font(.title3)
+                    .foregroundStyle(.white)
+            }
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Replyer Pro")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.purple, .pink, .orange],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                
+                Text("Unlimited access to all features")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "checkmark.seal.fill")
+                .font(.title2)
+                .foregroundStyle(.green)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.secondarySystemBackground))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(
+                            LinearGradient(
+                                colors: [.purple.opacity(0.4), .pink.opacity(0.4), .orange.opacity(0.4)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1.5
+                        )
+                )
+        )
+    }
+    
     // MARK: - Free Usage Banner
     
     private var freeUsageBanner: some View {
@@ -157,10 +211,26 @@ struct ContentView: View {
             viewModel.showPaywall = true
         } label: {
             HStack {
+                // Warning icon when out of generations
+                if viewModel.remainingFreeGenerations == 0 {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.title2)
+                        .foregroundStyle(.orange)
+                }
+                
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.freePlan)
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                    HStack(spacing: 6) {
+                        Text(L10n.freePlan)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                        
+                        if viewModel.remainingFreeGenerations == 0 {
+                            Text("• Limit Reached")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.orange)
+                        }
+                    }
                     Text(L10n.generationsLeftToday(viewModel.remainingFreeGenerations, SubscriptionConstants.freeUsageLimit))
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -173,13 +243,21 @@ struct ContentView: View {
                     .fontWeight(.semibold)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Color.accentColor)
+                    .background(viewModel.remainingFreeGenerations == 0 ? Color.orange : Color.accentColor)
                     .foregroundStyle(.white)
                     .clipShape(Capsule())
             }
             .padding()
-            .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(.secondarySystemBackground))
+                    .overlay(
+                        viewModel.remainingFreeGenerations == 0 ?
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.orange.opacity(0.5), lineWidth: 1.5)
+                        : nil
+                    )
+            )
         }
         .buttonStyle(.plain)
     }
@@ -213,65 +291,110 @@ struct ContentView: View {
             
             // Display selected images
             if !viewModel.selectedImages.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(Array(viewModel.selectedImages.enumerated()), id: \.offset) { index, image in
-                            ZStack(alignment: .topTrailing) {
-                                VStack(spacing: 4) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(height: 180)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    
-                                    // Order indicator
-                                    Text("\(index + 1)")
-                                        .font(.caption2)
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.white)
-                                        .frame(width: 20, height: 20)
-                                        .background(Color.accentColor)
-                                        .clipShape(Circle())
-                                }
-                                
-                                // Delete button
-                                Button {
-                                    viewModel.removeImage(at: index)
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .font(.title3)
-                                        .foregroundStyle(.white, .red)
-                                }
-                                .offset(x: 8, y: -8)
+                // Use centered layout for single image, scrollable for multiple
+                if viewModel.selectedImages.count == 1 {
+                    // Single image - centered
+                    VStack(spacing: 12) {
+                        ZStack(alignment: .topTrailing) {
+                            VStack(spacing: 4) {
+                                Image(uiImage: viewModel.selectedImages[0])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxHeight: 220)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
+                            
+                            // Delete button
+                            Button {
+                                viewModel.removeImage(at: 0)
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title3)
+                                    .foregroundStyle(.white, .red)
+                            }
+                            .offset(x: 8, y: -8)
                         }
                         
-                        // Add more button (if allowed)
+                        // Add more button (if Pro and allowed)
                         if viewModel.canAddMoreScreenshots {
                             PhotosPicker(
                                 selection: $viewModel.imageSelections,
                                 maxSelectionCount: viewModel.maxScreenshots,
                                 matching: .images
                             ) {
-                                VStack(spacing: 8) {
+                                HStack(spacing: 6) {
                                     Image(systemName: "plus.circle.fill")
-                                        .font(.title)
-                                        .foregroundStyle(Color.accentColor)
+                                        .font(.body)
                                     Text(L10n.addMore)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
                                 }
-                                .frame(width: 100, height: 180)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(.secondarySystemBackground))
-                                        .strokeBorder(Color(.separator), style: StrokeStyle(lineWidth: 1, dash: [6]))
-                                }
+                                .foregroundStyle(Color.accentColor)
                             }
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 4)
+                } else {
+                    // Multiple images - horizontal scroll
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(Array(viewModel.selectedImages.enumerated()), id: \.offset) { index, image in
+                                ZStack(alignment: .topTrailing) {
+                                    VStack(spacing: 4) {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(height: 180)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        
+                                        // Order indicator
+                                        Text("\(index + 1)")
+                                            .font(.caption2)
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(.white)
+                                            .frame(width: 20, height: 20)
+                                            .background(Color.accentColor)
+                                            .clipShape(Circle())
+                                    }
+                                    
+                                    // Delete button
+                                    Button {
+                                        viewModel.removeImage(at: index)
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.title3)
+                                            .foregroundStyle(.white, .red)
+                                    }
+                                    .offset(x: 8, y: -8)
+                                }
+                            }
+                            
+                            // Add more button (if allowed)
+                            if viewModel.canAddMoreScreenshots {
+                                PhotosPicker(
+                                    selection: $viewModel.imageSelections,
+                                    maxSelectionCount: viewModel.maxScreenshots,
+                                    matching: .images
+                                ) {
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "plus.circle.fill")
+                                            .font(.title)
+                                            .foregroundStyle(Color.accentColor)
+                                        Text(L10n.addMore)
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .frame(width: 100, height: 180)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.secondarySystemBackground))
+                                            .strokeBorder(Color(.separator), style: StrokeStyle(lineWidth: 1, dash: [6]))
+                                    }
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.horizontal, 4)
+                    }
                 }
                 
                 // Clear all button
@@ -465,25 +588,76 @@ struct ContentView: View {
     // MARK: - Pro Features Section
     
     private var proFeaturesSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(L10n.proFeatures)
-                .font(.headline)
-                .foregroundStyle(.primary)
+        VStack(alignment: .leading, spacing: 0) {
+            // Premium Header
+            HStack {
+                Image(systemName: "crown.fill")
+                    .font(.subheadline)
+                    .foregroundStyle(.yellow)
+                Text(L10n.proFeatures)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+                Spacer()
+                if !viewModel.isPro {
+                    Text("PRO")
+                        .font(.caption2)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            LinearGradient(
+                                colors: [.purple, .pink],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+            .padding(.bottom, 12)
             
-            VStack(spacing: 12) {
+            VStack(spacing: 0) {
                 // Full Story (Multi-Screenshot) - Pro Feature (ON TOP)
                 fullStoryFeatureRow
+                
+                Divider()
+                    .padding(.leading, 56)
                 
                 // My Style - Pro Feature (with toggle)
                 myStyleFeatureRow
                 
+                Divider()
+                    .padding(.leading, 56)
+                
                 // Decode Message - Pro Feature
                 decodeMessageFeatureRow
+                
+                Divider()
+                    .padding(.leading, 56)
                 
                 // Contact Profiles - Pro Feature
                 contactProfilesFeatureRow
             }
+            .padding(.bottom, 8)
         }
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    LinearGradient(
+                        colors: [.purple.opacity(0.5), .pink.opacity(0.5), .orange.opacity(0.3)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1.5
+                )
+        )
+        .shadow(color: .purple.opacity(0.1), radius: 8, x: 0, y: 4)
     }
     
     private var contactProfilesFeatureRow: some View {
@@ -497,20 +671,20 @@ struct ContentView: View {
             HStack(spacing: 12) {
                 Image(systemName: "person.crop.circle.badge.checkmark")
                     .font(.title2)
-                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .foregroundStyle(Color.orange)
                     .frame(width: 32)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
                         Text(L10n.contactProfiles)
                             .font(.subheadline)
-                            .fontWeight(.medium)
+                            .fontWeight(.bold)
                             .foregroundStyle(.primary)
                         
                         if !viewModel.isPro {
                             Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
                         } else if contactProfileManager.hasProfiles {
                             Text("\(contactProfileManager.profileCount)")
                                 .font(.caption2)
@@ -518,7 +692,7 @@ struct ContentView: View {
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Color.accentColor)
+                                .background(Color.orange)
                                 .clipShape(Capsule())
                         }
                     }
@@ -536,66 +710,82 @@ struct ContentView: View {
                     .font(.caption)
                     .foregroundStyle(.tertiary)
             }
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
         .buttonStyle(.plain)
     }
     
+    @ViewBuilder
     private var fullStoryFeatureRow: some View {
-        Button {
-            if !viewModel.isPro {
-                viewModel.showPaywall = true
-            }
-        } label: {
+        if viewModel.isPro {
+            // Pro users - just display, no button action needed
             HStack(spacing: 12) {
-                Image(systemName: "photo.stack")
+                Image(systemName: "photo.stack.fill")
                     .font(.title2)
-                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .foregroundStyle(Color.blue)
                     .frame(width: 32)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
                         Text(L10n.fullStoryModeTitle)
                             .font(.subheadline)
-                            .fontWeight(.medium)
+                            .fontWeight(.bold)
                             .foregroundStyle(.primary)
                         
-                        if !viewModel.isPro {
-                            Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        } else {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.caption)
-                                .foregroundStyle(.green)
-                        }
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.green)
                     }
                     
-                    Text(viewModel.isPro 
-                         ? L10n.fullStoryModeDescActive(MultiScreenshotConstants.proMaxScreenshots)
-                         : L10n.fullStoryModeDescLocked)
+                    Text(L10n.fullStoryModeDescActive(MultiScreenshotConstants.proMaxScreenshots))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
-                
-                if !viewModel.isPro {
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+        } else {
+            // Non-Pro users - button to show paywall
+            Button {
+                viewModel.showPaywall = true
+            } label: {
+                HStack(spacing: 12) {
+                    Image(systemName: "photo.stack.fill")
+                        .font(.title2)
+                        .foregroundStyle(Color.blue)
+                        .frame(width: 32)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Text(L10n.fullStoryModeTitle)
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary)
+                            
+                            Image(systemName: "lock.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
+                        }
+                        
+                        Text(L10n.fullStoryModeDescLocked)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Spacer()
+                    
                     Image(systemName: "chevron.right")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
             }
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
-        .disabled(viewModel.isPro) // No action needed for Pro users, feature is already active
     }
     
     private var decodeMessageFeatureRow: some View {
@@ -609,20 +799,20 @@ struct ContentView: View {
             HStack(spacing: 12) {
                 Image(systemName: "brain.head.profile")
                     .font(.title2)
-                    .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                    .foregroundStyle(Color.pink)
                     .frame(width: 32)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack {
                         Text(L10n.decodeMessage)
                             .font(.subheadline)
-                            .fontWeight(.medium)
+                            .fontWeight(.bold)
                             .foregroundStyle(.primary)
                         
                         if !viewModel.isPro {
                             Image(systemName: "lock.fill")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(.caption2)
+                                .foregroundStyle(.orange)
                         }
                     }
                     
@@ -637,10 +827,8 @@ struct ContentView: View {
                     .font(.caption)
                     .foregroundStyle(.tertiary)
             }
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .opacity(!viewModel.isPro ? 0.7 : 1.0)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
         .buttonStyle(.plain)
     }
@@ -656,22 +844,22 @@ struct ContentView: View {
                 }
             } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "person.text.rectangle")
+                    Image(systemName: "person.text.rectangle.fill")
                         .font(.title2)
-                        .foregroundStyle(!viewModel.isPro ? .secondary : Color.accentColor)
+                        .foregroundStyle(Color.purple)
                         .frame(width: 32)
                     
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
                             Text(L10n.myStyle)
                                 .font(.subheadline)
-                                .fontWeight(.medium)
+                                .fontWeight(.bold)
                                 .foregroundStyle(.primary)
                             
                             if !viewModel.isPro {
                                 Image(systemName: "lock.fill")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .font(.caption2)
+                                    .foregroundStyle(.orange)
                             } else if styleManager.hasCompleteProfile {
                                 Image(systemName: "checkmark.circle.fill")
                                     .font(.caption)
@@ -707,10 +895,8 @@ struct ContentView: View {
                     .padding(.trailing, 4)
             }
         }
-        .padding()
-        .background(Color(.secondarySystemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .opacity(!viewModel.isPro ? 0.7 : 1.0)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
     
     private func proFeatureRow(icon: String, title: String, description: String, isLocked: Bool, action: @escaping () -> Void) -> some View {
@@ -780,7 +966,15 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(!viewModel.hasImages ? Color.gray : Color.accentColor)
+                .background(
+                    Group {
+                        if !viewModel.hasImages {
+                            Color.gray
+                        } else {
+                            AnimatedGradientView()
+                        }
+                    }
+                )
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 14))
             }
@@ -822,99 +1016,6 @@ struct ContentView: View {
         }
     }
     
-    // MARK: - Result Section
-    
-    private var resultSection: some View {
-        VStack(spacing: 16) {
-            // Beautiful Reply Card
-            ReplyCardView(
-                reply: viewModel.generatedReply,
-                tone: viewModel.effectiveTone,
-                relationship: viewModel.effectiveRelationship
-            )
-            .overlay(alignment: .topTrailing) {
-                // Copied toast
-                if showCopiedToast {
-                    Text(L10n.copied)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(Color.green)
-                        .clipShape(Capsule())
-                        .transition(.scale.combined(with: .opacity))
-                        .padding(12)
-                }
-            }
-            
-            // Action Buttons
-            HStack(spacing: 12) {
-                // Copy Text Button
-                Button {
-                    UIPasteboard.general.string = viewModel.generatedReply
-                    withAnimation(.spring(response: 0.3)) {
-                        showCopiedToast = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        withAnimation {
-                            showCopiedToast = false
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "doc.on.doc")
-                        Text(L10n.copyText)
-                    }
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.blue, Color.cyan],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                
-                // Share Card Button
-                Button {
-                    showShareCard = true
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "square.and.arrow.up")
-                        Text(L10n.shareCard)
-                    }
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.purple, Color.pink],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-            }
-        }
-        .padding(.top, 8)
-        .sheet(isPresented: $showShareCard) {
-            ShareCardSheet(
-                reply: viewModel.generatedReply,
-                tone: viewModel.effectiveTone,
-                relationship: viewModel.effectiveRelationship
-            )
-        }
-    }
-    
     // MARK: - Error View
     
     private func errorView(_ message: String) -> some View {
@@ -932,214 +1033,516 @@ struct ContentView: View {
     }
 }
 
-// MARK: - Reply Card View
 
-struct ReplyCardView: View {
+// MARK: - Result Popup View
+
+struct ResultPopupView: View {
     let reply: String
-    let tone: String
-    let relationship: String
+    @Binding var showCopiedToast: Bool
+    let onDismiss: () -> Void
+    let onShareAsImage: () -> Void
     
-    private var gradientColors: [Color] {
-        switch tone.lowercased() {
-        case "angry": return [Color.red, Color.orange]
-        case "funny": return [Color.yellow, Color.orange]
-        case "professional": return [Color.blue, Color.indigo]
-        case "sarcastic": return [Color.purple, Color.pink]
-        case "passive aggressive": return [Color.gray, Color.purple]
-        case "romantic": return [Color.pink, Color.red]
-        case "apologetic": return [Color.blue, Color.cyan]
-        case "assertive": return [Color.orange, Color.red]
-        case "friendly": return [Color.green, Color.teal]
-        case "formal": return [Color.gray, Color.blue]
-        case "casual": return [Color.teal, Color.green]
-        case "sympathetic": return [Color.purple, Color.blue]
-        case "flirty": return [Color.pink, Color.purple]
-        default: return [Color.accentColor, Color.purple]
-        }
-    }
+    // Random gradient colors for text - generated on init
+    @State private var textGradientColors: [Color] = ResultPopupView.randomGradientColors()
     
-    private var toneEmoji: String {
-        switch tone.lowercased() {
-        case "angry": return "😤"
-        case "funny": return "😂"
-        case "professional": return "💼"
-        case "sarcastic": return "😏"
-        case "passive aggressive": return "🙃"
-        case "romantic": return "💕"
-        case "apologetic": return "🥺"
-        case "assertive": return "💪"
-        case "friendly": return "😊"
-        case "formal": return "🎩"
-        case "casual": return "✌️"
-        case "sympathetic": return "🤗"
-        case "flirty": return "😘"
-        default: return "✨"
-        }
+    // Image editing options
+    @State private var selectedBackgroundColor: Color = .black
+    @State private var showSaveSuccess = false
+    @State private var showSaveError = false
+    @State private var saveErrorMessage = ""
+    
+    // Preset color options
+    private let backgroundPresets: [Color] = [
+        .black, Color(hex: "1a1a2e"), Color(hex: "16213e"), Color(hex: "0f0f23"),
+        Color(hex: "2d132c"), Color(hex: "1e3a5f"), Color(hex: "2c3e50"),
+        .white, Color(hex: "f5f5dc"), Color(hex: "faf0e6")
+    ]
+    
+    private let gradientPresets: [[Color]] = [
+        [Color(hex: "667eea"), Color(hex: "764ba2")],
+        [Color(hex: "f093fb"), Color(hex: "f5576c")],
+        [Color(hex: "4facfe"), Color(hex: "00f2fe")],
+        [Color(hex: "43e97b"), Color(hex: "38f9d7")],
+        [Color(hex: "fa709a"), Color(hex: "fee140")],
+        [Color(hex: "a18cd1"), Color(hex: "fbc2eb")],
+        [Color(hex: "ff0844"), Color(hex: "ffb199")],
+        [Color(hex: "00c6fb"), Color(hex: "005bea")]
+    ]
+    
+    static func randomGradientColors() -> [Color] {
+        let allGradients: [[Color]] = [
+            [Color(hex: "667eea"), Color(hex: "764ba2")],
+            [Color(hex: "f093fb"), Color(hex: "f5576c")],
+            [Color(hex: "4facfe"), Color(hex: "00f2fe")],
+            [Color(hex: "43e97b"), Color(hex: "38f9d7")],
+            [Color(hex: "fa709a"), Color(hex: "fee140")],
+            [Color(hex: "a18cd1"), Color(hex: "fbc2eb")],
+            [Color(hex: "ff0844"), Color(hex: "ffb199")],
+            [Color(hex: "00c6fb"), Color(hex: "005bea")],
+            [Color(hex: "f857a6"), Color(hex: "ff5858")],
+            [Color(hex: "7f7fd5"), Color(hex: "86a8e7"), Color(hex: "91eae4")],
+            [Color(hex: "654ea3"), Color(hex: "eaafc8")],
+            [Color(hex: "ff416c"), Color(hex: "ff4b2b")]
+        ]
+        return allGradients.randomElement() ?? [.purple, .pink]
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Header with tone badge
-            HStack {
-                HStack(spacing: 6) {
-                    Text(toneEmoji)
-                    Text(tone)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color.white.opacity(0.2))
-                .clipShape(Capsule())
-                
-                Spacer()
-                
-                Image(systemName: "sparkles")
-                    .font(.title3)
-                    .foregroundStyle(.white.opacity(0.8))
-            }
+        ZStack {
+            // Fully opaque black background - hides everything
+            Color.black
+                .ignoresSafeArea()
             
-            // Reply text
-            Text(reply)
-                .font(.body)
-                .fontWeight(.medium)
-                .foregroundStyle(.white)
-                .textSelection(.enabled)
-                .lineSpacing(4)
-            
-            // Footer
-            HStack {
-                Text(L10n.generatedBy)
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
-                
-                Spacer()
-                
-                Text(L10n.forRelationship(relationship))
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
-            }
-        }
-        .padding(20)
-        .background(
-            LinearGradient(
-                colors: gradientColors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: gradientColors[0].opacity(0.4), radius: 15, x: 0, y: 8)
-    }
-}
-
-// MARK: - Share Card Sheet
-
-struct ShareCardSheet: View {
-    @Environment(\.dismiss) private var dismiss
-    let reply: String
-    let tone: String
-    let relationship: String
-    
-    @State private var renderedImage: UIImage?
-    
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
-                Text(L10n.shareYourReply)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                // Preview card
-                ReplyCardView(reply: reply, tone: tone, relationship: relationship)
-                    .padding(.horizontal)
-                
-                // Share buttons
-                VStack(spacing: 12) {
-                    // Share as Image
-                    Button {
-                        shareAsImage()
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "photo")
-                            Text(L10n.shareAsImage)
-                        }
-                        .font(.headline)
+            // Main content
+            VStack(spacing: 0) {
+                // Header with close button
+                HStack {
+                    Text("Your Reply")
+                        .font(.title2)
+                        .fontWeight(.bold)
                         .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(
-                            LinearGradient(
-                                colors: [Color.purple, Color.pink],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
                     
-                    // Share as Text
+                    Spacer()
+                    
                     Button {
-                        shareAsText()
-                    } label: {
-                        HStack(spacing: 8) {
-                            Image(systemName: "text.bubble")
-                            Text(L10n.shareAsText)
-                        }
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Color(.secondarySystemBackground))
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                    }
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-            }
-            .padding(.top, 24)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        dismiss()
+                        onDismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
+                            .font(.title2)
+                            .foregroundStyle(.gray)
                     }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 20)
+                
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // Preview Card (what will be shared/downloaded)
+                        ShareableReplyCard(
+                            reply: reply,
+                            backgroundColor: selectedBackgroundColor,
+                            gradientColors: textGradientColors
+                        )
+                        .padding(.horizontal, 20)
+                        
+                        // Editing Options
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Customize")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 20)
+                            
+                            // Background Color
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Background")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.gray)
+                                    .padding(.horizontal, 20)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 12) {
+                                        ForEach(backgroundPresets, id: \.self) { color in
+                                            ColorButton(
+                                                color: color,
+                                                isSelected: selectedBackgroundColor == color
+                                            ) {
+                                                withAnimation(.spring(response: 0.3)) {
+                                                    selectedBackgroundColor = color
+                                                }
+                                            }
+                                        }
+                                        
+                                        // Custom color picker
+                                        ColorPicker("", selection: $selectedBackgroundColor)
+                                            .labelsHidden()
+                                            .frame(width: 36, height: 36)
+                                    }
+                                    .padding(.horizontal, 20)
+                                }
+                            }
+                            
+                            // Text Gradient
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Text Gradient")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.gray)
+                                    .padding(.horizontal, 20)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 12) {
+                                        ForEach(0..<gradientPresets.count, id: \.self) { index in
+                                            GradientButton(
+                                                colors: gradientPresets[index],
+                                                isSelected: textGradientColors == gradientPresets[index]
+                                            ) {
+                                                withAnimation(.spring(response: 0.3)) {
+                                                    textGradientColors = gradientPresets[index]
+                                                }
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal, 20)
+                                }
+                            }
+                        }
+                        
+                        // Action Buttons - Order: Share, Copy, Download
+                        VStack(spacing: 12) {
+                            // Share as Image button
+                            Button {
+                                shareImage()
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "square.and.arrow.up")
+                                    Text("Share as Image")
+                                }
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(
+                                    LinearGradient(
+                                        colors: [.purple, .pink],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 14))
+                            }
+                            
+                            // Copy Text button
+                            Button {
+                                UIPasteboard.general.string = reply
+                                withAnimation(.spring(response: 0.3)) {
+                                    showCopiedToast = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    withAnimation {
+                                        showCopiedToast = false
+                                    }
+                                }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "doc.on.doc")
+                                    Text(showCopiedToast ? "Copied!" : "Copy Text")
+                                }
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(
+                                    LinearGradient(
+                                        colors: [.blue, .cyan],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 14))
+                            }
+                            
+                            // Download Image button
+                            Button {
+                                downloadImage()
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: showSaveSuccess ? "checkmark.circle.fill" : "arrow.down.circle.fill")
+                                    Text(showSaveSuccess ? "Saved to Photos!" : "Download Image")
+                                }
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(Color(.secondarySystemBackground))
+                                .clipShape(RoundedRectangle(cornerRadius: 14))
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 30)
+                    }
+                    .padding(.top, 10)
+                }
             }
+        }
+        .alert("Saved!", isPresented: $showSaveSuccess) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Image saved to your photo library.")
+        }
+        .alert("Error", isPresented: $showSaveError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(saveErrorMessage)
         }
     }
     
     @MainActor
-    private func shareAsImage() {
-        let cardView = ReplyCardView(reply: reply, tone: tone, relationship: relationship)
-            .padding(20)
-            .frame(width: 350)
-            .background(Color(.systemBackground))
+    private func renderShareableImage() -> UIImage? {
+        let cardView = ShareableReplyCard(
+            reply: reply,
+            backgroundColor: selectedBackgroundColor,
+            gradientColors: textGradientColors,
+            forExport: true
+        )
+        .frame(width: 600)
+        .padding(20)
+        .background(selectedBackgroundColor)
         
         let renderer = ImageRenderer(content: cardView)
-        renderer.scale = 3.0
-        
-        if let image = renderer.uiImage {
-            let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first,
-               let rootVC = window.rootViewController {
-                rootVC.present(activityVC, animated: true)
-            }
-        }
+        // Use high fixed scale for crisp, non-blurry images
+        renderer.scale = 4.0
+        return renderer.uiImage
     }
     
-    private func shareAsText() {
-        let activityVC = UIActivityViewController(activityItems: [reply], applicationActivities: nil)
+    @MainActor
+    private func shareImage() {
+        guard let image = renderShareableImage() else { return }
+        
+        let activityVC = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
            let rootVC = window.rootViewController {
-            rootVC.present(activityVC, animated: true)
+            // Find the topmost presented view controller
+            var topVC = rootVC
+            while let presented = topVC.presentedViewController {
+                topVC = presented
+            }
+            activityVC.popoverPresentationController?.sourceView = topVC.view
+            topVC.present(activityVC, animated: true)
+        }
+    }
+    
+    @MainActor
+    private func downloadImage() {
+        guard let image = renderShareableImage() else {
+            saveErrorMessage = "Failed to create image"
+            showSaveError = true
+            return
+        }
+        
+        // Request photo library permission and save
+        ImageSaver.shared.saveImage(image) { success, error in
+            DispatchQueue.main.async {
+                if success {
+                    withAnimation(.spring(response: 0.3)) {
+                        showSaveSuccess = true
+                    }
+                    // Reset after 2 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        withAnimation {
+                            showSaveSuccess = false
+                        }
+                    }
+                } else {
+                    saveErrorMessage = error ?? "Failed to save image"
+                    showSaveError = true
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Shareable Reply Card (for export)
+
+struct ShareableReplyCard: View {
+    let reply: String
+    let backgroundColor: Color
+    let gradientColors: [Color]
+    var forExport: Bool = false
+    
+    // Fixed corner radius - max roundness
+    private let cornerRadius: Double = 40
+    
+    var body: some View {
+        VStack {
+            Spacer(minLength: 24)
+            
+            // Reply text with gradient
+            Text(reply)
+                .font(.title3)
+                .fontWeight(.semibold)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: gradientColors,
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .padding(.horizontal, 28)
+            
+            Spacer(minLength: 24)
+        }
+        .frame(minHeight: 180)
+        .background(backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .stroke(
+                    LinearGradient(
+                        colors: gradientColors.map { $0.opacity(0.3) },
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                )
+        )
+        .shadow(color: gradientColors.first?.opacity(0.3) ?? .purple.opacity(0.3), radius: forExport ? 0 : 15, x: 0, y: 8)
+    }
+}
+
+// MARK: - Color Button
+
+struct ColorButton: View {
+    let color: Color
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Circle()
+                .fill(color)
+                .frame(width: 36, height: 36)
+                .overlay(
+                    Circle()
+                        .stroke(isSelected ? Color.white : Color.clear, lineWidth: 3)
+                )
+                .overlay(
+                    Circle()
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: color.opacity(0.5), radius: isSelected ? 6 : 2)
+        }
+    }
+}
+
+// MARK: - Gradient Button
+
+struct GradientButton: View {
+    let colors: [Color]
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(
+                    LinearGradient(
+                        colors: colors,
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 50, height: 36)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(isSelected ? Color.white : Color.clear, lineWidth: 3)
+                )
+                .shadow(color: colors.first?.opacity(0.5) ?? .purple.opacity(0.5), radius: isSelected ? 6 : 2)
+        }
+    }
+}
+
+// MARK: - Image Saver Helper
+
+class ImageSaver: NSObject {
+    static let shared = ImageSaver()
+    
+    private var completion: ((Bool, String?) -> Void)?
+    
+    func saveImage(_ image: UIImage, completion: @escaping (Bool, String?) -> Void) {
+        self.completion = completion
+        
+        // Check photo library permission
+        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+        
+        switch status {
+        case .authorized, .limited:
+            performSave(image)
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization(for: .addOnly) { [weak self] newStatus in
+                DispatchQueue.main.async {
+                    if newStatus == .authorized || newStatus == .limited {
+                        self?.performSave(image)
+                    } else {
+                        completion(false, "Photo library access denied. Please enable in Settings.")
+                    }
+                }
+            }
+        case .denied, .restricted:
+            completion(false, "Photo library access denied. Please enable in Settings > Privacy > Photos.")
+        @unknown default:
+            completion(false, "Unable to access photo library.")
+        }
+    }
+    
+    private func performSave(_ image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(saveCompleted), nil)
+    }
+    
+    @objc private func saveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            completion?(false, error.localizedDescription)
+        } else {
+            completion?(true, nil)
+        }
+    }
+}
+
+// MARK: - Color Extension for Hex
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+}
+
+// MARK: - Animated Gradient View
+
+struct AnimatedGradientView: View {
+    @State private var animateGradient = false
+    
+    var body: some View {
+        LinearGradient(
+            colors: [
+                Color.purple,
+                Color.pink,
+                Color.orange,
+                Color.yellow,
+                Color.pink,
+                Color.purple
+            ],
+            startPoint: animateGradient ? .topLeading : .bottomTrailing,
+            endPoint: animateGradient ? .bottomTrailing : .topLeading
+        )
+        .onAppear {
+            withAnimation(
+                .linear(duration: 3.0)
+                .repeatForever(autoreverses: true)
+            ) {
+                animateGradient.toggle()
+            }
         }
     }
 }

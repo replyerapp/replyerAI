@@ -6,7 +6,7 @@
 */
 
 // MARK: - App General
-"app_name" = "ReplyerAI";
+"app_name" = "Replyer";
 "pro" = "برو";
 "done" = "تم";
 "cancel" = "إلغاء";
@@ -93,8 +93,8 @@
 "flirty" = "مغازل";
 
 // MARK: - Context
-"additional_context" = "سياق إضافي";
-"context_placeholder" = "مثال: تشاجرنا بالأمس...";
+"additional_context" = "ردك والسياق الإضافي";
+"context_placeholder" = "مثال: تشاجرنا بالأمس. قل لا بدون أن تكون وقحاً...";
 
 // MARK: - Generate Button
 "generate_reply" = "توليد الرد";
@@ -108,7 +108,7 @@
 "share_your_reply" = "شارك ردك";
 "share_as_image" = "مشاركة كصورة";
 "share_as_text" = "مشاركة كنص";
-"generated_by" = "تم التوليد بواسطة ReplyerAI";
+"generated_by" = "تم التوليد بواسطة Replyer";
 "for_relationship" = "لـ: %@";
 
 // MARK: - Contact Profiles
@@ -176,18 +176,56 @@
 
 // MARK: - Settings Screen
 "appearance" = "المظهر";
-"appearance_footer" = "اختر مظهر ReplyerAI. النظام يتبع إعدادات جهازك.";
+"appearance_footer" = "اختر مظهر Replyer. النظام يتبع إعدادات جهازك.";
 "system" = "النظام";
 "light" = "فاتح";
 "dark" = "داكن";
 "general" = "عام";
-"share_app" = "مشاركة ReplyerAI";
+"share_app" = "مشاركة Replyer";
 "rate_us" = "قيّمنا";
 "terms_of_use" = "شروط الاستخدام";
 "privacy_policy" = "سياسة الخصوصية";
 "app_version" = "إصدار التطبيق";
 "support" = "الدعم";
 "feedback_suggestions" = "الملاحظات والاقتراحات";
+
+// MARK: - Subscription Management
+"subscription" = "الاشتراك";
+"manage_subscription" = "إدارة الاشتراك";
+"upgrade_to_pro" = "الترقية إلى Pro";
+"unlock_all_features" = "افتح جميع الميزات المميزة";
+"restore_purchases" = "استعادة المشتريات";
+"plan" = "الخطة";
+"renews_on" = "يتجدد في";
+"status" = "الحالة";
+"lifetime" = "مدى الحياة";
+"cancel_subscription" = "إلغاء الاشتراك";
+"cancel_subscription_footer" = "يتم إدارة الإلغاء من خلال App Store. اضغط لفتح اشتراكاتك.";
+"subscription_active_until_end" = "سيظل اشتراكك نشطاً حتى نهاية فترة الفوترة الحالية.";
+"auto_renew_info" = "لإيقاف الرسوم المستقبلية، قم بالإلغاء قبل 24 ساعة على الأقل من تاريخ التجديد.";
+"billed_through_apple" = "تتم معالجة جميع المدفوعات بشكل آمن عبر Apple.";
+"important_information" = "معلومات مهمة";
+"monthly_plan" = "شهري";
+"yearly_plan" = "سنوي";
+"lifetime_plan" = "مدى الحياة";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "ردك";
+"customize" = "تخصيص";
+"background" = "الخلفية";
+"text_color" = "لون النص";
+"text_gradient" = "تدرج النص";
+"shuffle" = "تبديل";
+"corner_style" = "نمط الزوايا";
+"sharp" = "حاد";
+"smooth" = "ناعم";
+"round" = "مستدير";
+"download_image" = "تحميل الصورة";
+"saved_to_photos" = "تم الحفظ في الصور!";
+"image_saved" = "تم الحفظ!";
+"image_saved_message" = "تم حفظ الصورة في مكتبة الصور الخاصة بك.";
+"created_with_replyer" = "تم الإنشاء بواسطة Replyer";
 
 // MARK: - Errors
 "please_select_image" = "يرجى اختيار صورة أولاً.";

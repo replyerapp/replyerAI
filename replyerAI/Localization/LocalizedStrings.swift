@@ -213,13 +213,51 @@ enum L10n {
     static let support = String(localized: "support")
     static let feedbackSuggestions = String(localized: "feedback_suggestions")
     
+    // MARK: - Subscription Management
+    static let subscription = String(localized: "subscription")
+    static let manageSubscription = String(localized: "manage_subscription")
+    static let upgradeToPro = String(localized: "upgrade_to_pro")
+    static let unlockAllFeatures = String(localized: "unlock_all_features")
+    static let restorePurchases = String(localized: "restore_purchases")
+    static let plan = String(localized: "plan")
+    static let renewsOn = String(localized: "renews_on")
+    static let status = String(localized: "status")
+    static let lifetime = String(localized: "lifetime")
+    static let cancelSubscription = String(localized: "cancel_subscription")
+    static let cancelSubscriptionFooter = String(localized: "cancel_subscription_footer")
+    static let subscriptionActiveUntilEnd = String(localized: "subscription_active_until_end")
+    static let autoRenewInfo = String(localized: "auto_renew_info")
+    static let billedThroughApple = String(localized: "billed_through_apple")
+    static let importantInformation = String(localized: "important_information")
+    static let monthlyPlan = String(localized: "monthly_plan")
+    static let yearlyPlan = String(localized: "yearly_plan")
+    static let lifetimePlan = String(localized: "lifetime_plan")
+    static let proPlan = String(localized: "pro_plan")
+    
+    // MARK: - Image Editor
+    static let yourReply = String(localized: "your_reply")
+    static let customize = String(localized: "customize")
+    static let background = String(localized: "background")
+    static let textColor = String(localized: "text_color")
+    static let textGradient = String(localized: "text_gradient")
+    static let shuffle = String(localized: "shuffle")
+    static let cornerStyle = String(localized: "corner_style")
+    static let sharp = String(localized: "sharp")
+    static let smooth = String(localized: "smooth")
+    static let round = String(localized: "round")
+    static let downloadImage = String(localized: "download_image")
+    static let savedToPhotos = String(localized: "saved_to_photos")
+    static let imageSaved = String(localized: "image_saved")
+    static let imageSavedMessage = String(localized: "image_saved_message")
+    static let createdWithReplyer = String(localized: "created_with_replyer")
+    
     // MARK: - Errors
     static let pleaseSelectImage = String(localized: "please_select_image")
     static let errorOccurred = String(localized: "error_occurred")
 }
 
 // MARK: - Relationship Localization Extension
-extension ReplyViewModel.Relationship {
+extension Relationship {
     var localizedName: String {
         switch self {
         case .wife: return L10n.wife
@@ -241,7 +279,7 @@ extension ReplyViewModel.Relationship {
 }
 
 // MARK: - Tone Localization Extension
-extension ReplyViewModel.Tone {
+extension Tone {
     var localizedName: String {
         switch self {
         case .angry: return L10n.angry

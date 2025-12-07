@@ -6,7 +6,7 @@
 */
 
 // MARK: - App General
-"app_name" = "ReplyerAI";
+"app_name" = "Replyer";
 "pro" = "PRO";
 "done" = "Concluído";
 "cancel" = "Cancelar";
@@ -66,7 +66,7 @@
 "husband" = "Marido";
 "girlfriend" = "Namorada";
 "boyfriend" = "Namorado";
-"situationship" = "Relação indefinida";
+"situationship" = "Situationship";
 "boss" = "Chefe";
 "coworker" = "Colega de trabalho";
 "friend" = "Amigo/a";
@@ -93,8 +93,8 @@
 "flirty" = "Flertando";
 
 // MARK: - Context
-"additional_context" = "Contexto Adicional";
-"context_placeholder" = "ex: Brigamos ontem...";
+"additional_context" = "Sua Resposta e Contexto";
+"context_placeholder" = "ex: Brigamos ontem. Dizer não sem ser rude...";
 
 // MARK: - Generate Button
 "generate_reply" = "Gerar Resposta";
@@ -108,7 +108,7 @@
 "share_your_reply" = "Compartilhe Sua Resposta";
 "share_as_image" = "Compartilhar como Imagem";
 "share_as_text" = "Compartilhar como Texto";
-"generated_by" = "Gerado por ReplyerAI";
+"generated_by" = "Gerado por Replyer";
 "for_relationship" = "Para: %@";
 
 // MARK: - Contact Profiles
@@ -176,18 +176,56 @@
 
 // MARK: - Settings Screen
 "appearance" = "Aparência";
-"appearance_footer" = "Escolha como o ReplyerAI aparece. Sistema segue as configurações do seu dispositivo.";
+"appearance_footer" = "Escolha como o Replyer aparece. Sistema segue as configurações do seu dispositivo.";
 "system" = "Sistema";
 "light" = "Claro";
 "dark" = "Escuro";
 "general" = "Geral";
-"share_app" = "Compartilhar ReplyerAI";
+"share_app" = "Compartilhar Replyer";
 "rate_us" = "Avalie-nos";
 "terms_of_use" = "Termos de Uso";
 "privacy_policy" = "Política de Privacidade";
 "app_version" = "Versão do App";
 "support" = "Suporte";
 "feedback_suggestions" = "Feedback e Sugestões";
+
+// MARK: - Subscription Management
+"subscription" = "Assinatura";
+"manage_subscription" = "Gerenciar assinatura";
+"upgrade_to_pro" = "Atualizar para Pro";
+"unlock_all_features" = "Desbloqueie todos os recursos premium";
+"restore_purchases" = "Restaurar compras";
+"plan" = "Plano";
+"renews_on" = "Renova em";
+"status" = "Status";
+"lifetime" = "Vitalício";
+"cancel_subscription" = "Cancelar assinatura";
+"cancel_subscription_footer" = "O cancelamento é gerenciado pela App Store. Toque para abrir suas assinaturas.";
+"subscription_active_until_end" = "Sua assinatura permanecerá ativa até o final do seu período de faturamento atual.";
+"auto_renew_info" = "Para interromper cobranças futuras, cancele pelo menos 24 horas antes da data de renovação.";
+"billed_through_apple" = "Todos os pagamentos são processados com segurança pela Apple.";
+"important_information" = "Informações Importantes";
+"monthly_plan" = "Mensal";
+"yearly_plan" = "Anual";
+"lifetime_plan" = "Vitalício";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "Sua Resposta";
+"customize" = "Personalizar";
+"background" = "Fundo";
+"text_color" = "Cor do texto";
+"text_gradient" = "Gradiente do texto";
+"shuffle" = "Embaralhar";
+"corner_style" = "Estilo dos cantos";
+"sharp" = "Angular";
+"smooth" = "Suave";
+"round" = "Arredondado";
+"download_image" = "Baixar imagem";
+"saved_to_photos" = "Salvo nas Fotos!";
+"image_saved" = "Salvo!";
+"image_saved_message" = "Imagem salva na sua biblioteca de fotos.";
+"created_with_replyer" = "Criado com Replyer";
 
 // MARK: - Errors
 "please_select_image" = "Por favor, selecione uma imagem primeiro.";
