@@ -95,6 +95,7 @@
 // MARK: - Context
 "additional_context" = "Your Reply & Additional Context";
 "context_placeholder" = "e.g., We had a fight yesterday. Say no without being rude...";
+"screenshot_privacy_notice" = "Screenshots are processed securely to generate your reply. We do not store or publish your conversation images.";
 
 // MARK: - Generate Button
 "generate_reply" = "Generate Reply";

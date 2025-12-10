@@ -24,11 +24,14 @@ struct SettingsView: View {
         return "\(version).\(build)"
     }
     
-    // URLs - Update these with your actual URLs
-    private let termsURL = URL(string: "https://example.com/terms")!
-    private let privacyURL = URL(string: "https://example.com/privacy")!
-    private let supportEmail = "support@example.com"
-    private let feedbackEmail = "feedback@example.com"
+    // URLs - Update these with your actual GitHub Gist URLs before release
+    // Example placeholders:
+    // Terms:   https://gist.github.com/YOUR_GITHUB_USERNAME/TERMS_GIST_ID
+    // Privacy: https://gist.github.com/YOUR_GITHUB_USERNAME/PRIVACY_GIST_ID
+    private let termsURL = URL(string: "https://gist.github.com/egeckoc")!
+    private let privacyURL = URL(string: "https://gist.github.com/egeckoc")!
+    private let supportEmail = "replyderv@gmail.com"
+    private let feedbackEmail = "replyderv@gmail.com"
     private let appStoreID = "YOUR_APP_STORE_ID" // Replace with your actual App Store ID
     
     var body: some View {
@@ -269,8 +272,9 @@ struct ManageSubscriptionView: View {
     @State private var customerInfo: CustomerInfo?
     @State private var isLoading = true
     
-    private let termsURL = URL(string: "https://example.com/terms")!
-    private let privacyURL = URL(string: "https://example.com/privacy")!
+    // Use the same GitHub Gist URLs as in SettingsView
+    private let termsURL = URL(string: "https://gist.github.com/egeckoc")!
+    private let privacyURL = URL(string: "https://gist.github.com/egeckoc")!
     
     var body: some View {
         NavigationStack {

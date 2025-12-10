@@ -95,6 +95,7 @@
 // MARK: - Context
 "additional_context" = "ردك والسياق الإضافي";
 "context_placeholder" = "مثال: تشاجرنا بالأمس. قل لا بدون أن تكون وقحاً...";
+"screenshot_privacy_notice" = "يتم معالجة لقطات الشاشة بشكل آمن لإنشاء ردك. لا نقوم بتخزين أو نشر صور محادثاتك.";
 
 // MARK: - Generate Button
 "generate_reply" = "توليد الرد";

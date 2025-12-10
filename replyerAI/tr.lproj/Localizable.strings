@@ -95,6 +95,7 @@
 // MARK: - Context
 "additional_context" = "Yanıtın & Ek Bilgi";
 "context_placeholder" = "örn: Dün kavga ettik. Kaba olmadan hayır de...";
+"screenshot_privacy_notice" = "Ekran görüntülerin yanıt üretmek için güvenli şekilde işlenir. Konuşma görsellerin saklanmaz veya paylaşılmaz.";
 
 // MARK: - Generate Button
 "generate_reply" = "Yanıt Oluştur";

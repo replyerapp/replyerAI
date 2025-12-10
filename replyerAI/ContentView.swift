@@ -471,6 +471,17 @@ struct ContentView: View {
                 .background(Color(.tertiarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
+
+            // Privacy notice for screenshots
+            HStack(alignment: .top, spacing: 6) {
+                Image(systemName: "lock.shield")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(L10n.screenshotPrivacyNotice)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 4)
         }
     }
     

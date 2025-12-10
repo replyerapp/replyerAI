@@ -136,7 +136,17 @@ struct DecodeMessageView: View {
                 }
             }
             .buttonStyle(.plain)
-            
+
+            // Privacy notice
+            HStack(alignment: .top, spacing: 6) {
+                Image(systemName: "lock.shield")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(L10n.screenshotPrivacyNotice)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+
             if selectedImage != nil {
                 Button {
                     selectedImage = nil

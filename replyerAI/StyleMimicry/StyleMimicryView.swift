@@ -184,6 +184,16 @@ struct StyleMimicryView: View {
                 instructionRow(icon: "xmark.circle.fill", text: L10n.dontUseOthers, color: .red)
             }
             .padding(.top, 8)
+
+            // Privacy notice for style samples
+            HStack(alignment: .top, spacing: 6) {
+                Image(systemName: "lock.shield")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(L10n.screenshotPrivacyNotice)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
             
             // Error message
             if let error = styleManager.errorMessage {

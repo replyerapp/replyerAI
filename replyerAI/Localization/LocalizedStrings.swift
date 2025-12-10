@@ -119,6 +119,9 @@ enum L10n {
     // MARK: - Generate Button
     static let generateReply = String(localized: "generate_reply")
     static let generating = String(localized: "generating")
+
+    // MARK: - Privacy Notices
+    static let screenshotPrivacyNotice = String(localized: "screenshot_privacy_notice")
     
     // MARK: - Result Section
     static let generatedReply = String(localized: "generated_reply")

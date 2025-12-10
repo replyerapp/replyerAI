@@ -95,6 +95,7 @@
 // MARK: - Context
 "additional_context" = "Votre Réponse & Contexte";
 "context_placeholder" = "ex: Nous nous sommes disputés hier. Dire non sans être impoli...";
+"screenshot_privacy_notice" = "Les captures d'écran sont traitées de manière sécurisée pour générer votre réponse. Nous ne stockons ni ne publions vos conversations.";
 
 // MARK: - Generate Button
 "generate_reply" = "Générer une Réponse";

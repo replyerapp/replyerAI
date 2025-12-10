@@ -95,6 +95,7 @@
 // MARK: - Context
 "additional_context" = "Sua Resposta e Contexto";
 "context_placeholder" = "ex: Brigamos ontem. Dizer não sem ser rude...";
+"screenshot_privacy_notice" = "As capturas de tela são processadas com segurança para gerar sua resposta. Não armazenamos nem publicamos suas conversas.";
 
 // MARK: - Generate Button
 "generate_reply" = "Gerar Resposta";
