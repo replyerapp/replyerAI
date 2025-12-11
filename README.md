@@ -23,7 +23,7 @@ An iOS app that generates smart reply suggestions for your messages using Google
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/egeckoc/replyerAI.git
+git clone https://github.com/replyerapp/replyerAI.git
 cd replyerAI
 ```
 
@@ -144,6 +144,11 @@ replyerAI/
 - Images are processed directly with Google's Gemini API
 - Subscription data is managed securely by RevenueCat
 - No personal data is stored on external servers by this app
+
+## Legal
+
+- [Privacy Policy](PRIVACY_POLICY.md)
+- [Terms of Use](TERMS_OF_USE.md)
 
 ## License
 
