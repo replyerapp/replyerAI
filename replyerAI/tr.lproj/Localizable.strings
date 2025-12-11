@@ -113,6 +113,9 @@
 "onboarding_next" = "İleri";
 "onboarding_start" = "Replyer'ı kullanmaya başla";
 
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "Abonelikleri ölçmek ve deneyimi iyileştirmek için takip kullanıyoruz. Verilerinizi asla satmayız.";
+
 // MARK: - Result Section
 "generated_reply" = "Oluşturulan Yanıt";
 "copy_text" = "Metni Kopyala";

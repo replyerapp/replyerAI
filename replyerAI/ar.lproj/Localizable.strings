@@ -113,6 +113,9 @@
 "onboarding_next" = "التالي";
 "onboarding_start" = "ابدأ استخدام Replyer";
 
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "نستخدم التتبع لقياس الاشتراكات وتحسين التجربة. نحن لا نبيع بياناتك أبداً.";
+
 // MARK: - Result Section
 "generated_reply" = "الرد المُولَّد";
 "copy_text" = "نسخ النص";

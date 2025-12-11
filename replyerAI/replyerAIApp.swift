@@ -6,22 +6,21 @@
 //
 
 import SwiftUI
-import Adapty
 import RevenueCatUI
+import AppTrackingTransparency
 
 @main
 struct ReplyerAIApp: App {
     @State private var appearanceManager = AppearanceManager.shared
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
     @AppStorage("hasSeenInitialPaywall") private var hasSeenInitialPaywall: Bool = false
+    @AppStorage("hasRequestedTracking") private var hasRequestedTracking: Bool = false
     @State private var showInitialPaywall: Bool = false
+    @State private var showTrackingPrompt: Bool = false
     
     init() {
         // Configure RevenueCat on app launch
         SubscriptionService.shared.configure()
-        
-        // Configure Adapty SDK
-        Adapty.activate(Secrets.adaptyAPIKey)
     }
     
     var body: some Scene {
@@ -30,6 +29,10 @@ struct ReplyerAIApp: App {
                 if hasCompletedOnboarding {
                     ContentView()
                         .onAppear {
+                            // Request tracking once after onboarding/completion
+                            if !hasRequestedTracking {
+                                showTrackingPrompt = true
+                            }
                             // Show paywall once after completing onboarding
                             if !hasSeenInitialPaywall {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -51,6 +54,24 @@ struct ReplyerAIApp: App {
                 }
             }
             .preferredColorScheme(appearanceManager.colorScheme)
+            .alert("Allow tracking to help us improve?", isPresented: $showTrackingPrompt) {
+                Button("Not Now", role: .cancel) {
+                    hasRequestedTracking = true
+                }
+                Button("Allow") {
+                    requestTracking()
+                }
+            } message: {
+                Text(L10n.trackingPermissionReason)
+            }
+        }
+    }
+    
+    private func requestTracking() {
+        ATTrackingManager.requestTrackingAuthorization { _ in
+            DispatchQueue.main.async {
+                hasRequestedTracking = true
+            }
         }
     }
 }

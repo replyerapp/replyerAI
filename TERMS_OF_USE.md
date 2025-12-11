@@ -74,7 +74,7 @@ We are **not responsible** for messages you choose to send to others based on su
 
 Your use of the App is also governed by our **Privacy Policy**, which explains:
 - What data we collect (e.g., screenshots you upload, style profiles, contact notes, subscription information).
-- How we use it (e.g., sending it to Google Gemini API for processing, managing your subscription through RevenueCat, analytics via Adapty).
+- How we use it (e.g., sending it to Google Gemini API for processing, managing your subscription through RevenueCat).
 - How we protect your data and your choices.
 
 By using the App, you consent to the processing of your data as described in the Privacy Policy.
@@ -115,7 +115,7 @@ We may change free usage limits or Pro feature scopes in future updates.
 
 ## 8. Third‑Party Services and Links
 
-The App integrates third‑party services (e.g., Google Gemini API, RevenueCat, Adapty) and may display links (e.g., to privacy policy, terms, subscription management).
+The App integrates third‑party services (e.g., Google Gemini API, RevenueCat) and may display links (e.g., to privacy policy, terms, subscription management).
 
 We are not responsible for:
 - The availability, accuracy, or content of third‑party services or websites.

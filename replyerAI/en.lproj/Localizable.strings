@@ -113,6 +113,9 @@
 "onboarding_next" = "Next";
 "onboarding_start" = "Start using Replyer";
 
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
+
 // MARK: - Result Section
 "generated_reply" = "Generated Reply";
 "copy_text" = "Copy Text";

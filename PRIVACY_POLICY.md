@@ -56,10 +56,9 @@ We do not upload contact profiles to our own servers.
 ### 1.4 Usage and Subscription Data
 We use:
 - **RevenueCat** to manage subscriptions and purchases.
-- **Adapty** for analytics and A/B testing of paywalls.
 
 These services may collect:
-- Anonymous or pseudonymous identifiers (e.g., app instance ID, RevenueCat ID, Adapty ID).
+- Anonymous or pseudonymous identifiers (e.g., app instance ID, RevenueCat ID).
 - Purchase history and entitlement status (e.g., whether you are Pro or Free).
 - Basic device information (e.g., platform, app version, language).
 
@@ -67,7 +66,7 @@ We do not receive your full payment card data; all payments are processed by App
 
 ### 1.5 Diagnostic Data
 To improve stability and fix bugs, we may log:
-- Error messages (e.g., API errors from Google Gemini, RevenueCat, or Adapty).
+- Error messages (e.g., API errors from Google Gemini or RevenueCat).
 - Non‑personal technical information (e.g., which feature failed, generic error strings).
 
 We do **not** log or store:
@@ -106,10 +105,6 @@ Replyer integrates the following third‑party services:
    - Purpose: Manage in‑app purchases and subscriptions, determine Pro access.  
    - Data used: Purchase identifiers, subscription status, anonymous user identifiers, region, and platform metadata.
 
-3. **Adapty**  
-   - Purpose: Analytics and A/B testing for paywalls and subscription flow.  
-   - Data used: Anonymous analytics on which paywalls are shown and how users interact with them, plus subscription outcome events.
-
 All communication with these services is performed over HTTPS.
 
 ---
@@ -120,7 +115,7 @@ All communication with these services is performed over HTTPS.
   - Kept only in memory while processing and not stored in persistent storage by the App.
   - Transmitted to Google Gemini API for processing and then discarded by the App.
 - **Style profiles and contact profiles** are stored locally on your device and remain until you delete the App or manually reset them within the App.
-- **Subscription and analytics data** are stored by RevenueCat and Adapty in accordance with their own retention policies.
+- **Subscription and analytics data** are stored by RevenueCat in accordance with their own retention policies.
 
 If you uninstall the App, local data stored in `UserDefaults` is removed from your device.
 
@@ -149,7 +144,7 @@ We use industry‑standard measures (HTTPS, platform security features) to prote
 
 ## 8. International Transfers
 
-Our third‑party providers (Google, RevenueCat, Adapty) may process data on servers located in different countries. By using the App, you consent to the transfer of information to these providers as necessary to provide the service.
+Our third‑party providers (Google, RevenueCat) may process data on servers located in different countries. By using the App, you consent to the transfer of information to these providers as necessary to provide the service.
 
 ---
 
@@ -184,7 +179,7 @@ Because most data used by the App is stored locally on your device (e.g., style 
 - Revoking photo access in your device settings.
 - Uninstalling the App (which removes locally stored data).
 
-For data processed by third‑party services (Google Gemini API, RevenueCat, Adapty), you may also exercise rights directly with those providers according to their own policies.
+For data processed by third‑party services (Google Gemini API, RevenueCat), you may also exercise rights directly with those providers according to their own policies.
 
 If you wish to exercise your rights or have questions, you can contact us using the email below. You also have the right to lodge a complaint with your local data protection authority.
 

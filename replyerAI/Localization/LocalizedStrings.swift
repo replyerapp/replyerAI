@@ -131,6 +131,9 @@ enum L10n {
     static let onboardingSubtitle4 = String(localized: "onboarding_subtitle_4")
     static let onboardingNext = String(localized: "onboarding_next")
     static let onboardingStart = String(localized: "onboarding_start")
+    
+    // MARK: - Tracking Permission
+    static let trackingPermissionReason = String(localized: "tracking_permission_reason")
 
     // MARK: - Privacy Notices
     static let screenshotPrivacyNotice = String(localized: "screenshot_privacy_notice")
