@@ -24,12 +24,9 @@ struct SettingsView: View {
         return "\(version).\(build)"
     }
     
-    // URLs - Update these with your actual GitHub Gist URLs before release
-    // Example placeholders:
-    // Terms:   https://gist.github.com/replyerapp/TERMS_GIST_ID
-    // Privacy: https://gist.github.com/replyerapp/PRIVACY_GIST_ID
-    private let termsURL = URL(string: "https://gist.github.com/replyerapp")!
-    private let privacyURL = URL(string: "https://gist.github.com/replyerapp")!
+    // URLs - Point to the markdown files in the GitHub repo
+    private let termsURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/TERMS_OF_USE.md")!
+    private let privacyURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/PRIVACY_POLICY.md")!
     private let supportEmail = "replyderv@gmail.com"
     private let feedbackEmail = "replyderv@gmail.com"
     private let appStoreID = "YOUR_APP_STORE_ID" // Replace with your actual App Store ID
@@ -272,9 +269,9 @@ struct ManageSubscriptionView: View {
     @State private var customerInfo: CustomerInfo?
     @State private var isLoading = true
     
-    // Use the same GitHub Gist URLs as in SettingsView
-    private let termsURL = URL(string: "https://gist.github.com/replyerapp")!
-    private let privacyURL = URL(string: "https://gist.github.com/replyerapp")!
+    // Use the same URLs as in SettingsView - point to GitHub repo files
+    private let termsURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/TERMS_OF_USE.md")!
+    private let privacyURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/PRIVACY_POLICY.md")!
     
     var body: some View {
         NavigationStack {
