@@ -101,6 +101,18 @@
 "generate_reply" = "Generate Reply";
 "generating" = "Generating...";
 
+// MARK: - Onboarding
+"onboarding_title_1" = "Texting help, but smarter.";
+"onboarding_subtitle_1" = "Upload a screenshot, tell Replyer who you're texting, and get a reply that sounds natural, confident, and perfectly \"you.\"";
+"onboarding_title_2" = "Replies that sound like you.";
+"onboarding_subtitle_2" = "Train Replyer with your own messages so it copies your slang, emojis, and tone when it writes replies for you.";
+"onboarding_title_3" = "Decode what they really mean.";
+"onboarding_subtitle_3" = "Upload a screenshot and get a dating‑coach style breakdown of their mood, intent, and what they're actually trying to say.";
+"onboarding_title_4" = "Remember every contact's rules.";
+"onboarding_subtitle_4" = "Save profiles like \"Sarah hates emojis, loves sarcasm\" so the AI always replies in the way each person prefers.";
+"onboarding_next" = "Next";
+"onboarding_start" = "Start using Replyer";
+
 // MARK: - Result Section
 "generated_reply" = "Generated Reply";
 "copy_text" = "Copy Text";

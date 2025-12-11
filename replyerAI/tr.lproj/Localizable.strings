@@ -101,6 +101,18 @@
 "generate_reply" = "Yanıt Oluştur";
 "generating" = "Oluşturuluyor...";
 
+// MARK: - Onboarding
+"onboarding_title_1" = "Mesaj yardımcısı, ama daha akıllı.";
+"onboarding_subtitle_1" = "Bir ekran görüntüsü yükle, Replyer'a kiminle yazıştığını söyle ve doğal, özgüvenli ve tam olarak senin gibi duran bir yanıt al.";
+"onboarding_title_2" = "Senin gibi konuşan yanıtlar.";
+"onboarding_subtitle_2" = "Kendi mesajlarınla Replyer'ı eğit ki senin argo, emoji ve tonunu kullanarak senin yerine yazsın.";
+"onboarding_title_3" = "Gerçekte ne demek istiyor, çöz.";
+"onboarding_subtitle_3" = "Bir ekran görüntüsü yükle ve ruh halleri, niyetleri ve aslında ne söylemeye çalıştıkları hakkında flört koçu tarzı bir analiz al.";
+"onboarding_title_4" = "Her kişinin kurallarını hatırla.";
+"onboarding_subtitle_4" = "\"Sarah emoji nefret eder, alaycılığı sever\" gibi profiller kaydet ki yapay zeka her zaman o kişinin sevdiği şekilde yanıt versin.";
+"onboarding_next" = "İleri";
+"onboarding_start" = "Replyer'ı kullanmaya başla";
+
 // MARK: - Result Section
 "generated_reply" = "Oluşturulan Yanıt";
 "copy_text" = "Metni Kopyala";

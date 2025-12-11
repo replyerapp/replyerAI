@@ -101,6 +101,18 @@
 "generate_reply" = "Générer une Réponse";
 "generating" = "Génération...";
 
+// MARK: - Onboarding
+"onboarding_title_1" = "De l'aide pour texter, en plus malin.";
+"onboarding_subtitle_1" = "Importez une capture d'écran, dites à Replyer à qui vous écrivez et obtenez une réponse naturelle, confiante et qui sonne vraiment comme vous.";
+"onboarding_title_2" = "Des réponses qui sonnent comme vous.";
+"onboarding_subtitle_2" = "Enseignez votre style à Replyer avec vos propres messages pour qu'il copie votre argot, vos emojis et votre ton quand il écrit pour vous.";
+"onboarding_title_3" = "Décryptez ce qu'ils veulent vraiment dire.";
+"onboarding_subtitle_3" = "Importez une capture d'écran et obtenez une analyse façon coach en rencontres de leur humeur, de leurs intentions et de ce qu'ils essaient vraiment de dire.";
+"onboarding_title_4" = "Se souvenir des règles de chaque contact.";
+"onboarding_subtitle_4" = "Enregistrez des profils comme « Sarah déteste les emojis, adore le sarcasme » pour que l'IA réponde toujours comme ils préfèrent.";
+"onboarding_next" = "Suivant";
+"onboarding_start" = "Commencer à utiliser Replyer";
+
 // MARK: - Result Section
 "generated_reply" = "Réponse Générée";
 "copy_text" = "Copier le texte";

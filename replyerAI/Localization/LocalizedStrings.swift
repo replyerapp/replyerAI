@@ -120,6 +120,18 @@ enum L10n {
     static let generateReply = String(localized: "generate_reply")
     static let generating = String(localized: "generating")
 
+    // MARK: - Onboarding
+    static let onboardingTitle1 = String(localized: "onboarding_title_1")
+    static let onboardingSubtitle1 = String(localized: "onboarding_subtitle_1")
+    static let onboardingTitle2 = String(localized: "onboarding_title_2")
+    static let onboardingSubtitle2 = String(localized: "onboarding_subtitle_2")
+    static let onboardingTitle3 = String(localized: "onboarding_title_3")
+    static let onboardingSubtitle3 = String(localized: "onboarding_subtitle_3")
+    static let onboardingTitle4 = String(localized: "onboarding_title_4")
+    static let onboardingSubtitle4 = String(localized: "onboarding_subtitle_4")
+    static let onboardingNext = String(localized: "onboarding_next")
+    static let onboardingStart = String(localized: "onboarding_start")
+
     // MARK: - Privacy Notices
     static let screenshotPrivacyNotice = String(localized: "screenshot_privacy_notice")
     

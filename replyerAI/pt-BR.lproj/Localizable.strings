@@ -101,6 +101,18 @@
 "generate_reply" = "Gerar Resposta";
 "generating" = "Gerando...";
 
+// MARK: - Onboarding
+"onboarding_title_1" = "Ajuda para responder, mas mais inteligente.";
+"onboarding_subtitle_1" = "Envie uma captura de tela, diga ao Replyer com quem você está conversando e receba uma resposta que soa natural, confiante e com a sua cara.";
+"onboarding_title_2" = "Respostas que soam como você.";
+"onboarding_subtitle_2" = "Treine o Replyer com suas próprias mensagens para que ele copie suas gírias, emojis e tom quando escrever por você.";
+"onboarding_title_3" = "Decodifique o que eles realmente querem dizer.";
+"onboarding_subtitle_3" = "Envie uma captura e receba uma análise no estilo coach de namoro sobre o humor, a intenção e o que a pessoa está realmente tentando dizer.";
+"onboarding_title_4" = "Lembre as regras de cada contato.";
+"onboarding_subtitle_4" = "Salve perfis como \"A Sarah odeia emojis, ama sarcasmo\" para que a IA sempre responda do jeito que cada pessoa prefere.";
+"onboarding_next" = "Próximo";
+"onboarding_start" = "Começar a usar o Replyer";
+
 // MARK: - Result Section
 "generated_reply" = "Resposta Gerada";
 "copy_text" = "Copiar Texto";

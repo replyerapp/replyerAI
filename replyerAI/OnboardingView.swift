@@ -26,8 +26,8 @@ struct OnboardingView: View {
                                 .foregroundStyle(Color.purple)
                         }
                     },
-                    title: "Texting help, but smarter.",
-                    subtitle: "Upload a screenshot, tell Replyer who you're texting, and get a reply that sounds natural, confident, and perfectly \"you.\""
+                    title: L10n.onboardingTitle1,
+                    subtitle: L10n.onboardingSubtitle1
                 )
                 .tag(0)
                 
@@ -40,8 +40,8 @@ struct OnboardingView: View {
                                 .foregroundStyle(Color.purple)
                         }
                     },
-                    title: "Replies that sound like you.",
-                    subtitle: "Train Replyer with your own messages so it copies your slang, emojis, and tone when it writes replies for you."
+                    title: L10n.onboardingTitle2,
+                    subtitle: L10n.onboardingSubtitle2
                 )
                 .tag(1)
                 
@@ -54,8 +54,8 @@ struct OnboardingView: View {
                                 .foregroundStyle(Color.pink)
                         }
                     },
-                    title: "Decode what they really mean.",
-                    subtitle: "Upload a screenshot and get a dating‑coach style breakdown of their mood, intent, and what they're actually trying to say."
+                    title: L10n.onboardingTitle3,
+                    subtitle: L10n.onboardingSubtitle3
                 )
                 .tag(2)
                 
@@ -68,8 +68,8 @@ struct OnboardingView: View {
                                 .foregroundStyle(Color.orange)
                         }
                     },
-                    title: "Remember every contact's rules.",
-                    subtitle: "Save profiles like \"Sarah hates emojis, loves sarcasm\" so the AI always replies in the way each person prefers."
+                    title: L10n.onboardingTitle4,
+                    subtitle: L10n.onboardingSubtitle4
                 )
                 .tag(3)
             }
@@ -85,7 +85,7 @@ struct OnboardingView: View {
                     onFinished()
                 }
             } label: {
-                Text(currentPage == 3 ? "Start using Replyer" : "Next")
+                Text(currentPage == 3 ? L10n.onboardingStart : L10n.onboardingNext)
                     .font(.headline)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
