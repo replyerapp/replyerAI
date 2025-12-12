@@ -422,7 +422,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Your data will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Replyer needs access to your photo library to select message screenshots for generating replies.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -457,6 +457,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Your data will be used to deliver personalized ads to you.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Replyer needs access to your photo library to select message screenshots for generating replies.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

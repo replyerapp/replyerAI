@@ -152,7 +152,16 @@ final class SubscriptionService {
         
         #if DEBUG
         print("📱 Pro Status Updated: \(isPro)")
-        print("📱 Active Entitlements: \(customerInfo.entitlements.active.keys)")
+        print("📱 Entitlement ID we're checking: '\(SubscriptionConstants.proEntitlementID)'")
+        print("📱 All Entitlements: \(customerInfo.entitlements.all.keys.map { "'\($0)'" })")
+        print("📱 Active Entitlements: \(customerInfo.entitlements.active.keys.map { "'\($0)'" })")
+        print("📱 Active Products: \(customerInfo.activeSubscriptions)")
+        if let entitlement = customerInfo.entitlements[SubscriptionConstants.proEntitlementID] {
+            print("📱 Entitlement '\(SubscriptionConstants.proEntitlementID)' found - isActive: \(entitlement.isActive)")
+        } else {
+            print("⚠️ Entitlement '\(SubscriptionConstants.proEntitlementID)' NOT FOUND")
+            print("⚠️ Available entitlement IDs: \(customerInfo.entitlements.all.keys.joined(separator: ", "))")
+        }
         #endif
     }
     
@@ -196,8 +205,13 @@ final class SubscriptionService {
             if !result.userCancelled {
                 updateProStatus(from: result.customerInfo)
                 
+                // Force a fresh fetch to ensure we have the latest status
+                try? await Task.sleep(nanoseconds: 500_000_000) // Wait 0.5s
+                await fetchCustomerInfo()
+                
                 #if DEBUG
                 print("✅ Purchase successful!")
+                print("✅ Pro status after purchase: \(isPro)")
                 #endif
             }
         } catch {
@@ -217,6 +231,10 @@ final class SubscriptionService {
         do {
             let customerInfo = try await Purchases.shared.restorePurchases()
             updateProStatus(from: customerInfo)
+            
+            // Force a fresh fetch to ensure we have the latest status
+            try? await Task.sleep(nanoseconds: 500_000_000) // Wait 0.5s
+            await fetchCustomerInfo()
             
             #if DEBUG
             print("✅ Restore successful! Pro: \(isPro)")
@@ -307,15 +325,15 @@ final class RevenueCatDelegate: NSObject, PurchasesDelegate, @unchecked Sendable
 // MARK: - View Modifiers
 
 extension View {
-    /// Present a paywall sheet using RevenueCatUI
+    /// Present a paywall as fullscreen using RevenueCatUI
     func paywallSheet(isPresented: Binding<Bool>) -> some View {
-        self.sheet(isPresented: isPresented) {
+        self.fullScreenCover(isPresented: isPresented) {
             DismissablePaywallView(isPresented: isPresented)
         }
     }
 }
 
-/// Paywall view with dismiss button
+/// Paywall view with dismiss button - Full Screen
 struct DismissablePaywallView: View {
     @Binding var isPresented: Bool
     
@@ -333,18 +351,19 @@ struct DismissablePaywallView: View {
                         SubscriptionService.shared.updateProStatus(from: customerInfo)
                     }
                 }
+                .padding(.bottom, 20) // Push buttons up from bottom
             
-            // Close button
+            // Close button - prominent for fullscreen
             Button {
                 isPresented = false
             } label: {
                 Image(systemName: "xmark.circle.fill")
-                    .font(.title2)
-                    .foregroundStyle(.white.opacity(0.8))
-                    .background(Circle().fill(.black.opacity(0.3)))
+                    .font(.title)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, .black.opacity(0.5))
             }
-            .padding(.top, 16)
-            .padding(.trailing, 16)
+            .padding(.top, 20)
+            .padding(.trailing, 20)
         }
     }
 }
