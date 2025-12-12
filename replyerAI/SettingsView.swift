@@ -16,6 +16,9 @@ struct SettingsView: View {
     @State private var subscriptionService = SubscriptionService.shared
     @State private var showManageSubscription = false
     @State private var showPaywall = false
+    #if DEBUG
+    @State private var showAppStoreScreenshots = false
+    #endif
     
     // App version from bundle
     private var appVersion: String {
@@ -230,6 +233,25 @@ struct SettingsView: View {
                 } header: {
                     Text(L10n.support)
                 }
+                
+                #if DEBUG
+                // MARK: - Debug
+                Section {
+                    Button {
+                        showAppStoreScreenshots = true
+                    } label: {
+                        SettingsRow(
+                            title: "App Store Screenshots",
+                            icon: "photo.on.rectangle.angled",
+                            iconColor: .pink
+                        )
+                    }
+                } header: {
+                    Text("Debug")
+                } footer: {
+                    Text("Generates 6 App Store-ready screenshots and saves them to Photos.")
+                }
+                #endif
             }
             .listStyle(.insetGrouped)
             .navigationTitle(L10n.settings)
@@ -247,6 +269,11 @@ struct SettingsView: View {
             .sheet(isPresented: $showManageSubscription) {
                 ManageSubscriptionView()
             }
+            #if DEBUG
+            .sheet(isPresented: $showAppStoreScreenshots) {
+                AppStoreScreenshotsView()
+            }
+            #endif
             .paywallSheet(isPresented: $showPaywall)
         }
     }
