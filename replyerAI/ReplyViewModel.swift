@@ -270,6 +270,10 @@ final class ReplyViewModel {
     
     /// Builds the prompt string based on user selections
     private func buildPrompt() -> String {
+        let deviceLanguageCode = Locale.current.language.languageCode?.identifier ?? "en"
+        let deviceLanguageName = Locale(identifier: "en").localizedString(forLanguageCode: deviceLanguageCode) ?? deviceLanguageCode
+        let trimmedContext = contextText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         var prompt = """
         You are a helpful assistant that generates reply messages. 
         
@@ -280,7 +284,11 @@ final class ReplyViewModel {
         - I want the reply to have a \(effectiveTone.lowercased()) tone.
         - Generate ONLY the reply message text, nothing else.
         - Keep the reply natural and conversational.
-        - Match the language used in the conversation (if they write in Spanish, reply in Spanish, etc.).
+        - **Language rules (important):**
+          - If I explicitly ask for a language in my context (e.g., "reply in French"), follow that.
+          - Otherwise, reply in the same language as my typed context below.
+          - If my typed context is empty, reply in \(deviceLanguageName).
+          - Even if the screenshot is in another language, do NOT switch languages unless I asked.
         """
         
         // Add contact profile notes if available
@@ -295,12 +303,12 @@ final class ReplyViewModel {
             """
         }
         
-        if !contextText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if !trimmedContext.isEmpty {
             prompt += """
             
             
             **Additional context from me:**
-            \(contextText)
+            \(trimmedContext)
             """
         }
         

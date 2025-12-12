@@ -27,6 +27,27 @@ final class GeminiService {
         )
     }
     
+    // MARK: - Language Rules
+    
+    /// Forces the model to reply in the user's intended language (based on typed context),
+    /// instead of drifting to the screenshot's language.
+    private func languageRules(context: String) -> String {
+        let deviceLanguageCode = Locale.current.language.languageCode?.identifier ?? "en"
+        let deviceLanguageName = Locale(identifier: "en").localizedString(forLanguageCode: deviceLanguageCode) ?? deviceLanguageCode
+        let trimmedContext = context.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return """
+        ## LANGUAGE RULES (IMPORTANT):
+        - If the user explicitly requests a language in the typed context (e.g., "reply in French"), follow that request.
+        - Otherwise, respond in the same language as the user's typed context.
+        - If the user's typed context is empty, respond in \(deviceLanguageName).
+        - Even if the screenshot(s) are in another language, DO NOT switch languages unless the user asked.
+        
+        User typed context:
+        \(trimmedContext.isEmpty ? "[EMPTY]" : trimmedContext)
+        """
+    }
+    
     /// Generates a response from the Gemini model for the given prompt
     /// - Parameter prompt: The text prompt to send to the model
     /// - Returns: The generated text response
@@ -193,6 +214,8 @@ final class GeminiService {
         ## CONTEXT:
         - Relationship with sender: \(relationship)
         \(context.isEmpty ? "" : "- Additional context: \(context)")
+        
+        \(languageRules(context: context))
         """
         
         if !contactNotes.isEmpty {
@@ -210,7 +233,6 @@ final class GeminiService {
         
         
         ## RULES:
-        - Match the language of the conversation
         - Use the EXACT style characteristics from the profile
         - If they use lowercase, use lowercase
         - If they use specific emojis, use those emojis
@@ -263,7 +285,8 @@ final class GeminiService {
         - Pay attention to how the conversation has evolved over time.
         - Generate ONLY the reply message text, nothing else.
         - Keep the reply natural and conversational.
-        - Match the language used in the conversation.
+        
+        \(languageRules(context: context))
         """
         
         if !contactNotes.isEmpty {
@@ -344,6 +367,8 @@ final class GeminiService {
         ## CONTEXT:
         - Relationship with sender: \(relationship)
         \(context.isEmpty ? "" : "- Additional context: \(context)")
+        
+        \(languageRules(context: context))
         """
         
         if !contactNotes.isEmpty {
@@ -362,7 +387,6 @@ final class GeminiService {
         
         ## RULES:
         - Consider the ENTIRE conversation from all screenshots
-        - Match the language of the conversation
         - Use the EXACT style characteristics from the profile
         - If they use lowercase, use lowercase
         - If they use specific emojis, use those emojis
@@ -407,6 +431,8 @@ final class GeminiService {
         ## CONTEXT:
         - Relationship: \(relationship)
         \(context.isEmpty ? "" : "- Background: \(context)")
+        
+        \(languageRules(context: context))
         
         ## ANALYZE THE FOLLOWING:
         
