@@ -421,6 +421,7 @@
 				DEVELOPMENT_TEAM = SWK2ARJXT6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Replyer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
@@ -456,6 +457,7 @@
 				DEVELOPMENT_TEAM = SWK2ARJXT6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Replyer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
