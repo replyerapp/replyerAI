@@ -189,7 +189,7 @@ If you wish to exercise your rights or have questions, you can contact us using 
 
 If you have questions or concerns about this Privacy Policy, or wish to exercise your data protection rights, you can contact us at:
 
-`replyderv@gmail.com`
+`replyerdev@gmail.com`
 
 
 

@@ -169,6 +169,6 @@ We may update these Terms from time to time. When we do, we will update the "Las
 
 If you have any questions about these Terms, you can contact us at:
 
-`replyderv@gmail.com`
+`replyerdev@gmail.com`
 
 

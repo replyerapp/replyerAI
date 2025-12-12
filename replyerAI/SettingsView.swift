@@ -27,8 +27,8 @@ struct SettingsView: View {
     // URLs - Point to the markdown files in the GitHub repo
     private let termsURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/TERMS_OF_USE.md")!
     private let privacyURL = URL(string: "https://raw.githubusercontent.com/replyerapp/replyerAI/main/PRIVACY_POLICY.md")!
-    private let supportEmail = "replyderv@gmail.com"
-    private let feedbackEmail = "replyderv@gmail.com"
+    private let supportEmail = "replyerdev@gmail.com"
+    private let feedbackEmail = "replyerdev@gmail.com"
     private let appStoreID = "YOUR_APP_STORE_ID" // Replace with your actual App Store ID
     
     var body: some View {
