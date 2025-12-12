@@ -148,7 +148,11 @@ final class SubscriptionService {
     /// Update pro status from customer info
     func updateProStatus(from customerInfo: CustomerInfo) {
         self.customerInfo = customerInfo
-        isPro = customerInfo.entitlements[SubscriptionConstants.proEntitlementID]?.isActive == true
+        // Be resilient to entitlement ID mismatches by treating any active entitlement as Pro.
+        // This prevents “paid but still locked” cases when the dashboard entitlement ID differs.
+        isPro =
+            customerInfo.entitlements[SubscriptionConstants.proEntitlementID]?.isActive == true ||
+            !customerInfo.entitlements.active.isEmpty
         
         #if DEBUG
         print("📱 Pro Status Updated: \(isPro)")

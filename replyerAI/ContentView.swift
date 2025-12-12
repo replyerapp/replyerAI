@@ -11,6 +11,7 @@ import RevenueCatUI
 import Combine
 import Photos
 
+@MainActor
 struct ContentView: View {
     @State private var viewModel = ReplyViewModel()
     @State private var showShareSheet = false
@@ -26,40 +27,46 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
-                    // MARK: - Subscription Status
-                    if viewModel.isPro {
-                        proStatusBanner
-                    } else {
-                        freeUsageBanner
+                // iPad-friendly: avoid stretching content edge-to-edge on large screens.
+                HStack {
+                    Spacer(minLength: 0)
+                    VStack(spacing: 24) {
+                        // MARK: - Subscription Status
+                        if viewModel.isPro {
+                            proStatusBanner
+                        } else {
+                            freeUsageBanner
+                        }
+                        
+                        // MARK: - Photo Picker Section
+                        photoPickerSection
+                        
+                        // MARK: - Pro Features Section (Between screenshot and settings)
+                        proFeaturesSection
+                        
+                        // MARK: - Contact Profile Section (Pro)
+                        if viewModel.isPro {
+                            contactProfileSection
+                        }
+                        
+                        // MARK: - Settings Section
+                        settingsSection
+                        
+                        // MARK: - Context Section
+                        contextSection
+                        
+                        // MARK: - Generate Button
+                        generateButton
+                        
+                        // MARK: - Error Message
+                        if let error = viewModel.errorMessage {
+                            errorView(error)
+                        }
                     }
-                    
-                    // MARK: - Photo Picker Section
-                    photoPickerSection
-                    
-                    // MARK: - Pro Features Section (Between screenshot and settings)
-                    proFeaturesSection
-                    
-                    // MARK: - Contact Profile Section (Pro)
-                    if viewModel.isPro {
-                        contactProfileSection
-                    }
-                    
-                    // MARK: - Settings Section
-                    settingsSection
-                    
-                    // MARK: - Context Section
-                    contextSection
-                    
-                    // MARK: - Generate Button
-                    generateButton
-                    
-                    // MARK: - Error Message
-                    if let error = viewModel.errorMessage {
-                        errorView(error)
-                    }
+                    .frame(maxWidth: 680)
+                    .padding()
+                    Spacer(minLength: 0)
                 }
-                .padding()
             }
             .navigationTitle(L10n.appName)
             .scrollDismissesKeyboard(.interactively)
