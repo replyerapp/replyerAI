@@ -337,37 +337,23 @@ extension View {
     }
 }
 
-/// Paywall view with dismiss button - Full Screen
+/// Paywall view - Full Screen (uses RevenueCat's built-in X button)
 struct DismissablePaywallView: View {
     @Binding var isPresented: Bool
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            PaywallView()
-                .onPurchaseCompleted { customerInfo in
-                    Task { @MainActor in
-                        SubscriptionService.shared.updateProStatus(from: customerInfo)
-                        isPresented = false
-                    }
+        PaywallView()
+            .onPurchaseCompleted { customerInfo in
+                Task { @MainActor in
+                    SubscriptionService.shared.updateProStatus(from: customerInfo)
+                    isPresented = false
                 }
-                .onRestoreCompleted { customerInfo in
-                    Task { @MainActor in
-                        SubscriptionService.shared.updateProStatus(from: customerInfo)
-                    }
-                }
-            
-            // Close button - prominent for fullscreen
-            Button {
-                isPresented = false
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title)
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, .black.opacity(0.5))
             }
-            .padding(.top, 60)
-            .padding(.trailing, 20)
-        }
+            .onRestoreCompleted { customerInfo in
+                Task { @MainActor in
+                    SubscriptionService.shared.updateProStatus(from: customerInfo)
+                }
+            }
     }
 }
 
