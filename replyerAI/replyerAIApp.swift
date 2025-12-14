@@ -12,10 +12,11 @@ import AppTrackingTransparency
 @main
 struct ReplyerAIApp: App {
     @State private var appearanceManager = AppearanceManager.shared
+    @State private var subscriptionService = SubscriptionService.shared
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
-    @AppStorage("hasSeenInitialPaywall") private var hasSeenInitialPaywall: Bool = false
     @AppStorage("hasRequestedTracking") private var hasRequestedTracking: Bool = false
-    @State private var showInitialPaywall: Bool = false
+    @State private var showPaywall: Bool = false
+    @State private var showTrackingThenPaywall: Bool = false
     
     init() {
         // Configure RevenueCat on app launch
@@ -28,35 +29,25 @@ struct ReplyerAIApp: App {
                 if hasCompletedOnboarding {
                     ContentView()
                         .onAppear {
-                            // Show paywall once after completing onboarding
-                            if !hasSeenInitialPaywall {
+                            // Show paywall on every app open (unless Pro)
+                            if !subscriptionService.isPro {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    showInitialPaywall = true
-                                }
-                            }
-                            // Request tracking after initial paywall
-                            if !hasRequestedTracking && hasSeenInitialPaywall {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                    requestTracking()
+                                    showPaywall = true
                                 }
                             }
                         }
-                        .paywallSheet(isPresented: $showInitialPaywall)
-                        .onChange(of: showInitialPaywall) { oldValue, newValue in
-                            // When paywall is dismissed, mark it as seen and request tracking
-                            if oldValue == true && newValue == false {
-                                hasSeenInitialPaywall = true
-                                // Request tracking right after paywall dismissal
-                                if !hasRequestedTracking {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        requestTracking()
-                                    }
-                                }
-                            }
-                        }
+                        .paywallSheet(isPresented: $showPaywall)
                 } else {
                     OnboardingView {
+                        // Onboarding completed - now show tracking, then paywall
                         hasCompletedOnboarding = true
+                        showTrackingThenPaywall = true
+                    }
+                    .onChange(of: showTrackingThenPaywall) { oldValue, newValue in
+                        if newValue {
+                            // First request tracking
+                            requestTrackingThenShowPaywall()
+                        }
                     }
                 }
             }
@@ -64,13 +55,29 @@ struct ReplyerAIApp: App {
         }
     }
     
-    private func requestTracking() {
-        // Request tracking authorization (shows standard iOS ATT prompt)
-        ATTrackingManager.requestTrackingAuthorization { status in
-            DispatchQueue.main.async {
-                hasRequestedTracking = true
-                print("📊 Tracking authorization status: \(status.rawValue)")
+    private func requestTrackingThenShowPaywall() {
+        // Request tracking authorization first
+        if !hasRequestedTracking {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                DispatchQueue.main.async {
+                    hasRequestedTracking = true
+                    print("📊 Tracking authorization status: \(status.rawValue)")
+                    // After tracking prompt, show paywall
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        if !subscriptionService.isPro {
+                            showPaywall = true
+                        }
+                    }
+                }
+            }
+        } else {
+            // Tracking already requested, just show paywall
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if !subscriptionService.isPro {
+                    showPaywall = true
+                }
             }
         }
+        showTrackingThenPaywall = false
     }
 }
