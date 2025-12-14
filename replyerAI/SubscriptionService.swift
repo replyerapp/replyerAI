@@ -342,10 +342,32 @@ struct DismissablePaywallView: View {
     @Binding var isPresented: Bool
     
     var body: some View {
-        CustomPaywallView(
-            onPurchaseCompleted: { _ in isPresented = false },
-            onRestoreCompleted: { _ in }
-        )
+        ZStack(alignment: .topTrailing) {
+            PaywallView()
+                .onPurchaseCompleted { customerInfo in
+                    Task { @MainActor in
+                        SubscriptionService.shared.updateProStatus(from: customerInfo)
+                        isPresented = false
+                    }
+                }
+                .onRestoreCompleted { customerInfo in
+                    Task { @MainActor in
+                        SubscriptionService.shared.updateProStatus(from: customerInfo)
+                    }
+                }
+            
+            // Close button - prominent for fullscreen
+            Button {
+                isPresented = false
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.title)
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, .black.opacity(0.5))
+            }
+            .padding(.top, 60)
+            .padding(.trailing, 20)
+        }
     }
 }
 
