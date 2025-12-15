@@ -184,6 +184,30 @@ final class ReplyViewModel {
         return selectedTone.rawValue
     }
     
+    /// Localized display name for the effective relationship
+    var effectiveRelationshipDisplay: String {
+        if let profile = selectedContactProfile {
+            // For contact profiles, try to find matching enum or return as-is
+            if let relationship = Relationship.allCases.first(where: { $0.rawValue == profile.relationship }) {
+                return relationship.localizedName
+            }
+            return profile.relationship
+        }
+        return selectedRelationship.localizedName
+    }
+    
+    /// Localized display name for the effective tone
+    var effectiveToneDisplay: String {
+        if let profile = selectedContactProfile, let preferredTone = profile.preferredTone {
+            // Try to find matching enum or return as-is
+            if let tone = Tone.allCases.first(where: { $0.rawValue == preferredTone }) {
+                return tone.localizedName
+            }
+            return preferredTone
+        }
+        return selectedTone.localizedName
+    }
+    
     /// Contact profile notes for AI context
     var contactProfileNotes: String {
         selectedContactProfile?.notes ?? ""

@@ -21,10 +21,43 @@ final class GeminiService {
     
     /// Initializes the Gemini service with the API key from Secrets
     private init() {
+        // Optimize generation config for speed without compromising quality
+        let generationConfig = GenerationConfig(
+            temperature: 0.7, // Balanced creativity/speed
+            topP: 0.95, // Focused sampling
+            topK: 40, // Faster token selection
+            maxOutputTokens: 500 // Limit response length for speed
+        )
+        
         self.model = GenerativeModel(
             name: "gemini-2.5-flash",
-            apiKey: Secrets.geminiAPIKey
+            apiKey: Secrets.geminiAPIKey,
+            generationConfig: generationConfig
         )
+    }
+    
+    // MARK: - Image Optimization
+    
+    /// Optimizes image size for faster API calls while maintaining quality
+    /// - Parameter image: Original UIImage
+    /// - Returns: Optimized UIImage (max 1024px on longest side, 80% JPEG quality)
+    private func optimizeImage(_ image: UIImage) -> UIImage {
+        let maxDimension: CGFloat = 1024
+        let currentSize = image.size
+        let scale = min(maxDimension / currentSize.width, maxDimension / currentSize.height, 1.0)
+        
+        // If image is already small enough, return as-is
+        if scale >= 1.0 {
+            return image
+        }
+        
+        let newSize = CGSize(width: currentSize.width * scale, height: currentSize.height * scale)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        defer { UIGraphicsEndImageContext() }
+        
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? image
     }
     
     // MARK: - Language Rules
@@ -69,13 +102,12 @@ final class GeminiService {
     /// - Returns: The generated text response
     /// - Throws: An error if the generation fails
     func generateResponse(image: UIImage, prompt: String) async throws -> String {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            throw GeminiError.imageConversionFailed
-        }
+        // Optimize image for faster processing
+        let optimizedImage = optimizeImage(image)
         
         let response = try await model.generateContent(
             prompt,
-            image
+            optimizedImage
         )
         
         guard let text = response.text else {
@@ -167,10 +199,10 @@ final class GeminiService {
         Respond ONLY with the JSON object, no other text.
         """
         
-        // Build content array with all images
+        // Build content array with optimized images
         var content: [any ThrowingPartsRepresentable] = [prompt]
         for image in samples {
-            content.append(image)
+            content.append(optimizeImage(image))
         }
         
         let response = try await model.generateContent(content)
@@ -242,7 +274,9 @@ final class GeminiService {
         Generate ONLY the reply message text, nothing else.
         """
         
-        let response = try await model.generateContent(prompt, image)
+        // Optimize image for faster processing
+        let optimizedImage = optimizeImage(image)
+        let response = try await model.generateContent(prompt, optimizedImage)
         
         guard let text = response.text else {
             throw GeminiError.noTextInResponse
@@ -315,10 +349,10 @@ final class GeminiService {
         Now, analyze ALL the images together and generate an appropriate reply message that takes into account the full conversation history.
         """
         
-        // Build content array with prompt and all images
+        // Build content array with optimized images
         var content: [any ThrowingPartsRepresentable] = [prompt]
         for image in images {
-            content.append(image)
+            content.append(optimizeImage(image))
         }
         
         let response = try await model.generateContent(content)
@@ -396,10 +430,10 @@ final class GeminiService {
         Generate ONLY the reply message text, nothing else.
         """
         
-        // Build content array with prompt and all images
+        // Build content array with optimized images
         var content: [any ThrowingPartsRepresentable] = [prompt]
         for image in images {
-            content.append(image)
+            content.append(optimizeImage(image))
         }
         
         let response = try await model.generateContent(content)
@@ -476,7 +510,9 @@ final class GeminiService {
         Respond ONLY with the JSON object, no other text.
         """
         
-        let response = try await model.generateContent(prompt, image)
+        // Optimize image for faster processing
+        let optimizedImage = optimizeImage(image)
+        let response = try await model.generateContent(prompt, optimizedImage)
         
         guard let text = response.text else {
             throw GeminiError.noTextInResponse

@@ -111,6 +111,8 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $showResultPopup) {
             ResultPopupView(
                 reply: viewModel.generatedReply,
+                relationship: viewModel.effectiveRelationshipDisplay,
+                tone: viewModel.effectiveToneDisplay,
                 showCopiedToast: $showCopiedToast,
                 onDismiss: {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -1056,6 +1058,8 @@ struct ContentView: View {
 
 struct ResultPopupView: View {
     let reply: String
+    let relationship: String
+    let tone: String
     @Binding var showCopiedToast: Bool
     let onDismiss: () -> Void
     let onShareAsImage: () -> Void
@@ -1142,6 +1146,44 @@ struct ResultPopupView: View {
                             backgroundColor: selectedBackgroundColor,
                             gradientColors: textGradientColors
                         )
+                        .padding(.horizontal, 20)
+                        
+                        // Relationship and Tone Display
+                        HStack(spacing: 16) {
+                            // Relationship Badge
+                            HStack(spacing: 6) {
+                                Image(systemName: "person.circle.fill")
+                                    .font(.caption)
+                                Text(relationship)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                            }
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(
+                                Capsule()
+                                    .fill(Color.white.opacity(0.2))
+                            )
+                            
+                            // Tone Badge
+                            HStack(spacing: 6) {
+                                Image(systemName: "sparkles")
+                                    .font(.caption)
+                                Text(tone)
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                            }
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(
+                                Capsule()
+                                    .fill(Color.white.opacity(0.2))
+                            )
+                            
+                            Spacer()
+                        }
                         .padding(.horizontal, 20)
                         
                         // Editing Options
