@@ -525,7 +525,7 @@ final class GeminiService {
     /// Parses JSON response into DecodeAnalysis object
     private func parseDecodeAnalysis(from jsonString: String) throws -> DecodeAnalysis {
         // Clean up the JSON string (remove markdown code blocks if present)
-        var cleanedJSON = jsonString
+        let cleanedJSON = jsonString
             .replacingOccurrences(of: "```json", with: "")
             .replacingOccurrences(of: "```", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)

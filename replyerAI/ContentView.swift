@@ -416,26 +416,30 @@ struct ContentView: View {
                 }
             } else {
                 // Empty state - Photo picker
+                // Capture main actor values before closure
+                let isPro = viewModel.isPro
+                let maxScreenshots = viewModel.maxScreenshots
+                
                 PhotosPicker(
                     selection: $viewModel.imageSelections,
-                    maxSelectionCount: viewModel.maxScreenshots,
+                    maxSelectionCount: maxScreenshots,
                     matching: .images
                 ) {
                     VStack(spacing: 12) {
-                        Image(systemName: viewModel.isPro ? "photo.stack" : "photo.badge.plus")
+                        Image(systemName: isPro ? "photo.stack" : "photo.badge.plus")
                             .font(.system(size: 40))
                             .foregroundStyle(.secondary)
-                        Text(viewModel.isPro ? L10n.selectScreenshots : L10n.selectScreenshot)
+                        Text(isPro ? L10n.selectScreenshots : L10n.selectScreenshot)
                             .font(.headline)
                             .foregroundStyle(.primary)
-                        Text(viewModel.isPro 
-                             ? L10n.addScreenshotsForContext(viewModel.maxScreenshots)
+                        Text(isPro 
+                             ? L10n.addScreenshotsForContext(maxScreenshots)
                              : L10n.tapToChooseScreenshot)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                         
-                        if !viewModel.isPro {
+                        if !isPro {
                             Button {
                                 viewModel.showPaywall = true
                             } label: {
