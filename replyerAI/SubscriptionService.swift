@@ -101,6 +101,9 @@ final class SubscriptionService {
     func configure() {
         #if DEBUG
         Purchases.logLevel = .debug
+        let apiKeyType = Secrets.revenueCatAPIKey.hasPrefix("test_") ? "Test Store" : "Production"
+        print("🔑 RevenueCat API Key Type: \(apiKeyType)")
+        print("🔑 Using API Key: \(Secrets.revenueCatAPIKey.prefix(20))...")
         #else
         Purchases.logLevel = .error
         #endif
@@ -180,11 +183,23 @@ final class SubscriptionService {
             
             #if DEBUG
             print("📦 Offerings fetched: \(offerings.current?.availablePackages.count ?? 0) packages")
+            if let current = offerings.current {
+                print("📦 Current Offering ID: \(current.identifier)")
+                print("📦 Available Packages: \(current.availablePackages.map { $0.identifier })")
+            } else {
+                print("⚠️ No current offering available")
+            }
             #endif
             
             return offerings
         } catch {
             print("❌ Error fetching offerings: \(error.localizedDescription)")
+            print("❌ Full error: \(error)")
+            #if DEBUG
+            if let rcError = error as? RevenueCat.ErrorCode {
+                print("❌ RevenueCat Error Code: \(rcError)")
+            }
+            #endif
             errorMessage = error.localizedDescription
             return nil
         }
