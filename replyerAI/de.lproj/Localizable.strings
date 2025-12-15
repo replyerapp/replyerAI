@@ -1,0 +1,249 @@
+/* 
+  Localizable.strings (German)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "Replyer";
+"pro" = "PRO";
+"done" = "Fertig";
+"cancel" = "Abbrechen";
+"save" = "Speichern";
+"delete" = "Löschen";
+"close" = "Schließen";
+"upgrade" = "Upgrade";
+"select" = "Auswählen";
+"none" = "Keine";
+"add" = "Hinzufügen";
+"edit" = "Bearbeiten";
+"reset" = "Zurücksetzen";
+
+// MARK: - Subscription
+"free_plan" = "Kostenlos";
+"generations_left_today" = "%d von %d Generierungen heute übrig";
+"daily_limit_reached" = "Tageslimit erreicht. Upgrade auf Pro für unbegrenzten Zugang.";
+"free_generations_remaining" = "%d kostenlose Generierung(en) heute übrig";
+
+// MARK: - Photo Picker
+"screenshots" = "Screenshots";
+"full_story_mode" = "Vollständiger Verlauf";
+"select_screenshot" = "Screenshot auswählen";
+"select_screenshots" = "Screenshots auswählen";
+"tap_to_choose_screenshot" = "Tippen, um einen Nachrichten-Screenshot auszuwählen";
+"add_screenshots_for_context" = "Bis zu %d Screenshots für vollständigen Kontext hinzufügen";
+"upgrade_for_multi_screenshot" = "Upgrade für Multi-Screenshot";
+"add_more" = "Mehr hinzufügen";
+"clear_all" = "Alle löschen";
+"screenshot_tip" = "Tipp: Screenshots werden der Reihe nach analysiert. Älteste zuerst, neueste zuletzt.";
+"remove_image" = "Bild entfernen";
+
+// MARK: - Pro Features
+"pro_features" = "Pro-Funktionen";
+"full_story_mode_title" = "Vollständiger Verlauf";
+"full_story_mode_desc_active" = "Bis zu %d Screenshots hochladen • Aktiv";
+"full_story_mode_desc_locked" = "Mehrere Screenshots für besseren Kontext hinzufügen";
+"my_style" = "Mein Stil";
+"my_style_active" = "Aktiv • Dein Stil wird verwendet";
+"my_style_configure" = "Tippen zum Konfigurieren";
+"my_style_train" = "KI trainieren, um deinen Schreibstil zu übernehmen";
+"decode_message" = "Nachricht entschlüsseln";
+"decode_message_desc" = "Psychologie, Stimmung & versteckte Bedeutungen analysieren";
+"contact_profiles" = "Kontaktprofile";
+"contact_profiles_desc" = "Einstellungen für bestimmte Personen speichern";
+"profiles_saved" = "%d Profil(e) gespeichert • Tippen zum Verwalten";
+
+// MARK: - Settings Section
+"settings" = "Einstellungen";
+"relationship" = "Beziehung";
+"tone" = "Tonfall";
+"use_my_style" = "Meinen Stil verwenden";
+"settings_from_profile" = "Einstellungen von %@ werden verwendet.";
+
+// MARK: - Relationships
+"wife" = "Ehefrau";
+"husband" = "Ehemann";
+"girlfriend" = "Freundin";
+"boyfriend" = "Freund";
+"situationship" = "Situationship";
+"boss" = "Chef";
+"coworker" = "Kollege";
+"friend" = "Freund";
+"best_friend" = "Bester Freund";
+"parent" = "Elternteil";
+"sibling" = "Geschwister";
+"ex_partner" = "Ex-Partner";
+"acquaintance" = "Bekannter";
+"stranger" = "Fremder";
+
+// MARK: - Tones
+"angry" = "Wütend";
+"funny" = "Lustig";
+"professional" = "Professionell";
+"sarcastic" = "Sarkastisch";
+"passive_aggressive" = "Passiv-aggressiv";
+"romantic" = "Romantisch";
+"apologetic" = "Entschuldigend";
+"assertive" = "Bestimmt";
+"friendly" = "Freundlich";
+"formal" = "Formell";
+"casual" = "Locker";
+"sympathetic" = "Mitfühlend";
+"flirty" = "Flirtend";
+
+// MARK: - Context
+"additional_context" = "Deine Antwort & zusätzlicher Kontext";
+"context_placeholder" = "z.B. Wir hatten gestern Streit. Sage nein, ohne unhöflich zu sein...";
+"screenshot_privacy_notice" = "Screenshots werden sicher verarbeitet, um deine Antwort zu generieren. Wir speichern oder veröffentlichen deine Gesprächsbilder nicht.";
+
+// MARK: - Generate Button
+"generate_reply" = "Antwort generieren";
+"generating" = "Generiere...";
+
+// MARK: - Onboarding
+"onboarding_title_1" = "SMS-Hilfe, aber intelligenter.";
+"onboarding_subtitle_1" = "Lade einen Screenshot hoch, sage Replyer, wem du schreibst, und erhalte eine Antwort, die natürlich, selbstbewusst und perfekt \"du\" klingt.";
+"onboarding_title_2" = "Antworten, die wie du klingen.";
+"onboarding_subtitle_2" = "Trainiere Replyer mit deinen eigenen Nachrichten, damit es deinen Slang, Emojis und Tonfall beim Schreiben von Antworten kopiert.";
+"onboarding_title_3" = "Entschlüssle, was sie wirklich meinen.";
+"onboarding_subtitle_3" = "Lade einen Screenshot hoch und erhalte eine Dating-Coach-Analyse ihrer Stimmung, Absicht und was sie wirklich sagen wollen.";
+"onboarding_title_4" = "Merke dir die Regeln jedes Kontakts.";
+"onboarding_subtitle_4" = "Speichere Profile wie \"Sarah hasst Emojis, liebt Sarkasmus\", damit die KI immer so antwortet, wie es jede Person bevorzugt.";
+"onboarding_next" = "Weiter";
+"onboarding_start" = "Replyer verwenden";
+
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "Wir verwenden Tracking, um Abonnements zu messen und das Erlebnis zu verbessern. Wir verkaufen deine Daten niemals.";
+
+// MARK: - Result Section
+"generated_reply" = "Generierte Antwort";
+"copy_text" = "Text kopieren";
+"share_card" = "Karte teilen";
+"copied" = "Kopiert!";
+"share_your_reply" = "Deine Antwort teilen";
+"share_as_image" = "Als Bild teilen";
+"share_as_text" = "Als Text teilen";
+"generated_by" = "Erstellt mit Replyer";
+"for_relationship" = "Für: %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "Kontaktprofil";
+"manage" = "Verwalten";
+"no_contact_profiles" = "Keine Kontaktprofile";
+"contact_profiles_empty_desc" = "Speichere Profile für Personen, denen du häufig schreibst. Füge Notizen wie \"hasst Emojis\" oder \"liebt Sarkasmus\" hinzu und die KI merkt es sich!";
+"create_first_profile" = "Erstes Profil erstellen";
+"add_profile" = "Profil hinzufügen";
+"edit_profile" = "Profil bearbeiten";
+"new_profile" = "Neues Profil";
+"basic_info" = "Grundinfo";
+"name" = "Name";
+"emoji" = "Emoji";
+"notes_for_ai" = "Notizen für KI";
+"notes_placeholder" = "z.B. Hasst Emojis, liebt Sarkasmus, immer beschäftigt...";
+"notes_footer" = "Füge Details hinzu, die die KI beim Generieren von Antworten für diese Person beachten soll.";
+"default_tone" = "Standard-Tonfall";
+"set_preferred_tone" = "Bevorzugten Tonfall festlegen";
+"tone_footer" = "Diesen Tonfall automatisch verwenden, wenn dieser Kontakt ausgewählt ist.";
+"delete_profile" = "Profil löschen";
+"swipe_to_delete" = "Nach links wischen zum Löschen. Tippen zum Bearbeiten.";
+"none_manual" = "Keine (Manuell)";
+"manage_profiles" = "Profile verwalten...";
+"choose_emoji" = "Emoji auswählen";
+"use_default" = "Standard verwenden";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "KI deinen Stil beibringen";
+"style_mimicry_desc" = "Lade 3-5 Screenshots deiner eigenen Nachrichten hoch. Die KI lernt deinen einzigartigen Schreibstil inklusive Slang, Emoji-Nutzung und Tonfall.";
+"style_profile_active" = "Stilprofil aktiv";
+"samples_analyzed" = "Analysierte Beispiele:";
+"last_updated" = "Zuletzt aktualisiert:";
+"style_active_desc" = "Deine Antworten werden jetzt deinem persönlichen Schreibstil entsprechen!";
+"update_your_style" = "Deinen Stil aktualisieren";
+"add_your_messages" = "Deine Nachrichten hinzufügen";
+"minimum_samples" = "%d/%d Minimum";
+"use_your_messages" = "Verwende Screenshots DEINER gesendeten Nachrichten";
+"include_different_types" = "Verschiedene Gesprächstypen einbeziehen";
+"dont_use_others" = "Verwende keine Nachrichten anderer Personen";
+"analyze_save_style" = "Stil analysieren & speichern";
+"analyzing_style" = "Analysiere deinen Stil...";
+"delete_style_profile" = "Stilprofil löschen";
+"delete_style_confirm" = "Dies entfernt deinen gelernten Schreibstil. Du musst neue Beispiele hinzufügen, um ein neues Profil zu erstellen.";
+
+// MARK: - Decode Message
+"decode_their_message" = "Ihre Nachricht entschlüsseln";
+"decode_desc" = "Lade einen Screenshot hoch und entdecke, was sie wirklich denken. Erhalte psychologische Einblicke in ihre Stimmung, versteckte Bedeutungen und was sie von dir wollen.";
+"select_message_screenshot" = "Nachrichten-Screenshot auswählen";
+"choose_conversation" = "Wähle eine Konversation zum Analysieren";
+"context" = "Kontext";
+"backstory_optional" = "Vorgeschichte? (optional)";
+"decode_message_button" = "Nachricht entschlüsseln";
+"analyzing" = "Analysiere...";
+"mood_analysis" = "Stimmungsanalyse";
+"quick_summary" = "Kurze Zusammenfassung";
+"what_they_really_mean" = "Was sie wirklich meinen";
+"emotional_state" = "Emotionaler Zustand";
+"what_they_want" = "Was sie wollen";
+"text_cues_detected" = "Erkannte Texthinweise";
+"relationship_dynamics" = "Beziehungsdynamik";
+"how_to_respond" = "Wie antworten";
+"red_flags" = "Warnzeichen";
+"green_flags" = "Positive Zeichen";
+
+// MARK: - Settings Screen
+"appearance" = "Erscheinungsbild";
+"appearance_footer" = "Wähle, wie Replyer aussieht. System folgt deinen Geräteeinstellungen.";
+"system" = "System";
+"light" = "Hell";
+"dark" = "Dunkel";
+"general" = "Allgemein";
+"share_app" = "Replyer teilen";
+"rate_us" = "Bewerte uns";
+"terms_of_use" = "Nutzungsbedingungen";
+"privacy_policy" = "Datenschutzrichtlinie";
+"app_version" = "App-Version";
+"support" = "Support";
+"feedback_suggestions" = "Feedback & Vorschläge";
+
+// MARK: - Subscription Management
+"subscription" = "Abonnement";
+"manage_subscription" = "Abonnement verwalten";
+"upgrade_to_pro" = "Upgrade auf Pro";
+"unlock_all_features" = "Alle Premium-Funktionen freischalten";
+"restore_purchases" = "Käufe wiederherstellen";
+"plan" = "Plan";
+"renews_on" = "Verlängert am";
+"status" = "Status";
+"lifetime" = "Lebenslang";
+"cancel_subscription" = "Abonnement kündigen";
+"cancel_subscription_footer" = "Die Kündigung wird über den App Store verwaltet. Tippen, um deine Abonnements zu öffnen.";
+"subscription_active_until_end" = "Dein Abonnement bleibt bis zum Ende des aktuellen Abrechnungszeitraums aktiv.";
+"auto_renew_info" = "Um zukünftige Abbuchungen zu stoppen, kündige mindestens 24 Stunden vor dem Verlängerungsdatum.";
+"billed_through_apple" = "Alle Zahlungen werden sicher über Apple abgewickelt.";
+"important_information" = "Wichtige Informationen";
+"monthly_plan" = "Monatlich";
+"yearly_plan" = "Jährlich";
+"lifetime_plan" = "Lebenslang";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "Deine Antwort";
+"customize" = "Anpassen";
+"background" = "Hintergrund";
+"text_color" = "Textfarbe";
+"text_gradient" = "Text-Verlauf";
+"shuffle" = "Mischen";
+"corner_style" = "Eckenstil";
+"sharp" = "Scharf";
+"smooth" = "Glatt";
+"round" = "Rund";
+"download_image" = "Bild herunterladen";
+"saved_to_photos" = "In Fotos gespeichert!";
+"image_saved" = "Gespeichert!";
+"image_saved_message" = "Bild in deiner Fotobibliothek gespeichert.";
+"created_with_replyer" = "Erstellt mit Replyer";
+
+// MARK: - Errors
+"please_select_image" = "Bitte wähle zuerst ein Bild aus.";
+"error_occurred" = "Ein Fehler ist aufgetreten";
+

@@ -1,0 +1,249 @@
+/* 
+  Localizable.strings (Russian)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "Replyer";
+"pro" = "PRO";
+"done" = "Готово";
+"cancel" = "Отмена";
+"save" = "Сохранить";
+"delete" = "Удалить";
+"close" = "Закрыть";
+"upgrade" = "Улучшить";
+"select" = "Выбрать";
+"none" = "Нет";
+"add" = "Добавить";
+"edit" = "Изменить";
+"reset" = "Сбросить";
+
+// MARK: - Subscription
+"free_plan" = "Бесплатный план";
+"generations_left_today" = "%d из %d генераций осталось сегодня";
+"daily_limit_reached" = "Дневной лимит достигнут. Перейдите на Pro для неограниченного доступа.";
+"free_generations_remaining" = "Осталось %d бесплатных генераций сегодня";
+
+// MARK: - Photo Picker
+"screenshots" = "Скриншоты";
+"full_story_mode" = "Полная история";
+"select_screenshot" = "Выбрать скриншот";
+"select_screenshots" = "Выбрать скриншоты";
+"tap_to_choose_screenshot" = "Нажмите, чтобы выбрать скриншот сообщения";
+"add_screenshots_for_context" = "Добавьте до %d скриншотов для полного контекста";
+"upgrade_for_multi_screenshot" = "Улучшить для мульти-скриншотов";
+"add_more" = "Добавить ещё";
+"clear_all" = "Очистить всё";
+"screenshot_tip" = "Совет: Скриншоты анализируются по порядку. Сначала старые, потом новые.";
+"remove_image" = "Удалить изображение";
+
+// MARK: - Pro Features
+"pro_features" = "Pro функции";
+"full_story_mode_title" = "Полная история";
+"full_story_mode_desc_active" = "Загрузите до %d скриншотов • Активно";
+"full_story_mode_desc_locked" = "Добавьте несколько скриншотов для лучшего контекста";
+"my_style" = "Мой стиль";
+"my_style_active" = "Активно • Используется ваш стиль";
+"my_style_configure" = "Нажмите для настройки";
+"my_style_train" = "Обучите ИИ вашему стилю письма";
+"decode_message" = "Расшифровать сообщение";
+"decode_message_desc" = "Анализ психологии, настроения и скрытых смыслов";
+"contact_profiles" = "Профили контактов";
+"contact_profiles_desc" = "Сохраните настройки для конкретных людей";
+"profiles_saved" = "%d профиль(ей) сохранено • Нажмите для управления";
+
+// MARK: - Settings Section
+"settings" = "Настройки";
+"relationship" = "Отношения";
+"tone" = "Тон";
+"use_my_style" = "Использовать мой стиль";
+"settings_from_profile" = "Используются настройки от %@.";
+
+// MARK: - Relationships
+"wife" = "Жена";
+"husband" = "Муж";
+"girlfriend" = "Девушка";
+"boyfriend" = "Парень";
+"situationship" = "Situationship";
+"boss" = "Босс";
+"coworker" = "Коллега";
+"friend" = "Друг";
+"best_friend" = "Лучший друг";
+"parent" = "Родитель";
+"sibling" = "Брат/Сестра";
+"ex_partner" = "Бывший партнёр";
+"acquaintance" = "Знакомый";
+"stranger" = "Незнакомец";
+
+// MARK: - Tones
+"angry" = "Злой";
+"funny" = "Смешной";
+"professional" = "Профессиональный";
+"sarcastic" = "Саркастичный";
+"passive_aggressive" = "Пассивно-агрессивный";
+"romantic" = "Романтичный";
+"apologetic" = "Извиняющийся";
+"assertive" = "Уверенный";
+"friendly" = "Дружелюбный";
+"formal" = "Формальный";
+"casual" = "Неформальный";
+"sympathetic" = "Сочувствующий";
+"flirty" = "Флиртующий";
+
+// MARK: - Context
+"additional_context" = "Ваш ответ и дополнительный контекст";
+"context_placeholder" = "Напр., Вчера мы поссорились. Откажите вежливо...";
+"screenshot_privacy_notice" = "Скриншоты безопасно обрабатываются для создания вашего ответа. Мы не храним и не публикуем изображения ваших разговоров.";
+
+// MARK: - Generate Button
+"generate_reply" = "Создать ответ";
+"generating" = "Создаём...";
+
+// MARK: - Onboarding
+"onboarding_title_1" = "Помощь с сообщениями, но умнее.";
+"onboarding_subtitle_1" = "Загрузите скриншот, скажите Replyer кому вы пишете, и получите ответ, который звучит естественно, уверенно и идеально \"как вы\".";
+"onboarding_title_2" = "Ответы, которые звучат как вы.";
+"onboarding_subtitle_2" = "Обучите Replyer своими сообщениями, чтобы он копировал ваш сленг, эмодзи и тон при написании ответов.";
+"onboarding_title_3" = "Расшифруйте, что они имеют в виду.";
+"onboarding_subtitle_3" = "Загрузите скриншот и получите анализ в стиле коуча по свиданиям: их настроение, намерения и что они на самом деле хотят сказать.";
+"onboarding_title_4" = "Помните правила каждого контакта.";
+"onboarding_subtitle_4" = "Сохраняйте профили вроде \"Саша ненавидит эмодзи, любит сарказм\", чтобы ИИ всегда отвечал так, как предпочитает каждый человек.";
+"onboarding_next" = "Далее";
+"onboarding_start" = "Начать использовать Replyer";
+
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "Мы используем отслеживание для измерения подписок и улучшения опыта. Мы никогда не продаём ваши данные.";
+
+// MARK: - Result Section
+"generated_reply" = "Созданный ответ";
+"copy_text" = "Копировать текст";
+"share_card" = "Поделиться карточкой";
+"copied" = "Скопировано!";
+"share_your_reply" = "Поделиться ответом";
+"share_as_image" = "Поделиться как изображение";
+"share_as_text" = "Поделиться как текст";
+"generated_by" = "Создано в Replyer";
+"for_relationship" = "Для: %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "Профиль контакта";
+"manage" = "Управлять";
+"no_contact_profiles" = "Нет профилей контактов";
+"contact_profiles_empty_desc" = "Сохраните профили для людей, которым часто пишете. Добавьте заметки вроде \"ненавидит эмодзи\" или \"любит сарказм\", и ИИ запомнит!";
+"create_first_profile" = "Создать первый профиль";
+"add_profile" = "Добавить профиль";
+"edit_profile" = "Изменить профиль";
+"new_profile" = "Новый профиль";
+"basic_info" = "Основная информация";
+"name" = "Имя";
+"emoji" = "Эмодзи";
+"notes_for_ai" = "Заметки для ИИ";
+"notes_placeholder" = "Напр., Ненавидит эмодзи, любит сарказм, всегда занят...";
+"notes_footer" = "Добавьте детали, которые ИИ должен помнить при создании ответов для этого человека.";
+"default_tone" = "Стандартный тон";
+"set_preferred_tone" = "Установить предпочтительный тон";
+"tone_footer" = "Автоматически использовать этот тон, когда выбран этот контакт.";
+"delete_profile" = "Удалить профиль";
+"swipe_to_delete" = "Свайп влево для удаления. Нажмите для редактирования.";
+"none_manual" = "Нет (Вручную)";
+"manage_profiles" = "Управлять профилями...";
+"choose_emoji" = "Выбрать эмодзи";
+"use_default" = "Использовать стандартный";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "Научите ИИ вашему стилю";
+"style_mimicry_desc" = "Загрузите 3-5 скриншотов своих сообщений. ИИ изучит ваш уникальный стиль письма, включая сленг, использование эмодзи и тон.";
+"style_profile_active" = "Профиль стиля активен";
+"samples_analyzed" = "Проанализировано образцов:";
+"last_updated" = "Последнее обновление:";
+"style_active_desc" = "Ваши ответы теперь будут соответствовать вашему личному стилю письма!";
+"update_your_style" = "Обновить ваш стиль";
+"add_your_messages" = "Добавить ваши сообщения";
+"minimum_samples" = "%d/%d минимум";
+"use_your_messages" = "Используйте скриншоты ВАШИХ отправленных сообщений";
+"include_different_types" = "Включите разные типы разговоров";
+"dont_use_others" = "Не используйте сообщения других людей";
+"analyze_save_style" = "Анализировать и сохранить стиль";
+"analyzing_style" = "Анализируем ваш стиль...";
+"delete_style_profile" = "Удалить профиль стиля";
+"delete_style_confirm" = "Это удалит ваш изученный стиль письма. Вам нужно будет добавить новые образцы для создания нового профиля.";
+
+// MARK: - Decode Message
+"decode_their_message" = "Расшифровать их сообщение";
+"decode_desc" = "Загрузите скриншот и узнайте, что они на самом деле думают. Получите психологические инсайты об их настроении, скрытых смыслах и что они от вас хотят.";
+"select_message_screenshot" = "Выбрать скриншот сообщения";
+"choose_conversation" = "Выберите разговор для анализа";
+"context" = "Контекст";
+"backstory_optional" = "Предыстория? (необязательно)";
+"decode_message_button" = "Расшифровать сообщение";
+"analyzing" = "Анализируем...";
+"mood_analysis" = "Анализ настроения";
+"quick_summary" = "Краткое резюме";
+"what_they_really_mean" = "Что они на самом деле имеют в виду";
+"emotional_state" = "Эмоциональное состояние";
+"what_they_want" = "Что они хотят";
+"text_cues_detected" = "Обнаруженные текстовые подсказки";
+"relationship_dynamics" = "Динамика отношений";
+"how_to_respond" = "Как ответить";
+"red_flags" = "Тревожные сигналы";
+"green_flags" = "Хорошие знаки";
+
+// MARK: - Settings Screen
+"appearance" = "Внешний вид";
+"appearance_footer" = "Выберите, как выглядит Replyer. Системный следует настройкам устройства.";
+"system" = "Системный";
+"light" = "Светлый";
+"dark" = "Тёмный";
+"general" = "Общие";
+"share_app" = "Поделиться Replyer";
+"rate_us" = "Оценить нас";
+"terms_of_use" = "Условия использования";
+"privacy_policy" = "Политика конфиденциальности";
+"app_version" = "Версия приложения";
+"support" = "Поддержка";
+"feedback_suggestions" = "Отзывы и предложения";
+
+// MARK: - Subscription Management
+"subscription" = "Подписка";
+"manage_subscription" = "Управлять подпиской";
+"upgrade_to_pro" = "Перейти на Pro";
+"unlock_all_features" = "Разблокировать все премиум-функции";
+"restore_purchases" = "Восстановить покупки";
+"plan" = "План";
+"renews_on" = "Продление";
+"status" = "Статус";
+"lifetime" = "Навсегда";
+"cancel_subscription" = "Отменить подписку";
+"cancel_subscription_footer" = "Отмена управляется через App Store. Нажмите, чтобы открыть ваши подписки.";
+"subscription_active_until_end" = "Ваша подписка останется активной до конца текущего расчётного периода.";
+"auto_renew_info" = "Чтобы остановить будущие списания, отмените как минимум за 24 часа до даты продления.";
+"billed_through_apple" = "Все платежи безопасно обрабатываются через Apple.";
+"important_information" = "Важная информация";
+"monthly_plan" = "Ежемесячно";
+"yearly_plan" = "Ежегодно";
+"lifetime_plan" = "Навсегда";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "Ваш ответ";
+"customize" = "Настроить";
+"background" = "Фон";
+"text_color" = "Цвет текста";
+"text_gradient" = "Градиент текста";
+"shuffle" = "Перемешать";
+"corner_style" = "Стиль углов";
+"sharp" = "Острый";
+"smooth" = "Гладкий";
+"round" = "Круглый";
+"download_image" = "Скачать изображение";
+"saved_to_photos" = "Сохранено в Фото!";
+"image_saved" = "Сохранено!";
+"image_saved_message" = "Изображение сохранено в вашу фотобиблиотеку.";
+"created_with_replyer" = "Создано в Replyer";
+
+// MARK: - Errors
+"please_select_image" = "Сначала выберите изображение.";
+"error_occurred" = "Произошла ошибка";
+

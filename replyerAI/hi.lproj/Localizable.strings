@@ -1,0 +1,249 @@
+/* 
+  Localizable.strings (Hindi)
+  replyerAI
+
+  Created by Ege Can Koç on 4.12.2025.
+*/
+
+// MARK: - App General
+"app_name" = "Replyer";
+"pro" = "PRO";
+"done" = "हो गया";
+"cancel" = "रद्द करें";
+"save" = "सहेजें";
+"delete" = "हटाएं";
+"close" = "बंद करें";
+"upgrade" = "अपग्रेड";
+"select" = "चुनें";
+"none" = "कोई नहीं";
+"add" = "जोड़ें";
+"edit" = "संपादित करें";
+"reset" = "रीसेट करें";
+
+// MARK: - Subscription
+"free_plan" = "मुफ्त प्लान";
+"generations_left_today" = "आज %d में से %d जनरेशन बाकी";
+"daily_limit_reached" = "दैनिक सीमा पूरी हुई। असीमित एक्सेस के लिए Pro में अपग्रेड करें।";
+"free_generations_remaining" = "आज %d मुफ्त जनरेशन बाकी";
+
+// MARK: - Photo Picker
+"screenshots" = "स्क्रीनशॉट";
+"full_story_mode" = "पूरी कहानी मोड";
+"select_screenshot" = "स्क्रीनशॉट चुनें";
+"select_screenshots" = "स्क्रीनशॉट चुनें";
+"tap_to_choose_screenshot" = "मैसेज स्क्रीनशॉट चुनने के लिए टैप करें";
+"add_screenshots_for_context" = "पूर्ण संदर्भ के लिए %d तक स्क्रीनशॉट जोड़ें";
+"upgrade_for_multi_screenshot" = "मल्टी-स्क्रीनशॉट के लिए अपग्रेड करें";
+"add_more" = "और जोड़ें";
+"clear_all" = "सब हटाएं";
+"screenshot_tip" = "टिप: स्क्रीनशॉट क्रम में विश्लेषित होते हैं। पहले पुराना, बाद में नया जोड़ें।";
+"remove_image" = "छवि हटाएं";
+
+// MARK: - Pro Features
+"pro_features" = "Pro सुविधाएं";
+"full_story_mode_title" = "पूरी कहानी मोड";
+"full_story_mode_desc_active" = "%d तक स्क्रीनशॉट अपलोड करें • सक्रिय";
+"full_story_mode_desc_locked" = "बेहतर संदर्भ के लिए कई स्क्रीनशॉट जोड़ें";
+"my_style" = "मेरी शैली";
+"my_style_active" = "सक्रिय • आपकी शैली का उपयोग हो रहा है";
+"my_style_configure" = "कॉन्फ़िगर करने के लिए टैप करें";
+"my_style_train" = "AI को अपनी लेखन शैली सिखाएं";
+"decode_message" = "मैसेज डिकोड करें";
+"decode_message_desc" = "मनोविज्ञान, मूड और छिपे अर्थों का विश्लेषण करें";
+"contact_profiles" = "संपर्क प्रोफाइल";
+"contact_profiles_desc" = "विशेष लोगों के लिए सेटिंग्स सहेजें";
+"profiles_saved" = "%d प्रोफाइल सहेजी गई • प्रबंधित करने के लिए टैप करें";
+
+// MARK: - Settings Section
+"settings" = "सेटिंग्स";
+"relationship" = "रिश्ता";
+"tone" = "लहजा";
+"use_my_style" = "मेरी शैली का उपयोग करें";
+"settings_from_profile" = "%@ की सेटिंग्स उपयोग हो रही हैं।";
+
+// MARK: - Relationships
+"wife" = "पत्नी";
+"husband" = "पति";
+"girlfriend" = "गर्लफ्रेंड";
+"boyfriend" = "बॉयफ्रेंड";
+"situationship" = "Situationship";
+"boss" = "बॉस";
+"coworker" = "सहकर्मी";
+"friend" = "दोस्त";
+"best_friend" = "सबसे अच्छा दोस्त";
+"parent" = "माता-पिता";
+"sibling" = "भाई-बहन";
+"ex_partner" = "पूर्व साथी";
+"acquaintance" = "परिचित";
+"stranger" = "अजनबी";
+
+// MARK: - Tones
+"angry" = "गुस्सा";
+"funny" = "मज़ेदार";
+"professional" = "पेशेवर";
+"sarcastic" = "व्यंग्यात्मक";
+"passive_aggressive" = "निष्क्रिय-आक्रामक";
+"romantic" = "रोमांटिक";
+"apologetic" = "माफी मांगने वाला";
+"assertive" = "दृढ़";
+"friendly" = "मित्रवत";
+"formal" = "औपचारिक";
+"casual" = "अनौपचारिक";
+"sympathetic" = "सहानुभूतिपूर्ण";
+"flirty" = "फ्लर्टी";
+
+// MARK: - Context
+"additional_context" = "आपका जवाब और अतिरिक्त संदर्भ";
+"context_placeholder" = "उदा., कल हमारी लड़ाई हुई थी। बिना अशिष्ट हुए मना करें...";
+"screenshot_privacy_notice" = "आपका जवाब बनाने के लिए स्क्रीनशॉट सुरक्षित रूप से प्रोसेस होते हैं। हम आपकी बातचीत की छवियां संग्रहित या प्रकाशित नहीं करते।";
+
+// MARK: - Generate Button
+"generate_reply" = "जवाब बनाएं";
+"generating" = "बना रहे हैं...";
+
+// MARK: - Onboarding
+"onboarding_title_1" = "टेक्स्टिंग मदद, पर स्मार्ट।";
+"onboarding_subtitle_1" = "स्क्रीनशॉट अपलोड करें, Replyer को बताएं कि आप किसे मैसेज कर रहे हैं, और एक ऐसा जवाब पाएं जो स्वाभाविक, आत्मविश्वासी और बिल्कुल \"आप\" जैसा लगे।";
+"onboarding_title_2" = "जवाब जो आप जैसे लगें।";
+"onboarding_subtitle_2" = "अपने मैसेज से Replyer को ट्रेन करें ताकि यह जवाब लिखते समय आपकी स्लैंग, इमोजी और लहजे की नकल करे।";
+"onboarding_title_3" = "समझें उनका असली मतलब।";
+"onboarding_subtitle_3" = "स्क्रीनशॉट अपलोड करें और डेटिंग कोच स्टाइल में उनके मूड, इरादे और वे वास्तव में क्या कहना चाहते हैं, का विश्लेषण पाएं।";
+"onboarding_title_4" = "हर संपर्क के नियम याद रखें।";
+"onboarding_subtitle_4" = "\"सारा को इमोजी पसंद नहीं, व्यंग्य पसंद है\" जैसी प्रोफाइल सहेजें ताकि AI हमेशा उसी तरह जवाब दे जैसा हर व्यक्ति पसंद करता है।";
+"onboarding_next" = "आगे";
+"onboarding_start" = "Replyer का उपयोग शुरू करें";
+
+// MARK: - Tracking Permission
+"tracking_permission_reason" = "हम सब्सक्रिप्शन मापने और अनुभव बेहतर करने के लिए ट्रैकिंग का उपयोग करते हैं। हम आपका डेटा कभी नहीं बेचते।";
+
+// MARK: - Result Section
+"generated_reply" = "बनाया गया जवाब";
+"copy_text" = "टेक्स्ट कॉपी करें";
+"share_card" = "कार्ड शेयर करें";
+"copied" = "कॉपी हो गया!";
+"share_your_reply" = "अपना जवाब शेयर करें";
+"share_as_image" = "छवि के रूप में शेयर करें";
+"share_as_text" = "टेक्स्ट के रूप में शेयर करें";
+"generated_by" = "Replyer द्वारा बनाया गया";
+"for_relationship" = "के लिए: %@";
+
+// MARK: - Contact Profiles
+"contact_profile" = "संपर्क प्रोफाइल";
+"manage" = "प्रबंधित करें";
+"no_contact_profiles" = "कोई संपर्क प्रोफाइल नहीं";
+"contact_profiles_empty_desc" = "जिन लोगों को आप अक्सर मैसेज करते हैं उनके लिए प्रोफाइल सहेजें। \"इमोजी पसंद नहीं\" या \"व्यंग्य पसंद है\" जैसे नोट्स जोड़ें और AI याद रखेगा!";
+"create_first_profile" = "पहली प्रोफाइल बनाएं";
+"add_profile" = "प्रोफाइल जोड़ें";
+"edit_profile" = "प्रोफाइल संपादित करें";
+"new_profile" = "नई प्रोफाइल";
+"basic_info" = "बुनियादी जानकारी";
+"name" = "नाम";
+"emoji" = "इमोजी";
+"notes_for_ai" = "AI के लिए नोट्स";
+"notes_placeholder" = "उदा., इमोजी पसंद नहीं, व्यंग्य पसंद है, हमेशा व्यस्त...";
+"notes_footer" = "कोई भी विवरण जोड़ें जो AI को इस व्यक्ति के लिए जवाब बनाते समय याद रखना चाहिए।";
+"default_tone" = "डिफ़ॉल्ट लहजा";
+"set_preferred_tone" = "पसंदीदा लहजा सेट करें";
+"tone_footer" = "जब यह संपर्क चुना जाए तो स्वचालित रूप से इस लहजे का उपयोग करें।";
+"delete_profile" = "प्रोफाइल हटाएं";
+"swipe_to_delete" = "हटाने के लिए बाएं स्वाइप करें। संपादित करने के लिए टैप करें।";
+"none_manual" = "कोई नहीं (मैनुअल)";
+"manage_profiles" = "प्रोफाइल प्रबंधित करें...";
+"choose_emoji" = "इमोजी चुनें";
+"use_default" = "डिफ़ॉल्ट का उपयोग करें";
+
+// MARK: - Style Mimicry
+"teach_ai_your_style" = "AI को अपनी शैली सिखाएं";
+"style_mimicry_desc" = "अपने मैसेज के 3-5 स्क्रीनशॉट अपलोड करें। AI आपकी अनूठी लेखन शैली सीखेगा जिसमें स्लैंग, इमोजी उपयोग और लहजा शामिल है।";
+"style_profile_active" = "शैली प्रोफाइल सक्रिय";
+"samples_analyzed" = "विश्लेषित नमूने:";
+"last_updated" = "अंतिम अपडेट:";
+"style_active_desc" = "आपके जवाब अब आपकी व्यक्तिगत लेखन शैली से मेल खाएंगे!";
+"update_your_style" = "अपनी शैली अपडेट करें";
+"add_your_messages" = "अपने मैसेज जोड़ें";
+"minimum_samples" = "%d/%d न्यूनतम";
+"use_your_messages" = "अपने भेजे गए मैसेज के स्क्रीनशॉट का उपयोग करें";
+"include_different_types" = "विभिन्न प्रकार की बातचीत शामिल करें";
+"dont_use_others" = "दूसरों के मैसेज का उपयोग न करें";
+"analyze_save_style" = "शैली का विश्लेषण और सहेजें";
+"analyzing_style" = "आपकी शैली का विश्लेषण हो रहा है...";
+"delete_style_profile" = "शैली प्रोफाइल हटाएं";
+"delete_style_confirm" = "यह आपकी सीखी हुई लेखन शैली को हटा देगा। नई प्रोफाइल बनाने के लिए आपको नए नमूने जोड़ने होंगे।";
+
+// MARK: - Decode Message
+"decode_their_message" = "उनका मैसेज डिकोड करें";
+"decode_desc" = "स्क्रीनशॉट अपलोड करें और जानें वे वास्तव में क्या सोच रहे हैं। उनके मूड, छिपे अर्थों और वे आपसे क्या चाहते हैं, इसकी मनोवैज्ञानिक जानकारी पाएं।";
+"select_message_screenshot" = "मैसेज स्क्रीनशॉट चुनें";
+"choose_conversation" = "विश्लेषण के लिए बातचीत चुनें";
+"context" = "संदर्भ";
+"backstory_optional" = "कोई पृष्ठभूमि? (वैकल्पिक)";
+"decode_message_button" = "मैसेज डिकोड करें";
+"analyzing" = "विश्लेषण हो रहा है...";
+"mood_analysis" = "मूड विश्लेषण";
+"quick_summary" = "त्वरित सारांश";
+"what_they_really_mean" = "उनका असली मतलब";
+"emotional_state" = "भावनात्मक स्थिति";
+"what_they_want" = "वे क्या चाहते हैं";
+"text_cues_detected" = "पाए गए टेक्स्ट संकेत";
+"relationship_dynamics" = "रिश्ते की गतिशीलता";
+"how_to_respond" = "कैसे जवाब दें";
+"red_flags" = "चेतावनी के संकेत";
+"green_flags" = "सकारात्मक संकेत";
+
+// MARK: - Settings Screen
+"appearance" = "दिखावट";
+"appearance_footer" = "चुनें कि Replyer कैसा दिखे। सिस्टम आपकी डिवाइस सेटिंग्स का पालन करता है।";
+"system" = "सिस्टम";
+"light" = "लाइट";
+"dark" = "डार्क";
+"general" = "सामान्य";
+"share_app" = "Replyer शेयर करें";
+"rate_us" = "हमें रेट करें";
+"terms_of_use" = "उपयोग की शर्तें";
+"privacy_policy" = "गोपनीयता नीति";
+"app_version" = "ऐप वर्जन";
+"support" = "सहायता";
+"feedback_suggestions" = "फीडबैक और सुझाव";
+
+// MARK: - Subscription Management
+"subscription" = "सब्सक्रिप्शन";
+"manage_subscription" = "सब्सक्रिप्शन प्रबंधित करें";
+"upgrade_to_pro" = "Pro में अपग्रेड करें";
+"unlock_all_features" = "सभी प्रीमियम सुविधाएं अनलॉक करें";
+"restore_purchases" = "खरीदारी पुनर्स्थापित करें";
+"plan" = "प्लान";
+"renews_on" = "नवीनीकरण तिथि";
+"status" = "स्थिति";
+"lifetime" = "आजीवन";
+"cancel_subscription" = "सब्सक्रिप्शन रद्द करें";
+"cancel_subscription_footer" = "रद्दीकरण App Store के माध्यम से प्रबंधित होता है। अपनी सब्सक्रिप्शन खोलने के लिए टैप करें।";
+"subscription_active_until_end" = "आपकी सब्सक्रिप्शन वर्तमान बिलिंग अवधि के अंत तक सक्रिय रहेगी।";
+"auto_renew_info" = "भविष्य के शुल्क रोकने के लिए, नवीनीकरण तिथि से कम से कम 24 घंटे पहले रद्द करें।";
+"billed_through_apple" = "सभी भुगतान Apple के माध्यम से सुरक्षित रूप से प्रोसेस होते हैं।";
+"important_information" = "महत्वपूर्ण जानकारी";
+"monthly_plan" = "मासिक";
+"yearly_plan" = "वार्षिक";
+"lifetime_plan" = "आजीवन";
+"pro_plan" = "Pro";
+
+// MARK: - Image Editor
+"your_reply" = "आपका जवाब";
+"customize" = "कस्टमाइज़ करें";
+"background" = "पृष्ठभूमि";
+"text_color" = "टेक्स्ट रंग";
+"text_gradient" = "टेक्स्ट ग्रेडिएंट";
+"shuffle" = "शफल करें";
+"corner_style" = "कोने की शैली";
+"sharp" = "तीखा";
+"smooth" = "चिकना";
+"round" = "गोल";
+"download_image" = "छवि डाउनलोड करें";
+"saved_to_photos" = "फोटो में सहेजा गया!";
+"image_saved" = "सहेजा गया!";
+"image_saved_message" = "छवि आपकी फोटो लाइब्रेरी में सहेजी गई।";
+"created_with_replyer" = "Replyer से बनाया गया";
+
+// MARK: - Errors
+"please_select_image" = "कृपया पहले एक छवि चुनें।";
+"error_occurred" = "एक त्रुटि हुई";
+

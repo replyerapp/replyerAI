@@ -209,6 +209,9 @@
 				ar,
 				tr,
 				"pt-BR",
+				de,
+				hi,
+				ru,
 			);
 			mainGroup = 3F936C622EE0BDC90017DCA6;
 			minimizedProjectReferenceProxies = 1;
@@ -423,9 +426,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Replyer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Replyer needs access to your photo library to select message screenshots for generating replies.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -459,9 +462,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Replyer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Replyer needs permission to save generated reply images to your photo library.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Replyer needs access to your photo library to select message screenshots for generating replies.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use tracking to measure subscriptions and improve the experience. We never sell your data.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
